@@ -8,14 +8,24 @@ class Position(models.Model):
     name = models.CharField(max_length=50)
     id_code = models.CharField(max_length=10)
 
-class Interview(models.Model):
-    candidate = models.OneToOneField(User)
-    date = models.DateField()
-    position = models.OneToOneField(Position)
+    def __str__(self):  # __unicode__ on Python 2
+        return self.name
 
 class Candidate(models.Model):
     name = models.CharField(max_length=40)
     contact_primary = RegexValidator(regex='^\d{10}$')
     contact_secondary = RegexValidator(regex='^\d{10}$')
-    experience = models.IntegerField()
+    experience = models.PositiveIntegerField()
     position_applied = models.OneToOneField(Position)
+
+    def __str__(self):  # __unicode__ on Python 2
+        return self.name
+
+class Interview(models.Model):
+    candidate = models.OneToOneField(Candidate)
+    date = models.DateField()
+    position = models.OneToOneField(Position)
+
+    def __str__(self):  # __unicode__ on Python 2
+        return "{0}_{1}_{2}".format(self.candidate, str(self.date), self.position)
+
