@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 from django.contrib.auth.models import User
 from django.db import models
 from django.core.validators import RegexValidator
+from datetime import datetime
 
 class Position(models.Model):
     name = models.CharField(max_length=50)
@@ -29,3 +30,5 @@ class Interview(models.Model):
     def __str__(self):  # __unicode__ on Python 2
         return "{0}_{1}_{2}".format(self.candidate, str(self.date), self.position)
 
+    def interviews_today(self):
+        return Interview.objects.filter(date=datetime.today())
