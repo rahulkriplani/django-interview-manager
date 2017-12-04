@@ -1,19 +1,14 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<!-- Where all the magic happens -->
-<!-- LOGIN FORM -->
-<div class="text-center" style="padding:50px 0">
-	<h1><div class="logo">Welcome, Please Login</div></h1>
-	<!-- Main Form -->
 
-    <div class="login-form-1">
-		<form id="login-form" class="text-left" method="post">
+<div class="container">
+	<h1>Welcome, Please Login</h1>
+		<form method="post">
 			{% csrf_token %}
 			{{ form.as_p }}
 			<button type="submit">Login</button>
 		</form>
-	</div>
-    <!-- end:Main Form -->
 </div>
+
 {% endblock %}
