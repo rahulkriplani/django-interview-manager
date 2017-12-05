@@ -4,6 +4,14 @@
 <title>Profile</title>
 {% endblock %}
 
+<div class="container">
 {% block content %}
 {{ user }}
+Name: {{ user.first_name }} {{user.last_name}}
+Email:{{ user.email }}
+Interviews Today : {% for interview in interview_today %}
+    <p> Position : {{ interview.position.name }}</p>
+    <p> Name : {{ interview.candidate.name }}</p>
+    {% endfor %}
 {% endblock %}
+</div>
