@@ -17,15 +17,15 @@ class Candidate(models.Model):
     contact_primary = RegexValidator(regex='^\d{10}$')
     contact_secondary = RegexValidator(regex='^\d{10}$')
     experience = models.PositiveIntegerField()
-    position_applied = models.OneToOneField(Position)
+    position_applied = models.ForeignKey(Position)
 
     def __str__(self):  # __unicode__ on Python 2
         return self.name
 
 class Interview(models.Model):
-    candidate = models.OneToOneField(Candidate)
+    candidate = models.ForeignKey(Candidate)
     date = models.DateField()
-    position = models.OneToOneField(Position)
+    position = models.ForeignKey(Position)
 
     def __str__(self):  # __unicode__ on Python 2
         return "{0}_{1}_{2}".format(self.candidate, str(self.date), self.position)
