@@ -7,4 +7,5 @@ urlpatterns = [
     url(r'^login/$', login, {'template_name': 'login.html'}),
     url(r'^logout/$', login, {'template_name': 'logout.html'}),
     url(r'^profile/$', views.profile, name='profile'),
+    url(r'^register/$', views.register, name='register'),
     ]
