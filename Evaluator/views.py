@@ -13,5 +13,6 @@ def index(request):
 def profile(request):
     i = Interview()
     print i.interviews_today()
+
     args = {'user':request.user, 'interview_today': i.interviews_today()}
     return render(request, 'profile.html')

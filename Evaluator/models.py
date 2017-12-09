@@ -32,3 +32,7 @@ class Interview(models.Model):
 
     def interviews_today(self):
         return Interview.objects.filter(date=datetime.today())
+
+    def all_interviews(self):
+        return Interview.objects.all()
+
