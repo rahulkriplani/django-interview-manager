@@ -4,14 +4,14 @@
 <title>Profile</title>
 {% endblock %}
 
-<div class="container">
 {% block content %}
-{{ user }}
-Name: {{ user.first_name }} {{user.last_name}}
-Email:{{ user.email }}
-Interviews Today : {% for interview in interview_today %}
-    <p> Position : {{ interview.position.name }}</p>
-    <p> Name : {{ interview.candidate.name }}</p>
+<p>
+<h3>Name: {{ user.first_name }} {{user.last_name}}</h3>
+<h3>Email: {{ user.email }}</h3>
+<h3> Interviews Today : {% for interview in interview_today %}</h3>
+     Position : {{ interview.position.name }}
+     Name : {{ interview.candidate.name }}
     {% endfor %}
+
+</p>
 {% endblock %}
-</div>
