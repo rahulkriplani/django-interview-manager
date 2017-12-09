@@ -8,10 +8,12 @@
 
 <p><h3>Name: {{ user.first_name }} {{user.last_name}}</h3></p>
 <p><h3>Email: {{ user.email }}</h3></p>
-<p><h3> Interviews Today : {% for interview in interview_today %}</h3></p>
-     <p>{{ forloop.counter }}. Position : {{ interview.position.name }}</p>
+<p><h3> Interviews Scheduled : {% for interview in interview_today %}</h3></p>
+    <ul class="list-group">
+     <p><li class="list-group-item">{{ forloop.counter }}. Position : {{ interview.position.name }}</p>
      <p>Name : {{ interview.candidate.name }}</p>
-     <p>Date : {{ interview.date|date }}</p>
+     <p>Date : {{ interview.date|date }}</p></li>
     {% endfor %}
+    </ul>
 
 {% endblock %}
