@@ -12,7 +12,9 @@
     <ul class="list-group">
      <p><li class="list-group-item list-group-item-info">{{ forloop.counter }}. Position : {{ interview.position.name }}</p>
      <p>Name : {{ interview.candidate.name }}</p>
-     <p>Date : {{ interview.date|date }}</p></li>
+     <p>Date : {{ interview.date|date }}</p>
+     <p>Status : {{ interview.get_status_display }}</p>
+     <p>Result : {{ interview.get_result_display }}</p></li>
     {% endfor %}
     </ul>
 

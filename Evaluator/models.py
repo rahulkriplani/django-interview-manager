@@ -26,6 +26,29 @@ class Interview(models.Model):
     candidate = models.ForeignKey(Candidate)
     date = models.DateField()
     position = models.ForeignKey(Position)
+    status_choices = (
+        ('AC', 'Active'),
+        ('CN', 'Cancelled'),
+        ('FN', 'Finished'),
+                     )
+    status = models.CharField(
+                        max_length=2,
+                        choices=status_choices,
+                        default='AC'
+                             )
+
+    # This is to mark if the candidate passed the test.
+    result_choices = (
+        ('P', 'Pass'),
+        ('F', 'Fail'),
+        ('TBD', 'Pending'),
+                    )
+
+    result = models.CharField(
+        max_length=3,
+        choices=result_choices,
+        default='TBD'
+    )
 
     def __str__(self):  # __unicode__ on Python 2
         return "{0}_{1}_{2}".format(self.candidate, str(self.date), self.position)
@@ -35,4 +58,6 @@ class Interview(models.Model):
 
     def all_interviews(self):
         return Interview.objects.all()
+
+
 
