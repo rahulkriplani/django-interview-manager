@@ -6,6 +6,7 @@ from django.shortcuts import render, redirect
 from .models import Interview
 from .forms import RegistrationForm, EditProfileForm
 from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth import update_session_auth_hash
 
 # Create your views here.
 def index(request):
@@ -45,7 +46,10 @@ def change_password(request):
         form = PasswordChangeForm(data=request.POST, user=request.user)
         if form.is_valid():
             form.save()
+            update_session_auth_hash(request, form.user)
             return redirect('/profile')
+        else:
+            return redirect('/profile/password')
     else:
         form = PasswordChangeForm(user=request.user)
         args = {'form':form}
