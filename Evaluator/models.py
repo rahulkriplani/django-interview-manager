@@ -14,10 +14,11 @@ class Position(models.Model):
 
 class Candidate(models.Model):
     name = models.CharField(max_length=40)
-    contact_primary = RegexValidator(regex='^\d{10}$')
-    contact_secondary = RegexValidator(regex='^\d{10}$')
+    contact_validator = RegexValidator(regex='\d+')
+    contact_primary = models.CharField(max_length=20, validators=[contact_validator], null=True)
     experience = models.PositiveIntegerField()
     position_applied = models.ForeignKey(Position)
+
 
     def __str__(self):  # __unicode__ on Python 2
         return self.name
@@ -58,6 +59,44 @@ class Interview(models.Model):
 
     def all_interviews(self):
         return Interview.objects.all()
+
+class Skill(models.Model):
+    name = models.CharField('Name', max_length=20)
+    position = models.ManyToManyField(Position)
+
+    def __str__(self):  # __unicode__ on Python 2
+        return self.name
+
+class Question(models.Model):
+    description = models.CharField('Description', max_length=300)
+    difficulty_choice = (
+        ('H', 'Hard'),
+        ('M', 'Medium'),
+        ('E', 'Easy'),
+    )
+
+    difficulty = models.CharField(
+        max_length=3,
+        choices=difficulty_choice,
+        default='M'
+                    )
+
+    skill = models.ForeignKey(Skill, null=True)
+
+    def __str__(self):  # __unicode__ on Python 2
+        return "{0}".format(self.description)
+
+class Answer(models.Model):
+    """
+    Answer's Model, which is used as the answer in Question Model
+    """
+    detail = models.CharField(max_length=128, verbose_name=u'Answer\'s text')
+    question = models.ForeignKey(Question, null=True)
+    correct = models.BooleanField('Correct', default=True)
+
+    def __str__(self):
+        return self.detail
+
 
 
 

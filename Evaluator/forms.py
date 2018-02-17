@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
-from django.contrib.admin.models import models
+from .models import Question, Answer, Candidate
 
 class RegistrationForm(UserCreationForm):
     email = forms.EmailField(required=True)
@@ -37,3 +37,33 @@ class EditProfileForm(UserChangeForm):
             user.save()
 
         return user
+
+class QuestionForm(forms.ModelForm):
+    class Meta:
+        model = Question
+        fields = ['description', 'difficulty', 'skill']
+
+#    def __init__(self, *args, **kwargs):
+#        user = kwargs.pop('user', '')
+#        super(QuestionForm, self).__init__(*args, **kwargs)
+#        #self.fields['answer'] = forms.ModelChoiceField(queryset=Answer.objects.all())
+#        self.fields['answer'] = forms.CharField(max_length=300)
+#        self.fields['correct'] = forms.BooleanField()
+
+class AnswerForm(forms.ModelForm):
+    class Meta:
+        model = Answer
+        fields = ['detail', 'correct']
+
+AnswerFormSet = forms.inlineformset_factory(Question, Answer,
+                                            form=AnswerForm, extra=1)
+
+class AddCandidateForm(forms.ModelForm):
+    class Meta:
+        model = Candidate
+        fields = ['name', 'experience', 'position_applied', 'contact_primary']
+
+
+class SearchCandidate(forms.Form):
+    pass
+

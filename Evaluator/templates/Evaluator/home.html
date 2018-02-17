@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+<h1> Welcome Home </h1>
+<html>
+    <head>
+        {% block head %}
+        <title>Home Page</title>
+        {% endblock %}
+    </head>
+    <body>
+    {% block content %}
+
+
+    <h1>Welcome to the Tessaract!</h1>
+    <p>
+    <form action="/login/">
+        <input type="submit" class="btn btn-info btn-lg" value="Let's Begin">
+    </form>
+    </p>
+    {% endblock %}
+    </body>
+
+</html>

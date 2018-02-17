@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<!---This is a form for searching for candidates.---->
+
+<form method="get">
+	<div class="row">
+        <div class="col-md-6">
+    		<h2>Search Candidates</h2>
+            <div id="candidate-search">
+                <div class="input-group col-md-12">
+                        <input type="text" class="form-control input-lg" placeholder="Your keyword" name="keyword"/>
+                        <span class="input-group-btn">
+                            <button class="btn btn-info btn-lg" type="submit" name="Search" value="Search">
+                            <i class="glyphicon glyphicon-search"></i>
+                            </button>
+                        </span>
+                </div>
+            </div>
+        </div>
+	</div>
+</form>
+
+{% if error_message %}
+    <h2>{{ error_message}}</h2>
+{% else %}
+    {% for candi in candidates %}
+        <p>{{ candi.name }}</p>
+    {% endfor %}
+{% endif %}
+
+{% endblock %}
