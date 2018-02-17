@@ -9,7 +9,26 @@ from django.contrib import admin
 from .models import Candidate
 from .models import Position
 from .models import Interview
+from .models import Question
+from .models import Skill, Answer
+
+class AnswerInline(admin.TabularInline):
+    model = Answer
+    extra = 0
+
+
+class QuestionAdmin(admin.ModelAdmin):
+    list_display = ('description', 'difficulty', 'skill')
+    fieldsets = [
+        (None,               {'fields': ['description', 'difficulty', 'skill']}),
+
+    ]
+    inlines = [AnswerInline]
 
 admin.site.register(Candidate)
 admin.site.register(Position)
 admin.site.register(Interview)
+admin.site.register(Question, QuestionAdmin)
+admin.site.register(Skill)
+
+
