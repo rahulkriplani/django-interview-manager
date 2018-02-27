@@ -3,7 +3,7 @@
 {% block content %}
 <h1>{{ question.description }}</h1>
 
-<form action="" method="post">
+<form action="{% url 'Evaluator:question_detail' question.id %}" method="post">
 {% csrf_token %}
     {% for option in question.answer_set.all %}
         <input type="checkbox" name="option" id="option{{forloop.counter}}" value="choice.id">

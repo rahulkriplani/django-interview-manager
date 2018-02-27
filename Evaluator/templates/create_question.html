@@ -2,7 +2,7 @@
 
 {% block content %}
 
-<form action="{% url 'Evaluator:question_detail' %}" method="POST">
+<form action='/profile/' method="POST">
     {% csrf_token %}
     {{ form.as_p }}
     <button type="submit">Save</button>

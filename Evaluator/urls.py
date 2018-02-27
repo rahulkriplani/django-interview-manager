@@ -1,5 +1,6 @@
 from django.conf.urls import url
 from django.contrib.auth.views import login, logout
+from django.core.urlresolvers import reverse
 from . import views
 
 app_name = 'Evaluator'
@@ -15,7 +16,7 @@ urlpatterns = [
 
     #Question URLs
     url(r'^question/$', views.QuestionList.as_view(), name='question_list'),
-    url(r'^(?P<pk>[0-9]+)/$', views.question_detail, name='question_detail'),
+    url(r'^(?P<question_id>[0-9]+)/$', views.question_detail, name='question_detail'),
     url(r'^search/question/$', views.search_question, name='search_question'),
     url(r'^addquestion/$', views.QuestionCreate.as_view(), name='add_question'),
 
