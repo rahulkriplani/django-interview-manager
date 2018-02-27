@@ -13,7 +13,7 @@ from .models import Interview, Question, Candidate
 
 # Create your views here.
 def index(request):
-    return render(request, 'Evaluator\home.html')
+    return render(request, 'Evaluator/home.html')
 
 @login_required
 def profile(request):
@@ -65,11 +65,7 @@ def add_candidate(request):
 @login_required
 def search_candidate(request):
     if request.method == 'GET':
-        print 'Idhar aaya'
         if 'keyword' in request.GET.keys():
-            print 'Idhar bhi aya'
-            print request.GET.keys()
-            print request.GET['keyword']
             keyword = request.GET['keyword']
             candis = Candidate.objects.filter(name__icontains=keyword)
             if candis:
@@ -113,29 +109,9 @@ def change_password(request):
         args = {'form':form}
         return render(request, 'password_change.html', args)
 
-def create_question(request):
-    if request.method == 'POST':
-        print 'Yes we are in the POST'
-        form = QuestionForm(request.POST)
-        if form.is_valid():
-            print 'Form is valid'
-            post = form.save(commit=False)
-            post.description = form.cleaned_data['description']
-            post.difficulty = form.cleaned_data['difficulty']
-            post.skill = form.cleaned_data['skill']
-            post.author = request.user
-            print 'Saving the form'
-            post.save()
-            return redirect('/profile')
-        else:
-            print 'Form is NOT valid'
-            return redirect('/question')
 
-    else:
-        print 'Request is a GET (create_question form)'
-        form = QuestionForm()
-        args = {'form': form}
-    return render(request, 'create_question.html', args)
+def search_question(request):
+    pass
 
 
 class QuestionList(ListView):
@@ -144,8 +120,6 @@ class QuestionList(ListView):
 
 class QuestionCreate(CreateView):
     model = Question
+    template_name = 'create_question.html'
     fields = ['description', 'skill', 'difficulty']
-
-
-
 

@@ -15,7 +15,10 @@ urlpatterns = [
 
     #Question URLs
     url(r'^question/$', views.QuestionList.as_view(), name='question_list'),
-    url(r'^(?P<question_id>[0-9]+)/$', views.question_detail, name='question_detail'),
+    url(r'^(?P<pk>[0-9]+)/$', views.question_detail, name='question_detail'),
+    url(r'^search/question/$', views.search_question, name='search_question'),
+    url(r'^addquestion/$', views.QuestionCreate.as_view(), name='add_question'),
+
 
     #Candidate URLS
     url(r'^candidate/$', views.profile, name='profile'),
