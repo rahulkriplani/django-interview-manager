@@ -38,25 +38,13 @@ class EditProfileForm(UserChangeForm):
 
         return user
 
-class QuestionForm(forms.ModelForm):
-    class Meta:
-        model = Question
-        fields = ['description', 'difficulty', 'skill']
+#class AnswerForm(forms.ModelForm):
+#    class Meta:
+#        model = Answer
+#        fields = ['detail', 'correct']
 
-#    def __init__(self, *args, **kwargs):
-#        user = kwargs.pop('user', '')
-#        super(QuestionForm, self).__init__(*args, **kwargs)
-#        #self.fields['answer'] = forms.ModelChoiceField(queryset=Answer.objects.all())
-#        self.fields['answer'] = forms.CharField(max_length=300)
-#        self.fields['correct'] = forms.BooleanField()
-
-class AnswerForm(forms.ModelForm):
-    class Meta:
-        model = Answer
-        fields = ['detail', 'correct']
-
-AnswerFormSet = forms.inlineformset_factory(Question, Answer,
-                                            form=AnswerForm, extra=1)
+#AnswerFormSet = forms.inlineformset_factory(Question, Answer,
+#                                            form=AnswerForm, extra=1)
 
 class AddCandidateForm(forms.ModelForm):
     class Meta:

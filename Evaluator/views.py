@@ -8,8 +8,8 @@ from django.views.generic import CreateView, UpdateView, DeleteView, ListView
 from django.contrib.auth.decorators import login_required
 from django.http import Http404
 
-from .forms import RegistrationForm, EditProfileForm, QuestionForm, AddCandidateForm
-from .models import Interview, Question, Candidate
+from .forms import RegistrationForm, EditProfileForm, AddCandidateForm
+from .models import Interview, Question, Candidate, Answer
 
 # Create your views here.
 def index(request):
