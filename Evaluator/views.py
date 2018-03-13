@@ -13,7 +13,7 @@ from .models import Interview, Question, Candidate
 
 # Create your views here.
 def index(request):
-    return render(request, 'Evaluator\home.html')
+    return render(request, 'Evaluator/home.html')
 
 @login_required
 def profile(request):
