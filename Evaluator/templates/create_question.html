@@ -5,6 +5,8 @@
 <form action='/profile/' method="POST">
     {% csrf_token %}
     {{ form.as_p }}
+    {{formset.management_form}}
+    {{formset.as_p}}		
     <button type="submit">Save</button>
 </form>
 {% endblock %}

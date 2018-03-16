@@ -8,7 +8,7 @@ from django.views.generic import CreateView, UpdateView, DeleteView, ListView
 from django.contrib.auth.decorators import login_required
 from django.http import Http404
 
-from .forms import RegistrationForm, EditProfileForm, AddCandidateForm
+from . import forms
 from .models import Interview, Question, Candidate, Answer
 
 # Create your views here.
@@ -34,19 +34,19 @@ def question_detail(request, question_id):
 
 def register(request):
     if request.method == 'POST':
-        form = RegistrationForm(request.POST)
+        form = forms.RegistrationForm(request.POST)
         if form.is_valid():
             form.save()
             return redirect('/')
     else:
-        form = RegistrationForm()
+        form = forms.RegistrationForm()
         args = {'form': form}
         return render(request, 'register.html', args)
 
 @login_required
 def add_candidate(request):
     if request.method == 'POST':
-        form = AddCandidateForm(request.POST)
+        form = forms.AddCandidateForm(request.POST)
         if form.is_valid():
             print 'Form is valid'
             post = form.save(commit=False)
@@ -58,7 +58,7 @@ def add_candidate(request):
             post.save()
             return redirect('/profile')
     else:
-        form = AddCandidateForm()
+        form = forms.AddCandidateForm()
         args = {'form': form}
         return render(request, 'add_candidate.html', args)
 
@@ -78,12 +78,12 @@ def search_candidate(request):
 @login_required
 def edit_profile(request):
     if request.method == 'POST':
-        form = EditProfileForm(request.POST, instance=request.user)
+        form = forms.EditProfileForm(request.POST, instance=request.user)
         if form.is_valid():
             form.save()
             return redirect('/profile')
     else:
-        form = EditProfileForm(instance=request.user)
+        form = forms.EditProfileForm(instance=request.user)
         args = {'form' : form}
         return render(request, 'edit_profile.html', args)
 
@@ -97,7 +97,7 @@ def edit_candidate(request):
 @login_required
 def change_password(request):
     if request.method == 'POST':
-        form = PasswordChangeForm(data=request.POST, user=request.user)
+        form = forms.PasswordChangeForm(data=request.POST, user=request.user)
         if form.is_valid():
             form.save()
             update_session_auth_hash(request, form.user)
@@ -105,7 +105,7 @@ def change_password(request):
         else:
             return redirect('/profile/password')
     else:
-        form = PasswordChangeForm(user=request.user)
+        form = forms.PasswordChangeForm(user=request.user)
         args = {'form':form}
         return render(request, 'password_change.html', args)
 
@@ -118,8 +118,24 @@ class QuestionList(ListView):
     model = Question
 
 
-class QuestionCreate(CreateView):
-    model = Question
-    template_name = 'create_question.html'
-    fields = ['description', 'skill', 'difficulty']
+def create_question(request):
+    answer_forms = forms.AnswerInLineFormSet(
+            queryset=Answer.objects.none()
+            )
+    form = forms.QuestionForm()
+    if request.method == 'POST':
+        if form.is_valid():
+            question = form.save()
+            answers = answer_forms.save(commit=False)
+            for answer in answers:
+                answer.question = question
+                answer.save()
+            return HttpResponseRedirect(reverse('profile'))
+    return render(request, 'create_question.html',
+            {
+                'form':form,
+                'formset':answer_forms
+            })
+            
+            
 
