@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, reverse
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash
 from django.views.generic import CreateView, UpdateView, DeleteView, ListView
 from django.contrib.auth.decorators import login_required
-from django.http import Http404
+from django.http import Http404, HttpResponseRedirect
 
 from . import forms
 from .models import Interview, Question, Candidate, Answer
@@ -124,13 +124,19 @@ def create_question(request):
             )
     form = forms.QuestionForm()
     if request.method == 'POST':
-        if form.is_valid():
+        print "Inside POST call of create question"
+        form = forms.QuestionForm(request.POST)
+        answer_forms = forms.AnswerInLineFormSet(
+                request.POST,
+                queryset=Answer.objects.none()
+                )
+        if form.is_valid() and answer_forms.is_valid():
             question = form.save()
             answers = answer_forms.save(commit=False)
             for answer in answers:
                 answer.question = question
                 answer.save()
-            return HttpResponseRedirect(reverse('profile'))
+            return HttpResponseRedirect(reverse('Evaluator:profile'))
     return render(request, 'create_question.html',
             {
                 'form':form,

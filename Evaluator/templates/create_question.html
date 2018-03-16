@@ -2,11 +2,12 @@
 
 {% block content %}
 
-<form action='/profile/' method="POST">
+<form method='POST'>
     {% csrf_token %}
     {{ form.as_p }}
     {{formset.management_form}}
+    <hr>
     {{formset.as_p}}		
-    <button type="submit">Save</button>
+<input type="submit" name="Save" value="Save">
 </form>
 {% endblock %}
