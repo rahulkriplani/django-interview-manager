@@ -3,11 +3,31 @@
 {% block content %}
 
 <form method='POST'>
+    <div class="form-group">	
     {% csrf_token %}
     {{ form.as_p }}
+    </div>
     {{formset.management_form}}
     <hr>
-    {{formset.as_p}}		
-<input type="submit" name="Save" value="Save">
+    <table class="table">
+    <thead>
+                <tr>
+                    <th>Text</th>
+                    <th>Correct?</th>
+                    <th>Delete?</th>
+                </tr>
+            </thead>
+    <tbody class="table">
+    {% for form in formset %}
+    	<tr>
+	<td> {{ form.detail }}</td>
+	<td>{{ form.correct }}</td>
+	<td>{{ form.DELETE }}</td>
+	</tr>
+    {% endfor %}
+    </tbody>
+    </table>
+	<input type="submit" name="Save" value="Save">
+	</div>
 </form>
 {% endblock %}
