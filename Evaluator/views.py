@@ -1,15 +1,15 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, reverse
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash
 from django.views.generic import CreateView, UpdateView, DeleteView, ListView
 from django.contrib.auth.decorators import login_required
-from django.http import Http404
+from django.http import Http404, HttpResponseRedirect
 
-from .forms import RegistrationForm, EditProfileForm, QuestionForm, AddCandidateForm
-from .models import Interview, Question, Candidate
+from . import forms
+from .models import Interview, Question, Candidate, Answer
 
 # Create your views here.
 def index(request):
@@ -34,19 +34,19 @@ def question_detail(request, question_id):
 
 def register(request):
     if request.method == 'POST':
-        form = RegistrationForm(request.POST)
+        form = forms.RegistrationForm(request.POST)
         if form.is_valid():
             form.save()
             return redirect('/')
     else:
-        form = RegistrationForm()
+        form = forms.RegistrationForm()
         args = {'form': form}
         return render(request, 'register.html', args)
 
 @login_required
 def add_candidate(request):
     if request.method == 'POST':
-        form = AddCandidateForm(request.POST)
+        form = forms.AddCandidateForm(request.POST)
         if form.is_valid():
             print 'Form is valid'
             post = form.save(commit=False)
@@ -58,18 +58,14 @@ def add_candidate(request):
             post.save()
             return redirect('/profile')
     else:
-        form = AddCandidateForm()
+        form = forms.AddCandidateForm()
         args = {'form': form}
         return render(request, 'add_candidate.html', args)
 
 @login_required
 def search_candidate(request):
     if request.method == 'GET':
-        print 'Idhar aaya'
         if 'keyword' in request.GET.keys():
-            print 'Idhar bhi aya'
-            print request.GET.keys()
-            print request.GET['keyword']
             keyword = request.GET['keyword']
             candis = Candidate.objects.filter(name__icontains=keyword)
             if candis:
@@ -82,12 +78,12 @@ def search_candidate(request):
 @login_required
 def edit_profile(request):
     if request.method == 'POST':
-        form = EditProfileForm(request.POST, instance=request.user)
+        form = forms.EditProfileForm(request.POST, instance=request.user)
         if form.is_valid():
             form.save()
             return redirect('/profile')
     else:
-        form = EditProfileForm(instance=request.user)
+        form = forms.EditProfileForm(instance=request.user)
         args = {'form' : form}
         return render(request, 'edit_profile.html', args)
 
@@ -101,7 +97,7 @@ def edit_candidate(request):
 @login_required
 def change_password(request):
     if request.method == 'POST':
-        form = PasswordChangeForm(data=request.POST, user=request.user)
+        form = forms.PasswordChangeForm(data=request.POST, user=request.user)
         if form.is_valid():
             form.save()
             update_session_auth_hash(request, form.user)
@@ -109,43 +105,43 @@ def change_password(request):
         else:
             return redirect('/profile/password')
     else:
-        form = PasswordChangeForm(user=request.user)
+        form = forms.PasswordChangeForm(user=request.user)
         args = {'form':form}
         return render(request, 'password_change.html', args)
 
-def create_question(request):
-    if request.method == 'POST':
-        print 'Yes we are in the POST'
-        form = QuestionForm(request.POST)
-        if form.is_valid():
-            print 'Form is valid'
-            post = form.save(commit=False)
-            post.description = form.cleaned_data['description']
-            post.difficulty = form.cleaned_data['difficulty']
-            post.skill = form.cleaned_data['skill']
-            post.author = request.user
-            print 'Saving the form'
-            post.save()
-            return redirect('/profile')
-        else:
-            print 'Form is NOT valid'
-            return redirect('/question')
 
-    else:
-        print 'Request is a GET (create_question form)'
-        form = QuestionForm()
-        args = {'form': form}
-    return render(request, 'create_question.html', args)
+def search_question(request):
+    pass
 
 
 class QuestionList(ListView):
     model = Question
 
 
-class QuestionCreate(CreateView):
-    model = Question
-    fields = ['description', 'skill', 'difficulty']
-
-
-
+def create_question(request):
+    answer_forms = forms.AnswerInLineFormSet(
+            queryset=Answer.objects.none()
+            )
+    form = forms.QuestionForm()
+    if request.method == 'POST':
+        print "Inside POST call of create question"
+        form = forms.QuestionForm(request.POST)
+        answer_forms = forms.AnswerInLineFormSet(
+                request.POST,
+                queryset=Answer.objects.none()
+                )
+        if form.is_valid() and answer_forms.is_valid():
+            question = form.save()
+            answers = answer_forms.save(commit=False)
+            for answer in answers:
+                answer.question = question
+                answer.save()
+            return HttpResponseRedirect(reverse('Evaluator:profile'))
+    return render(request, 'create_question.html',
+            {
+                'form':form,
+                'formset':answer_forms
+            })
+            
+            
 

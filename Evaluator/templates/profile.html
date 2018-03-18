@@ -28,13 +28,20 @@
         <p>Schedule Interview</p>
         <p>Edit Interviews</p>
         <p>Cancel Interviews</p>
-
     </div>
     <div class="row well" style="margin-bottom: 50px; margin-top: 20px">
             <h3 style="margin-top:0px;margin-bottom:20px"><span  class="label label-primary">Candidate</span></h3>
             <p><a href="{% url 'Evaluator:add_candidate' %}">Add Candidate</a></p>
             <p><a href="{% url 'Evaluator:search_candidate' %}">Edit Candidate</a></p>
             <p>Remove Candidate</p>
+    </div>
+
+    <div class="row">
+	<div class="well">
+        <h3 style="margin-top:0px;margin-bottom:20px"><span  class="label label-primary">Question Designing</span></h3>
+	    <p><a href="{% url 'Evaluator:add_question' %}">Add Question</p>
+        <p><a href="{% url 'Evaluator:search_question' %}">Edit Question</p>
+	</div>    
     </div>
 </div>
 {% endblock %}

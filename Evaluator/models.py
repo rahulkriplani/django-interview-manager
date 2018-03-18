@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 from django.contrib.auth.models import User
 from django.db import models
 from django.core.validators import RegexValidator
+from django.shortcuts import redirect
 from datetime import datetime
 
 class Position(models.Model):
@@ -85,6 +86,7 @@ class Question(models.Model):
 
     def __str__(self):  # __unicode__ on Python 2
         return "{0}".format(self.description)
+
 
 class Answer(models.Model):
     """

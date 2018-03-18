@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
-from .models import Question, Answer, Candidate
+from . import models
 
 class RegistrationForm(UserCreationForm):
     email = forms.EmailField(required=True)
@@ -38,29 +38,34 @@ class EditProfileForm(UserChangeForm):
 
         return user
 
-class QuestionForm(forms.ModelForm):
-    class Meta:
-        model = Question
-        fields = ['description', 'difficulty', 'skill']
-
-#    def __init__(self, *args, **kwargs):
-#        user = kwargs.pop('user', '')
-#        super(QuestionForm, self).__init__(*args, **kwargs)
-#        #self.fields['answer'] = forms.ModelChoiceField(queryset=Answer.objects.all())
-#        self.fields['answer'] = forms.CharField(max_length=300)
-#        self.fields['correct'] = forms.BooleanField()
-
 class AnswerForm(forms.ModelForm):
     class Meta:
-        model = Answer
+        models = models.Answer
         fields = ['detail', 'correct']
 
-AnswerFormSet = forms.inlineformset_factory(Question, Answer,
-                                            form=AnswerForm, extra=1)
+class QuestionForm(forms.ModelForm):
+    class Meta:
+        model = models.Question
+        fields = ['description', 'difficulty', 'skill']
+
+AnswerFormSet = forms.modelformset_factory(
+        models.Answer,
+        form=AnswerForm,
+        extra=1
+                                            )
+
+AnswerInLineFormSet = forms.inlineformset_factory(
+        models.Question,
+        models.Answer,
+        extra=2,
+        fields=('detail', 'correct'),
+        formset=AnswerFormSet,
+        min_num=1,
+        )
 
 class AddCandidateForm(forms.ModelForm):
     class Meta:
-        model = Candidate
+        model = models.Candidate
         fields = ['name', 'experience', 'position_applied', 'contact_primary']
 
 
