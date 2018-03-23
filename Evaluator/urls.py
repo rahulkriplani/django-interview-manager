@@ -19,6 +19,7 @@ urlpatterns = [
     url(r'^(?P<question_id>[0-9]+)/$', views.question_detail, name='question_detail'),
     url(r'^search/question/$', views.search_question, name='search_question'),
     url(r'^addquestion/$', views.create_question, name='add_question'),
+    url(r'^edit_question/(?P<que_pk>\d+)/$', views.edit_question, name='edit_question'),
 
 
     #Candidate URLS

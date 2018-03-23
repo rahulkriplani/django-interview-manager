@@ -69,7 +69,7 @@ def search_candidate(request):
             keyword = request.GET['keyword']
             candis = Candidate.objects.filter(name__icontains=keyword)
             if candis:
-                return render(request, 'search_candidate.html', {'candidates': candis})
+                return render(request, 'search_candidate.html', {'search_list': candis})
             else:
                 return render(request, 'search_candidate.html', {'error_message': 'No candidates matching'})
         else:
@@ -111,7 +111,18 @@ def change_password(request):
 
 
 def search_question(request):
-    pass
+    if request.method == 'GET':
+        if 'keyword' in request.GET.keys():
+            keyword = request.GET['keyword']
+            questions = Question.objects.filter(description__icontains=keyword)
+            if questions:
+                return render(request, 'search_candidate.html', {'search_list': questions})
+            else:
+                return render(request, 'search_candidate.html', {'error_message': 'No candidates matching'})
+        else:
+            return render(request, 'search_candidate.html')
+
+
 
 
 class QuestionList(ListView):
@@ -144,4 +155,30 @@ def create_question(request):
             })
             
             
-
+def edit_question(request, que_pk):
+    question = Question.objects.get(pk=que_pk)
+    answer_forms = forms.AnswerInLineFormSet(
+            queryset=forms.instance.answer_set.all()
+            )
+    form = forms.QuestionForm(instance=question)
+    if request.method == 'POST':
+        print "Inside POST call of create question"
+        form = forms.QuestionForm(request.POST, instance=question)
+        answer_forms = forms.AnswerInLineFormSet(
+                request.POST,
+                queryset=form.instance.answer_set.all()
+                )
+        if form.is_valid() and answer_forms.is_valid():
+            form.save()
+            answers = answer_forms.save(commit=False)
+            for answer in answers:
+                answer.question = question
+                answer.save()
+            return HttpResponseRedirect(reverse('Evaluator:profile'))
+    return render(request, 'create_question.html',
+            {
+                'form':form,
+                'formset':answer_forms
+            })
+            
+      
