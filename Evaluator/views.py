@@ -69,7 +69,7 @@ def search_candidate(request):
             keyword = request.GET['keyword']
             candis = Candidate.objects.filter(name__icontains=keyword)
             if candis:
-                return render(request, 'search_candidate.html', {'search_list': candis})
+                return render(request, 'search_candidate.html', {'candi_list': candis})
             else:
                 return render(request, 'search_candidate.html', {'error_message': 'No candidates matching'})
         else:
@@ -88,10 +88,18 @@ def edit_profile(request):
         return render(request, 'edit_profile.html', args)
 
 @login_required
-def edit_candidate(request):
+def edit_candidate(request, candidate_pk):
+    candidate = Candidate.objects.get(pk=candidate_pk)
     if request.method == 'POST':
-        #Do something
-        pass
+        form = forms.AddCandidateForm(request.POST, instance=candidate)
+        if form.is_valid():
+            form.save()
+            return redirect('/profile')#This has to go to candidate details                     page
+    else:
+        form = forms.AddCandidateForm(instance=candidate)
+        args = {'form':form}
+        return render(request, 'edit_profile.html', args)
+
 
 
 @login_required
@@ -116,7 +124,7 @@ def search_question(request):
             keyword = request.GET['keyword']
             questions = Question.objects.filter(description__icontains=keyword)
             if questions:
-                return render(request, 'search_candidate.html', {'search_list': questions})
+                return render(request, 'search_candidate.html', {'question_list': questions})
             else:
                 return render(request, 'search_candidate.html', {'error_message': 'No candidates matching'})
         else:
@@ -157,10 +165,10 @@ def create_question(request):
             
 def edit_question(request, que_pk):
     question = Question.objects.get(pk=que_pk)
-    answer_forms = forms.AnswerInLineFormSet(
-            queryset=forms.instance.answer_set.all()
-            )
     form = forms.QuestionForm(instance=question)
+    answer_forms = forms.AnswerInLineFormSet(
+            queryset=form.instance.answer_set.all()
+            )
     if request.method == 'POST':
         print "Inside POST call of create question"
         form = forms.QuestionForm(request.POST, instance=question)

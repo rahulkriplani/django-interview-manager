@@ -23,10 +23,14 @@
 {% if error_message %}
     <h2>{{ error_message}}</h2>
 {% else %}
-    {% for item in search_list  %}
-        <p>{{ item.name }}</p>
-        <p>{{ item.description }}</p>
-    {% endfor %}
+    {% if candi_list %}
+   	 {% for item in candi_list  %}
+    		<p>{{ item.name }} <a href={% url 'Evaluator:edit_candidate' item.pk %}>Edit</a></p>
+	{% endfor %}		
+    {% elif question_list  %}
+	 {% for question in question_list %}
+	 	<p>{{ question.description }}<a href={% url 'Evaluator:edit_question' question.pk %}>Edit</a></p>
+    	{% endfor %}
+    {% endif %}
 {% endif %}
-
 {% endblock %}

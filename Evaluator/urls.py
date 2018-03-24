@@ -25,7 +25,7 @@ urlpatterns = [
     #Candidate URLS
     url(r'^candidate/$', views.profile, name='profile'),
     url(r'^addcandidate/$', views.add_candidate, name='add_candidate'),
-    url(r'^candidate/edit$', views.edit_candidate, name='edit_candidate'),
+    url(r'^edit_candidate/(?P<candidate_pk>\d+)/$', views.edit_candidate, name='edit_candidate'),
     url(r'^search/candidate/$', views.search_candidate, name='search_candidate'),
 
     ]
