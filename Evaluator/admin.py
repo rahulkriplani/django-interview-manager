@@ -11,6 +11,7 @@ from .models import Position
 from .models import Interview
 from .models import Question
 from .models import Skill, Answer
+from .models import Exam
 
 class AnswerInline(admin.TabularInline):
     model = Answer
@@ -30,5 +31,6 @@ admin.site.register(Position)
 admin.site.register(Interview)
 admin.site.register(Question, QuestionAdmin)
 admin.site.register(Skill)
+admin.site.register(Exam)
 
 

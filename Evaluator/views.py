@@ -189,4 +189,16 @@ def edit_question(request, que_pk):
                 'formset':answer_forms
             })
             
-      
+def create_exam(request):
+    exam_form = forms.ExamForm()
+    if request.method == 'POST':
+        exam_form = forms.ExamForm(request.POST)
+        if exam_form.is_valid():
+            exam_form.save()
+            return HttpResponseRedirect(Exam.get_absolute_url())
+    return render(request, 'create_exam.html', 
+            {
+                'form':exam_form
+            })
+            
+                

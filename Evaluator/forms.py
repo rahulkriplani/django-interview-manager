@@ -68,7 +68,14 @@ class AddCandidateForm(forms.ModelForm):
         model = models.Candidate
         fields = ['name', 'experience', 'position_applied', 'contact_primary']
 
+class ExamForm(forms.ModelForm):
+    class Meta:
+        model = models.Exam
+        fields = ['name']
 
-class SearchCandidate(forms.Form):
-    pass
+QuestionFormSet = forms.modelformset_factory(
+        models.Question,
+        form=QuestionForm,
+        extra=1
+        )
 

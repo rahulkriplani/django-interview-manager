@@ -68,6 +68,7 @@ class Skill(models.Model):
     def __str__(self):  # __unicode__ on Python 2
         return self.name
 
+
 class Question(models.Model):
     description = models.CharField('Description', max_length=300)
     difficulty_choice = (
@@ -99,6 +100,14 @@ class Answer(models.Model):
     def __str__(self):
         return self.detail
 
+class Exam(models.Model):
+    name = models.CharField('Name', max_length=200)
+    question = models.ManyToManyField(Question)
+
+    def __str__(self):
+        return self.name
 
 
+    def get_absolute_url(self):
+        return "/exam/%s" % name
 
