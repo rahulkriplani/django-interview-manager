@@ -9,7 +9,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import Http404, HttpResponseRedirect
 
 from . import forms
-from .models import Interview, Question, Candidate, Answer
+from .models import Interview, Question, Candidate, Answer, Exam
 
 # Create your views here.
 def index(request):
@@ -194,11 +194,15 @@ def create_exam(request):
     if request.method == 'POST':
         exam_form = forms.ExamForm(request.POST)
         if exam_form.is_valid():
-            exam_form.save()
-            return HttpResponseRedirect(Exam.get_absolute_url())
+            exam = exam_form.save()
+            return HttpResponseRedirect(exam.get_absolute_url())
     return render(request, 'create_exam.html', 
             {
                 'form':exam_form
             })
             
+def exam_details(request, exam_name):
+    print 'Name of exam', exam_name
+    exam = Exam.objects.get(name=exam_name)
+    return render(request, 'exam_details.html', {'exam': exam})
                 

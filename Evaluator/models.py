@@ -109,5 +109,5 @@ class Exam(models.Model):
 
 
     def get_absolute_url(self):
-        return "/exam/%s" % name
+        return "/exam/%s" % self.name
 

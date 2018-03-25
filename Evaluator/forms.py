@@ -68,14 +68,6 @@ class AddCandidateForm(forms.ModelForm):
         model = models.Candidate
         fields = ['name', 'experience', 'position_applied', 'contact_primary']
 
-class ExamForm(forms.ModelForm):
-    class Meta:
-        model = models.Exam
-        fields = ['name']
-
-QuestionFormSet = forms.modelformset_factory(
-        models.Question,
-        form=QuestionForm,
-        extra=1
-        )
-
+class ExamForm(forms.Form):
+    name = forms.CharField(max_length=200)
+    questions = forms.ModelMultipleChoiceField(queryset=models.Question.objects.all())
