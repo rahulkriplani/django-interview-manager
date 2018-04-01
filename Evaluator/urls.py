@@ -29,8 +29,9 @@ urlpatterns = [
     url(r'^search/candidate/$', views.search_candidate, name='search_candidate'),
     
     #Exam URLs
+    url(r'Exams/$', views.exams, name="allexams"),
     url(r'addexam/$', views.create_exam, name="createExam"),
-    url(r'^exam/(?P<exam_name>)\w+$', views.exam_details, name='examDetails')
+    url(r'^exam/(?P<exam_pk>\d+)/$', views.exam_details, name='examDetails'),
 
 
     ]

@@ -19,9 +19,9 @@ class AnswerInline(admin.TabularInline):
 
 
 class QuestionAdmin(admin.ModelAdmin):
-    list_display = ('description', 'difficulty', 'skill')
+    list_display = ('description', 'difficulty', 'skill', 'exam')
     fieldsets = [
-        (None,               {'fields': ['description', 'difficulty', 'skill']}),
+        (None,               {'fields': ['description', 'difficulty', 'skill', 'exam']}),
 
     ]
     inlines = [AnswerInline]

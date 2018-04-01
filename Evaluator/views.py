@@ -188,7 +188,7 @@ def edit_question(request, que_pk):
                 'form':form,
                 'formset':answer_forms
             })
-            
+
 def create_exam(request):
     exam_form = forms.ExamForm()
     if request.method == 'POST':
@@ -200,9 +200,16 @@ def create_exam(request):
             {
                 'form':exam_form
             })
-            
-def exam_details(request, exam_name):
-    print 'Name of exam', exam_name
-    exam = Exam.objects.get(name=exam_name)
-    return render(request, 'exam_details.html', {'exam': exam})
+
+@login_required            
+def exam_details(request, exam_pk):
+    print 'exam PK is', exam_pk
+    exam = Exam.objects.get(pk=exam_pk)
+    questions = Question.objects.filter(exam=exam)
+    print 'Questions found:', questions
+    return render(request, 'exam_details.html', {'exam': exam, 'questions':questions})
+
+def exams(request):
+    Exams = Exam.objects.all()
+    return render(request, 'exams.html',{'exams':Exams})
                 

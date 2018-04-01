@@ -1,13 +1,11 @@
+<h1>All Exam</h1>
 {% extends 'base.html' %}
 {% block content %}
-
-<h1>Exam : {{exam.name}}</h1>
 <div class="row">
     <ul>	
-	{% for question in questions %}
-		<li>{{ question }}</li>
+	{% for exam in exams %}
+	<li><a href={% url 'Evaluator:examDetails' exam.pk %}>{{ exam }}</a></li>
 	{% endfor %}
     </ul>
 </div>
 {% endblock %}
-
