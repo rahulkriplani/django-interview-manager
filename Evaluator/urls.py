@@ -29,7 +29,7 @@ urlpatterns = [
     url(r'^search/candidate/$', views.search_candidate, name='search_candidate'),
     
     #Exam URLs
-    url(r'addExam/$', views.create_exam, name="createExam"),
+    url(r'addexam/$', views.create_exam, name="createExam"),
     url(r'^exam/(?P<exam_name>)\w+$', views.exam_details, name='examDetails')
 
 

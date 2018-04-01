@@ -194,8 +194,8 @@ def create_exam(request):
     if request.method == 'POST':
         exam_form = forms.ExamForm(request.POST)
         if exam_form.is_valid():
-            exam = exam_form.save()
-            return HttpResponseRedirect(exam.get_absolute_url())
+            exam_form.save()
+            return HttpResponseRedirect(reverse('Evaluator:profile'))
     return render(request, 'create_exam.html', 
             {
                 'form':exam_form

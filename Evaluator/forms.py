@@ -46,7 +46,7 @@ class AnswerForm(forms.ModelForm):
 class QuestionForm(forms.ModelForm):
     class Meta:
         model = models.Question
-        fields = ['description', 'difficulty', 'skill']
+        fields = ['description', 'difficulty', 'skill', 'exam']
 
 AnswerFormSet = forms.modelformset_factory(
         models.Answer,
@@ -68,6 +68,9 @@ class AddCandidateForm(forms.ModelForm):
         model = models.Candidate
         fields = ['name', 'experience', 'position_applied', 'contact_primary']
 
-class ExamForm(forms.Form):
+class ExamForm(forms.ModelForm):
     name = forms.CharField(max_length=200)
-    questions = forms.ModelMultipleChoiceField(queryset=models.Question.objects.all())
+    class Meta:
+        model = models.Exam
+        fields = ['name', 'total_questions']
+
