@@ -19,7 +19,7 @@
             </thead>
     <tbody class="table">
     {% for form in formset %}
-        {% form.id %} <!--This is just for handling an error during save after editing -->
+        {{ form.id }} <!--This is just for handling an error during save after editing -->
     	<tr>
         }
 	<td> {{ form.detail }}</td>
