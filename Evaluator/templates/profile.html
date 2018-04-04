@@ -13,7 +13,13 @@
      <p>Name : {{ interview.candidate.name }}</p>
      <p>Date : {{ interview.date|date }}</p>
      <p>Status : {{ interview.get_status_display }}</p>
+     <p>Result : {{ interview.get_result_display }}</p>
+     {% if interview.exam.pk %}
+     	<p>Result : {{ interview.get_result_display }}</p>
+     	<p>Exam Link:<a href={% url 'Evaluator:examDetails' interview.exam.pk %}>{{interview.exam.name}}</a></p></li>
+     {% else %}
      <p>Result : {{ interview.get_result_display }}</p></li>
+     {% endif %}
     {% endfor %}
     </ul>
 </div>

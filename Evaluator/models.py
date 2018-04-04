@@ -24,10 +24,25 @@ class Candidate(models.Model):
     def __str__(self):  # __unicode__ on Python 2
         return self.name
 
+
+class Exam(models.Model):
+    name = models.CharField(max_length=200, default='Exam')
+    total_questions = models.IntegerField(default=4)
+    times_taken = models.IntegerField(default=0, editable=False)
+
+    def __str__(self):
+        return self.name
+
+
+    def get_absolute_url(self):
+        return "/exam/%s" % self.name
+
+
 class Interview(models.Model):
     candidate = models.ForeignKey(Candidate)
     date = models.DateField()
     position = models.ForeignKey(Position)
+    exam = models.ForeignKey(Exam, null=True)
     status_choices = (
         ('AC', 'Active'),
         ('CN', 'Cancelled'),
@@ -68,18 +83,7 @@ class Skill(models.Model):
     def __str__(self):  # __unicode__ on Python 2
         return self.name
 
-class Exam(models.Model):
-    name = models.CharField(max_length=200, default='Exam')
-    total_questions = models.IntegerField(default=4)
-    times_taken = models.IntegerField(default=0, editable=False)
-
-    def __str__(self):
-        return self.name
-
-
-    def get_absolute_url(self):
-        return "/exam/%s" % self.name
-    
+   
  
 class Question(models.Model):
     description = models.CharField('Description', max_length=300)

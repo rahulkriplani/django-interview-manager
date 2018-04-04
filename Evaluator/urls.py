@@ -33,5 +33,4 @@ urlpatterns = [
     url(r'addexam/$', views.create_exam, name="createExam"),
     url(r'^exam/(?P<exam_pk>\d+)/$', views.exam_details, name='examDetails'),
 
-
     ]
