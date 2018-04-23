@@ -48,13 +48,11 @@ def add_candidate(request):
     if request.method == 'POST':
         form = forms.AddCandidateForm(request.POST)
         if form.is_valid():
-            print 'Form is valid'
             post = form.save(commit=False)
             post.name = form.cleaned_data['name']
             post.contact_primary = form.cleaned_data['contact_primary']
             post.experience = form.cleaned_data['experience']
             post.position_applied = form.cleaned_data['position_applied']
-            print 'Saving the form'
             post.save()
             return redirect('/profile')
     else:
@@ -143,7 +141,6 @@ def create_question(request):
             )
     form = forms.QuestionForm()
     if request.method == 'POST':
-        print "Inside POST call of create question"
         form = forms.QuestionForm(request.POST)
         answer_forms = forms.AnswerInLineFormSet(
                 request.POST,
@@ -170,7 +167,6 @@ def edit_question(request, que_pk):
             queryset=form.instance.answer_set.all()
             )
     if request.method == 'POST':
-        print "Inside POST call of create question"
         form = forms.QuestionForm(request.POST, instance=question)
         answer_forms = forms.AnswerInLineFormSet(
                 request.POST,
@@ -203,10 +199,8 @@ def create_exam(request):
 
 @login_required            
 def exam_details(request, exam_pk):
-    print 'exam PK is', exam_pk
     exam = Exam.objects.get(pk=exam_pk)
     questions = Question.objects.filter(exam=exam)
-    print 'Questions found:', questions
     return render(request, 'exam_details.html', {'exam': exam, 'questions':questions})
 
 def exams(request):

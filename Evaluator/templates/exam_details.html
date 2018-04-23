@@ -3,11 +3,21 @@
 
 <h1>Exam : {{exam.name}}</h1>
 <div class="row">
-    <ul>	
+    <ol>	
+
 	{% for question in questions %}
 		<li>{{ question }}</li>
+		<br>
+		{% for option in question.answer_set.all %}
+        	<input type="checkbox" name="option" id="option{{forloop.counter}}" value="choice.id">
+	    	<label for="option{{forloop.counter}}">{{option.detail}}</label><br>
+    	{% endfor %}
+    	<hr class="hr">
 	{% endfor %}
-    </ul>
+
+    </ol>
 </div>
+
+<input type="submit" value="Finish" class="btn btn-success" />
 {% endblock %}
 
