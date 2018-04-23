@@ -10,7 +10,7 @@ from django.http import Http404, HttpResponseRedirect
 from django.utils.decorators import method_decorator
 
 from . import forms
-from .models import Interview, Question, Candidate, Answer, Exam
+from .models import Interview, Question, Candidate, Answer, QuestionSet
 
 # Create your views here.
 def index(request):
@@ -190,7 +190,7 @@ def edit_question(request, que_pk):
             })
 
 @login_required
-def create_exam(request):
+def create_question_set(request):
     exam_form = forms.ExamForm()
     if request.method == 'POST':
         exam_form = forms.ExamForm(request.POST)
@@ -203,13 +203,13 @@ def create_exam(request):
             })
 
 @login_required            
-def exam_details(request, exam_pk):
-    exam = Exam.objects.get(pk=exam_pk)
-    questions = Question.objects.filter(exam=exam)
-    return render(request, 'exam_details.html', {'exam': exam, 'questions':questions})
+def question_set_details(request, exam_pk):
+    question_set = Exam.objects.get(pk=exam_pk)
+    questions = Question.objects.filter(q_set=question_set)
+    return render(request, 'qset_details.html', {'question_set': question_set, 'questions':questions})
 
 @login_required
-def exams(request):
-    Exams = Exam.objects.all()
-    return render(request, 'exams.html',{'exams':Exams})
+def question_sets(request):
+    question_sets = Exam.objects.all()
+    return render(request, 'exams.html',{'question_sets':question_sets})
                 
