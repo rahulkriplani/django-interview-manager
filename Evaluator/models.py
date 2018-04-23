@@ -48,7 +48,7 @@ class Interview(models.Model):
         ('CN', 'Cancelled'),
         ('FN', 'Finished'),
                      )
-    status = models.CharField(
+    status = models.CharField( # This field can be shown in template as get_status_display
                         max_length=2,
                         choices=status_choices,
                         default='AC'
@@ -61,7 +61,7 @@ class Interview(models.Model):
         ('TBD', 'Pending'),
                     )
 
-    result = models.CharField(
+    result = models.CharField( # This field can be shown in template as get_result_display
         max_length=3,
         choices=result_choices,
         default='TBD'

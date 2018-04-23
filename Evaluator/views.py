@@ -7,6 +7,7 @@ from django.contrib.auth import update_session_auth_hash
 from django.views.generic import CreateView, UpdateView, DeleteView, ListView
 from django.contrib.auth.decorators import login_required
 from django.http import Http404, HttpResponseRedirect
+from django.utils.decorators import method_decorator
 
 from . import forms
 from .models import Interview, Question, Candidate, Answer, Exam
@@ -23,6 +24,7 @@ def profile(request):
     args = {'user': request.user, 'interview_today': i.all_interviews()}
     return render(request, 'profile.html', args)
 
+@login_required
 def question_detail(request, question_id):
     try:
         question = Question.objects.get(pk=question_id)
@@ -31,7 +33,7 @@ def question_detail(request, question_id):
     args = {'question': question}
     return render(request, 'question_details.html', args)
 
-
+@login_required
 def register(request):
     if request.method == 'POST':
         form = forms.RegistrationForm(request.POST)
@@ -92,7 +94,7 @@ def edit_candidate(request, candidate_pk):
         form = forms.AddCandidateForm(request.POST, instance=candidate)
         if form.is_valid():
             form.save()
-            return redirect('/profile')#This has to go to candidate details                     page
+            return redirect('/profile')  # This has to go to candidate details page
     else:
         form = forms.AddCandidateForm(instance=candidate)
         args = {'form':form}
@@ -116,6 +118,7 @@ def change_password(request):
         return render(request, 'password_change.html', args)
 
 
+@login_required
 def search_question(request):
     if request.method == 'GET':
         if 'keyword' in request.GET.keys():
@@ -130,11 +133,12 @@ def search_question(request):
 
 
 
-
+@method_decorator(login_required, name='dispatch')
 class QuestionList(ListView):
     model = Question
 
 
+@login_required
 def create_question(request):
     answer_forms = forms.AnswerInLineFormSet(
             queryset=Answer.objects.none()
@@ -159,7 +163,7 @@ def create_question(request):
                 'formset':answer_forms
             })
             
-            
+@login_required            
 def edit_question(request, que_pk):
     question = Question.objects.get(pk=que_pk)
     form = forms.QuestionForm(instance=question)
@@ -185,6 +189,7 @@ def edit_question(request, que_pk):
                 'formset':answer_forms
             })
 
+@login_required
 def create_exam(request):
     exam_form = forms.ExamForm()
     if request.method == 'POST':
@@ -203,6 +208,7 @@ def exam_details(request, exam_pk):
     questions = Question.objects.filter(exam=exam)
     return render(request, 'exam_details.html', {'exam': exam, 'questions':questions})
 
+@login_required
 def exams(request):
     Exams = Exam.objects.all()
     return render(request, 'exams.html',{'exams':Exams})

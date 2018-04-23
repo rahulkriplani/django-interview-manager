@@ -8,20 +8,22 @@
 <div class="col-md-10">
 <p><h3>Welcome {{ request.user.first_name }} {{request.user.last_name}}</h3></p>
 <p><h3> Interviews Scheduled : {% for interview in interview_today %}</h3></p>
-    <ul class="list-group">
-     <p><li class="list-group-item list-group-item-info">{{ forloop.counter }}. Position : {{ interview.position.name }}</p>
-     <p>Name : {{ interview.candidate.name }}</p>
-     <p>Date : {{ interview.date|date }}</p>
-     <p>Status : {{ interview.get_status_display }}</p>
-     <p>Result : {{ interview.get_result_display }}</p>
-     {% if interview.exam.pk %}
-     	<p>Result : {{ interview.get_result_display }}</p>
-     	<p>Exam Link:<a href={% url 'Evaluator:examDetails' interview.exam.pk %}>{{interview.exam.name}}</a></p></li>
-     {% else %}
-     <p>Result : {{ interview.get_result_display }}</p></li>
-     {% endif %}
+    <ol class="list-group">
+     <p>
+        <li class="list-group-item list-group-item-info">
+            {{ forloop.counter }}. Position : {{ interview.position.name }}
+    </p>
+         <p>Name : {{ interview.candidate.name }}</p>
+         <p>Date : {{ interview.date|date }}</p>
+         <p>Status : {{ interview.get_status_display }}</p>
+            {% if interview.exam.pk %}
+         	  <p>Result : {{ interview.get_result_display }}</p>
+         	  <p>Exam Link : <a href={% url 'Evaluator:examDetails' interview.exam.pk %}>{{interview.exam.name}}</a></p>
+            {% endif %}
+        </li>
+     
     {% endfor %}
-    </ul>
+    </ol>
 </div>
 <div class="col-md-2">
     <div class="row well">

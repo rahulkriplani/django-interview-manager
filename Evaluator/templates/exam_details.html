@@ -10,7 +10,7 @@
 		<br>
 		{% for option in question.answer_set.all %}
         	<input type="checkbox" name="option" id="option{{forloop.counter}}" value="choice.id">
-	    	<label for="option{{forloop.counter}}">{{option.detail}}</label><br>
+	    	<label for="option{{forloop.counter}}">{{ option.detail }}</label><br>
     	{% endfor %}
     	<hr class="hr">
 	{% endfor %}
@@ -18,6 +18,6 @@
     </ol>
 </div>
 
-<input type="submit" value="Finish" class="btn btn-success" />
+<input type="submit" value="Finish" class="btn btn-success btn-lg btn-block" />
 {% endblock %}
 
