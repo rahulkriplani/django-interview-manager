@@ -33,7 +33,6 @@ def question_detail(request, question_id):
     args = {'question': question}
     return render(request, 'question_details.html', args)
 
-@login_required
 def register(request):
     if request.method == 'POST':
         form = forms.RegistrationForm(request.POST)
@@ -162,8 +161,8 @@ def create_question(request):
                 'form':form,
                 'formset':answer_forms
             })
-            
-@login_required            
+
+@login_required
 def edit_question(request, que_pk):
     question = Question.objects.get(pk=que_pk)
     form = forms.QuestionForm(instance=question)
@@ -197,12 +196,12 @@ def create_exam(request):
         if exam_form.is_valid():
             exam_form.save()
             return HttpResponseRedirect(reverse('Evaluator:profile'))
-    return render(request, 'create_exam.html', 
+    return render(request, 'create_exam.html',
             {
                 'form':exam_form
             })
 
-@login_required            
+@login_required
 def exam_details(request, exam_pk):
     exam = Exam.objects.get(pk=exam_pk)
     questions = Question.objects.filter(exam=exam)
@@ -212,4 +211,4 @@ def exam_details(request, exam_pk):
 def exams(request):
     Exams = Exam.objects.all()
     return render(request, 'exams.html',{'exams':Exams})
-                
+
