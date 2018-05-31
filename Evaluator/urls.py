@@ -34,5 +34,6 @@ urlpatterns = [
     url(r'Exams/$', views.exams, name="allexams"),
     url(r'addexam/$', views.create_exam, name="createExam"),
     url(r'^exam/(?P<exam_pk>\d+)/$', views.exam_details, name='examDetails'),
+    url(r'^examPreface/$', views.exam_launch_page, name='examLaunch')
 
     ]

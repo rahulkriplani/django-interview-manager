@@ -5,7 +5,7 @@ from django.shortcuts import render, redirect, reverse
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash
 from django.views.generic import CreateView, UpdateView, DeleteView, ListView
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.http import Http404, HttpResponseRedirect
 from django.utils.decorators import method_decorator
 from django.contrib.auth import authenticate, login
@@ -23,21 +23,20 @@ def user_login(request):
         username = request.POST.get('username')
         password = request.POST.get('password')
         user = authenticate(username=username, password=password)
-        print dir(user)
-        print 'user', user
-        if user is not None:    
+        if user is not None and user.is_active:    
         # Redirecting to the required login according to user status.
             if user.is_superuser or user.is_staff:
                 login(request, user)
                 return redirect('/profile')  # or your url name
             else:
                 login(request, user)
-                return redirect('/examStart')
+                return render(request, 'exam_launch.html')
+        else:
+            return render(request, 'login_form.html', {'error': 'Incorrect password'})
     else:
         return render(request, 'login_form.html')
 
-
-
+@user_passes_test(lambda u: u.is_staff)
 @login_required
 def profile(request):
     i = Interview()
@@ -55,7 +54,6 @@ def question_detail(request, question_id):
     args = {'question': question}
     return render(request, 'question_details.html', args)
 
-@login_required
 def register(request):
     if request.method == 'POST':
         form = forms.RegistrationForm(request.POST)
@@ -67,6 +65,7 @@ def register(request):
         args = {'form': form}
         return render(request, 'register.html', args)
 
+@user_passes_test(lambda u: u.is_staff)
 @login_required
 def add_candidate(request):
     if request.method == 'POST':
@@ -84,6 +83,7 @@ def add_candidate(request):
         args = {'form': form}
         return render(request, 'add_candidate.html', args)
 
+@user_passes_test(lambda u: u.is_staff)
 @login_required
 def search_candidate(request):
     if request.method == 'GET':
@@ -97,6 +97,7 @@ def search_candidate(request):
         else:
             return render(request, 'search_candidate.html')
 
+@user_passes_test(lambda u: u.is_staff)
 @login_required
 def edit_profile(request):
     if request.method == 'POST':
@@ -123,8 +124,6 @@ def edit_candidate(request, candidate_pk):
         return render(request, 'edit_profile.html', args)
 
 
-
-@login_required
 def change_password(request):
     if request.method == 'POST':
         form = forms.PasswordChangeForm(data=request.POST, user=request.user)
@@ -139,7 +138,7 @@ def change_password(request):
         args = {'form':form}
         return render(request, 'password_change.html', args)
 
-
+@user_passes_test(lambda u: u.is_staff)
 @login_required
 def search_question(request):
     if request.method == 'GET':
@@ -159,7 +158,7 @@ def search_question(request):
 class QuestionList(ListView):
     model = Question
 
-
+@user_passes_test(lambda u: u.is_staff)
 @login_required
 def create_question(request):
     answer_forms = forms.AnswerInLineFormSet(
@@ -184,7 +183,8 @@ def create_question(request):
                 'form':form,
                 'formset':answer_forms
             })
-            
+
+@user_passes_test(lambda u: u.is_staff)            
 @login_required            
 def edit_question(request, que_pk):
     question = Question.objects.get(pk=que_pk)
@@ -211,6 +211,7 @@ def edit_question(request, que_pk):
                 'formset':answer_forms
             })
 
+@user_passes_test(lambda u: u.is_staff)
 @login_required
 def create_exam(request):
     exam_form = forms.ExamForm()
@@ -224,14 +225,20 @@ def create_exam(request):
                 'form':exam_form
             })
 
+@user_passes_test(lambda u: u.is_staff)
 @login_required            
 def exam_details(request, exam_pk):
     exam = Exam.objects.get(pk=exam_pk)
     questions = Question.objects.filter(exam=exam)
     return render(request, 'exam_details.html', {'exam': exam, 'questions':questions})
 
+@user_passes_test(lambda u: u.is_staff)
 @login_required
 def exams(request):
     Exams = Exam.objects.all()
     return render(request, 'exams.html',{'exams':Exams})
+
+@login_required
+def exam_launch_page(request):
+    return render(request, 'exams_launch.html')
                 
