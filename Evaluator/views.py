@@ -220,7 +220,7 @@ def create_exam(request):
         if exam_form.is_valid():
             exam_form.save()
             return HttpResponseRedirect(reverse('Evaluator:profile'))
-    return render(request, 'create_exam.html', 
+    return render(request, 'create_exam.html',
             {
                 'form':exam_form
             })
@@ -241,4 +241,3 @@ def exams(request):
 @login_required
 def exam_launch_page(request):
     return render(request, 'exams_launch.html')
-                
