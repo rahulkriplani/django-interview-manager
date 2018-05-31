@@ -8,6 +8,7 @@ from django.views.generic import CreateView, UpdateView, DeleteView, ListView
 from django.contrib.auth.decorators import login_required
 from django.http import Http404, HttpResponseRedirect
 from django.utils.decorators import method_decorator
+from django.contrib.auth import authenticate, login
 
 from . import forms
 from .models import Interview, Question, Candidate, Answer, Exam
@@ -15,6 +16,27 @@ from .models import Interview, Question, Candidate, Answer, Exam
 # Create your views here.
 def index(request):
     return render(request, 'Evaluator/home.html')
+
+def user_login(request):
+    print request.method
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = authenticate(username=username, password=password)
+        print dir(user)
+        print 'user', user
+        if user is not None:    
+        # Redirecting to the required login according to user status.
+            if user.is_superuser or user.is_staff:
+                login(request, user)
+                return redirect('/profile')  # or your url name
+            else:
+                login(request, user)
+                return redirect('/examStart')
+    else:
+        return render(request, 'login_form.html')
+
+
 
 @login_required
 def profile(request):

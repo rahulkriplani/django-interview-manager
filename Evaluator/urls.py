@@ -7,7 +7,9 @@ app_name = 'Evaluator'
 
 urlpatterns = [
     url(r'^$', views.index, name='index'),
-    url(r'^login/$', login, {'template_name': 'login.html'}),
+    #url(r'^login/$', login, {'template_name': 'login.html'}),
+    url(r'^login/$', views.user_login, name='login_users'),
+
     url(r'^logout/$', logout, {'template_name': 'logout.html'}),
     url(r'^profile/$', views.profile, name='profile'),
     url(r'^register/$', views.register, name='register'),
