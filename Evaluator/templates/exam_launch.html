@@ -1,7 +1,10 @@
 {% extends 'base.html' %}
 {% block content %}
-<p>
-Welcome {{ request.user.first_name }}</p>
+    {% block head %}
+    <title>Exam Launch Page</title>
+    {% endblock %}
+
+	<p>Welcome {{ request.user.first_name }}</p>
 
 <p> This is test . Press begin to start your exam. Best of luck</p>
 {% endblock%}
