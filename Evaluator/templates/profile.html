@@ -21,7 +21,7 @@
          	  <p>Exam Link : <a href={% url 'Evaluator:examDetails' interview.exam.pk %}>{{interview.exam.name}}</a></p>
             {% endif %}
         </li>
-     
+
     {% endfor %}
     </ol>
 </div>
@@ -51,8 +51,8 @@
     </div>
 	<div class="row well">
         <h3 style="margin-top:0px;margin-bottom:20px"><span  class="label label-primary">Exam Tools</span></h3>
-	    <p><a href="{% url 'Evaluator:allexams' %}">All Exams</p>
-       	    <p><a href="{% url 'Evaluator:createExam' %}">Create Exam</p>
+	    <p><a href="{% url 'Evaluator:allQueSets' %}">All QuestionSets</p>
+       	    <p><a href="{% url 'Evaluator:createQuestionSet' %}">Create Que Set</p>
     </div>
 </div>
 {% endblock %}

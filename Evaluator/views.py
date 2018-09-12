@@ -162,8 +162,8 @@ def create_question(request):
                 'form':form,
                 'formset':answer_forms
             })
-            
-@login_required            
+
+@login_required
 def edit_question(request, que_pk):
     question = Question.objects.get(pk=que_pk)
     form = forms.QuestionForm(instance=question)
@@ -191,25 +191,27 @@ def edit_question(request, que_pk):
 
 @login_required
 def create_question_set(request):
-    exam_form = forms.ExamForm()
+    question_set_form = forms.QuestionSetForm()
     if request.method == 'POST':
-        exam_form = forms.ExamForm(request.POST)
-        if exam_form.is_valid():
-            exam_form.save()
+        question_set_form = forms.QuestionSetForm(request.POST)
+        if question_set_form.is_valid():
+            question_set_form.save()
             return HttpResponseRedirect(reverse('Evaluator:profile'))
-    return render(request, 'create_exam.html', 
+    return render(request, 'create_exam.html',
             {
-                'form':exam_form
+                'form':question_set_form
             })
 
-@login_required            
-def question_set_details(request, exam_pk):
-    question_set = Exam.objects.get(pk=exam_pk)
-    questions = Question.objects.filter(q_set=question_set)
+@login_required
+def question_set_details(request, qset_pk):
+    question_set = QuestionSet.objects.get(pk=qset_pk)
+    questions = Question.objects.filter(qset=question_set)
+    print questions
     return render(request, 'qset_details.html', {'question_set': question_set, 'questions':questions})
 
 @login_required
 def question_sets(request):
-    question_sets = Exam.objects.all()
+    question_sets = QuestionSet.objects.all()
+    print question_sets
     return render(request, 'exams.html',{'question_sets':question_sets})
-                
+

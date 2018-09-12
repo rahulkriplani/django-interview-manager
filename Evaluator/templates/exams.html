@@ -1,10 +1,10 @@
 {% extends 'base.html' %}
 {% block content %}
-<h1>All Exams</h1>
+<h1>All Question Sets</h1>
 <div class="row">
-    <ul>	
-	{% for exam in exams %}
-	<li><a href={% url 'Evaluator:examDetails' exam.pk %}>{{ exam }}</a></li>
+    <ul>
+	{% for qset in question_sets %}
+    	<li><a href={% url 'Evaluator:question_set_details' qset.pk %}>{{ qset.name }}</a></li>
 	{% endfor %}
     </ul>
 </div>

@@ -82,8 +82,8 @@ class Skill(models.Model):
     def __str__(self):  # __unicode__ on Python 2
         return self.name
 
-   
- 
+
+
 class Question(models.Model):
     description = models.CharField('Description', max_length=300)
     difficulty_choice = (
@@ -99,7 +99,7 @@ class Question(models.Model):
                     )
 
     skill = models.ForeignKey(Skill, null=True)
-    qset = models.ForeignKey(QuestionSet, null=True)
+    qset = models.ManyToManyField(QuestionSet)
 
     def __str__(self):  # __unicode__ on Python 2
         return "{0}".format(self.description)
@@ -116,4 +116,4 @@ class Answer(models.Model):
     def __str__(self):
         return self.detail
 
-   
+

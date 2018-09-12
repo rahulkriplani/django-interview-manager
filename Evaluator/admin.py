@@ -19,7 +19,7 @@ class AnswerInline(admin.TabularInline):
 
 
 class QuestionAdmin(admin.ModelAdmin):
-    list_display = ('description', 'difficulty', 'skill', 'qset')
+    list_display = ('description', 'difficulty', 'skill')
     fieldsets = [
         (None,               {'fields': ['description', 'difficulty', 'skill', 'qset']}),
 
