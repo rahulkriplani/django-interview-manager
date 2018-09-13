@@ -11,7 +11,7 @@ from django.utils.decorators import method_decorator
 from django.contrib.auth import authenticate, login
 
 from . import forms
-from .models import Interview, Question, Candidate, Answer, Exam
+from .models import Interview, Question, Candidate, Answer, QuestionSet
 
 # Create your views here.
 def index(request):
@@ -213,24 +213,23 @@ def edit_question(request, que_pk):
 
 @user_passes_test(lambda u: u.is_staff)
 @login_required
-def create_exam(request):
-    exam_form = forms.ExamForm()
+def create_question_set(request):
+    question_set_form = forms.QuestionSetForm()
     if request.method == 'POST':
-        exam_form = forms.ExamForm(request.POST)
-        if exam_form.is_valid():
-            exam_form.save()
+        question_set_form = forms.QuestionSetForm(request.POST)
+        if question_set_form.is_valid():
+            question_set_form.save()
             return HttpResponseRedirect(reverse('Evaluator:profile'))
     return render(request, 'create_exam.html',
             {
-                'form':exam_form
+                'form':question_set_form
             })
 
-@user_passes_test(lambda u: u.is_staff)
-@login_required            
-def exam_details(request, exam_pk):
-    exam = Exam.objects.get(pk=exam_pk)
-    questions = Question.objects.filter(exam=exam)
-    return render(request, 'exam_details.html', {'exam': exam, 'questions':questions})
+def question_set_details(request, qset_pk):
+    question_set = QuestionSet.objects.get(pk=qset_pk)
+    questions = Question.objects.filter(qset=question_set)
+    print questions
+    return render(request, 'qset_details.html', {'question_set': question_set, 'questions':questions})
 
 @user_passes_test(lambda u: u.is_staff)
 @login_required
@@ -241,3 +240,9 @@ def exams(request):
 @login_required
 def exam_launch_page(request):
     return render(request, 'exams_launch.html')
+
+@login_required
+def question_sets(request):
+    question_sets = QuestionSet.objects.all()
+    print question_sets
+    return render(request, 'exams.html',{'question_sets':question_sets})

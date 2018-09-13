@@ -11,7 +11,7 @@ from .models import Position
 from .models import Interview
 from .models import Question
 from .models import Skill, Answer
-from .models import Exam
+from .models import QuestionSet
 
 class AnswerInline(admin.TabularInline):
     model = Answer
@@ -19,9 +19,9 @@ class AnswerInline(admin.TabularInline):
 
 
 class QuestionAdmin(admin.ModelAdmin):
-    list_display = ('description', 'difficulty', 'skill', 'exam')
+    list_display = ('description', 'difficulty', 'skill')
     fieldsets = [
-        (None,               {'fields': ['description', 'difficulty', 'skill', 'exam']}),
+        (None,               {'fields': ['description', 'difficulty', 'skill', 'qset']}),
 
     ]
     inlines = [AnswerInline]
@@ -31,6 +31,6 @@ admin.site.register(Position)
 admin.site.register(Interview)
 admin.site.register(Question, QuestionAdmin)
 admin.site.register(Skill)
-admin.site.register(Exam)
+admin.site.register(QuestionSet)
 
 
