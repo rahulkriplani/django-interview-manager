@@ -24,14 +24,12 @@ class Candidate(models.Model):
     def __str__(self):  # __unicode__ on Python 2
         return self.name
 
-
 class QuestionSet(models.Model):
     name = models.CharField(max_length=200, default='QuestionSet')
     times_taken = models.IntegerField(default=0, editable=False)
 
     def __str__(self):
         return self.name
-
 
     def get_absolute_url(self):
         return "/qset/%s" % self.name

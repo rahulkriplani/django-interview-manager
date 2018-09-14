@@ -18,12 +18,11 @@ def index(request):
     return render(request, 'Evaluator/home.html')
 
 def user_login(request):
-    print request.method
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
         user = authenticate(username=username, password=password)
-        if user is not None and user.is_active:    
+        if user is not None and user.is_active:
         # Redirecting to the required login according to user status.
             if user.is_superuser or user.is_staff:
                 login(request, user)
@@ -38,10 +37,22 @@ def user_login(request):
 
 @user_passes_test(lambda u: u.is_staff)
 @login_required
+def add_interview(request):
+    if request.method == 'POST':
+        form = forms.AddInterview(request.POST)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.save()
+            return redirect('/profile')
+    else:
+        form = forms.AddInterview()
+        args = {'form': form}
+        return render(request, 'add_interview.html', args)
+
+@user_passes_test(lambda u: u.is_staff)
+@login_required
 def profile(request):
     i = Interview()
-    print 'We are inside the profile of ', request.user
-
     args = {'user': request.user, 'interview_today': i.all_interviews()}
     return render(request, 'profile.html', args)
 
@@ -184,8 +195,8 @@ def create_question(request):
                 'formset':answer_forms
             })
 
-@user_passes_test(lambda u: u.is_staff)            
-@login_required            
+@user_passes_test(lambda u: u.is_staff)
+@login_required
 def edit_question(request, que_pk):
     question = Question.objects.get(pk=que_pk)
     form = forms.QuestionForm(instance=question)
@@ -228,7 +239,6 @@ def create_question_set(request):
 def question_set_details(request, qset_pk):
     question_set = QuestionSet.objects.get(pk=qset_pk)
     questions = Question.objects.filter(qset=question_set)
-    print questions
     return render(request, 'qset_details.html', {'question_set': question_set, 'questions':questions})
 
 @user_passes_test(lambda u: u.is_staff)
@@ -244,5 +254,4 @@ def exam_launch_page(request):
 @login_required
 def question_sets(request):
     question_sets = QuestionSet.objects.all()
-    print question_sets
     return render(request, 'exams.html',{'question_sets':question_sets})

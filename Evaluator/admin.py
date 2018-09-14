@@ -27,7 +27,7 @@ class QuestionAdmin(admin.ModelAdmin):
     inlines = [AnswerInline]
 
 class InterviewAdmin(admin.ModelAdmin):
-    list_display = ('candidate','date', 'position', 'status', 'result')
+    list_display = ('__str__', 'candidate','date', 'position', 'status', 'result')
     search_fields = ['candidate__name']
     list_editable = ['status', 'result']
     list_filter = ['status', 'result']

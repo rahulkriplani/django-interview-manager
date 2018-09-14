@@ -23,13 +23,15 @@ urlpatterns = [
     url(r'^addQuestion/$', views.create_question, name='add_question'),
     url(r'^editQuestion/(?P<que_pk>\d+)/$', views.edit_question, name='edit_question'),
 
+    #Interview URLs
+    url(r'^addInterview/$', views.add_interview, name='add_interview'),
 
     #Candidate URLS
     url(r'^candidate/$', views.profile, name='profile'),
     url(r'^addCandidate/$', views.add_candidate, name='add_candidate'),
     url(r'^editCandidate/(?P<candidate_pk>\d+)/$', views.edit_candidate, name='edit_candidate'),
     url(r'^search/candidate/$', views.search_candidate, name='search_candidate'),
-    
+
     #Exam URLs
     url(r'Exams/$', views.exams, name="allexams"),
     #url(r'addexam/$', views.create_exam, name="createExam"),

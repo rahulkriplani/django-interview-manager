@@ -74,3 +74,7 @@ class QuestionSetForm(forms.ModelForm):
         model = models.QuestionSet
         fields = ['name',]
 
+class AddInterview(forms.ModelForm):
+    class Meta:
+        model = models.Interview
+        fields = ['candidate', 'date', 'position', 'question_set']

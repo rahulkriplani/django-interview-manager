@@ -16,9 +16,9 @@
          <p>Name : {{ interview.candidate.name }}</p>
          <p>Date : {{ interview.date|date }}</p>
          <p>Status : {{ interview.get_status_display }}</p>
-            {% if interview.exam.pk %}
+            {% if interview.question_set.pk %}
          	  <p>Result : {{ interview.get_result_display }}</p>
-         	  <p>Exam Link : <a href={% url 'Evaluator:examDetails' interview.exam.pk %}>{{interview.exam.name}}</a></p>
+         	  <p>Exam Link : <a href={% url 'Evaluator:question_set_details' interview.question_set.pk %}>{{interview.question_set.name}}</a></p>
             {% endif %}
         </li>
 
@@ -33,9 +33,8 @@
     </div>
     <div class="row well" style="margin-bottom: 10px; margin-top: 50px">
         <h3 style="margin-top:0px;margin-bottom:20px"><span  class="label label-primary">Interview Tools</span></h3>
-        <p>Schedule Interview</p>
+        <p><a href="{% url 'Evaluator:add_interview' %}">Schedule Interview</a></p>
         <p>Edit Interviews</p>
-        <p>Cancel Interviews</p>
     </div>
     <div class="row well" style="margin-bottom: 50px; margin-top: 20px">
             <h3 style="margin-top:0px;margin-bottom:20px"><span  class="label label-primary">Candidate</span></h3>
