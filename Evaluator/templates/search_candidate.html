@@ -24,12 +24,12 @@
     <h2>{{ error_message}}</h2>
 {% else %}
     {% if candi_list %}
-   	 {% for candidate in candi_list  %}
+   	    {% for candidate in candi_list  %}
     		<p>{{ candidate.name }} | {{ candidate.position_applied }} | {{ candidate.contact_primary }} <a href={% url 'Evaluator:edit_candidate' candidate.pk %}>Edit</a></p>
-	{% endfor %}
+	   {% endfor %}
     {% elif question_list  %}
-	 {% for question in question_list %}
-	 	<p>{{ question.description }}<a href={% url 'Evaluator:edit_question' question.pk %}>Edit</a></p>
+	    {% for question in question_list %}
+	 	   <p>{{ question.description }}<a href={% url 'Evaluator:edit_question' question.pk %}>Edit</a></p>
     	{% endfor %}
     {% endif %}
 {% endif %}
