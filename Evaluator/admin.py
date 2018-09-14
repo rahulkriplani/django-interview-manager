@@ -26,9 +26,15 @@ class QuestionAdmin(admin.ModelAdmin):
     ]
     inlines = [AnswerInline]
 
+class InterviewAdmin(admin.ModelAdmin):
+    list_display = ('candidate','date', 'position', 'status', 'result')
+    search_fields = ['candidate__name']
+    list_editable = ['status', 'result']
+    list_filter = ['status', 'result']
+
 admin.site.register(Candidate)
 admin.site.register(Position)
-admin.site.register(Interview)
+admin.site.register(Interview, InterviewAdmin)
 admin.site.register(Question, QuestionAdmin)
 admin.site.register(Skill)
 admin.site.register(QuestionSet)
