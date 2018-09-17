@@ -35,6 +35,14 @@ def user_login(request):
     else:
         return render(request, 'login_form.html')
 
+
+@user_passes_test(lambda u: u.is_staff)
+@login_required
+def all_interviews(request):
+    interviews = Interview.all_interviews()
+    return render(request, 'all_interviews.html', {'interviews': interviews})
+
+
 @user_passes_test(lambda u: u.is_staff)
 @login_required
 def add_interview(request):
@@ -48,6 +56,16 @@ def add_interview(request):
         form = forms.AddInterview()
         args = {'form': form}
         return render(request, 'add_interview.html', args)
+
+@user_passes_test(lambda u: u.is_staff)
+@login_required
+def interviews_details(request, interview_pk):
+    try:
+        interview = Interview.objects.get(pk=interview_pk)
+    except Interview.DoesNotExist:
+        raise Http404("Question does not exists!")
+    args = {'interview': interview}
+    return render(request, 'interview_details.html', args)
 
 @user_passes_test(lambda u: u.is_staff)
 @login_required
@@ -254,4 +272,4 @@ def exam_launch_page(request):
 @login_required
 def question_sets(request):
     question_sets = QuestionSet.objects.all()
-    return render(request, 'exams.html',{'question_sets':question_sets})
+    return render(request, 'all_qsets.html',{'question_sets':question_sets})

@@ -34,13 +34,12 @@
     <div class="row well" style="margin-bottom: 10px; margin-top: 50px">
         <h3 style="margin-top:0px;margin-bottom:20px"><span  class="label label-primary">Interview Tools</span></h3>
         <p><a href="{% url 'Evaluator:add_interview' %}">Schedule Interview</a></p>
-        <p>Edit Interviews</p>
+        <p><a href="{% url 'Evaluator:all_interview' %}">All Interviews</a></p>
     </div>
-    <div class="row well" style="margin-bottom: 50px; margin-top: 20px">
+    <div class="row well" style="margin-bottom: 20px; margin-top: 20px">
             <h3 style="margin-top:0px;margin-bottom:20px"><span  class="label label-primary">Candidate</span></h3>
             <p><a href="{% url 'Evaluator:add_candidate' %}">Add Candidate</a></p>
             <p><a href="{% url 'Evaluator:search_candidate' %}">Search Candidate</a></p>
-            <p>Remove Candidate</p>
     </div>
 
     <div class="row well">

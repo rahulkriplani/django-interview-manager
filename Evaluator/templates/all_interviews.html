@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>All Interviews</h1>
+<div class="row">
+    <ul>
+    {% for interview in interviews %}
+        <li><a href={% url 'Evaluator:interview_details' interview.pk %}>{{ interview }}</a></li>
+    {% endfor %}
+    </ul>
+</div>
+{% endblock %}

@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>{{ interview }}</h1>
+         <p>Position : {{ interview.position.name }}</p>
+         <p>Name : {{ interview.candidate.name }}</p>
+         <p>Date : {{ interview.date|date }}</p>
+         <p>Status : {{ interview.get_status_display }}</p>
+            {% if interview.question_set.pk %}
+              <p>Result : {{ interview.get_result_display }}</p>
+              <p>Exam Link : <a href={% url 'Evaluator:question_set_details' interview.question_set.pk %}>{{interview.question_set.name}}</a></p>
+            {% endif %}
+
+{% endblock %}

@@ -67,10 +67,12 @@ class Interview(models.Model):
     def __str__(self):  # __unicode__ on Python 2
         return "{0}_{1}_{2}".format(self.candidate, str(self.date), self.position)
 
-    def interviews_today(self):
+    @classmethod
+    def interviews_today(cls):
         return Interview.objects.filter(date=datetime.today())
 
-    def all_interviews(self):
+    @classmethod
+    def all_interviews(cls):
         return Interview.objects.all()
 
 class Skill(models.Model):
