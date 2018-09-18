@@ -54,7 +54,7 @@ class Interview(models.Model):
     candidate = models.ForeignKey(Candidate)
     date = models.DateField()
     position = models.ForeignKey(Position)
-    question_set = models.ForeignKey(QuestionSet, null=True)
+    question_set = models.ForeignKey(QuestionSet, null=True, blank=True)
     history = HistoricalRecords()
     status_choices = (
         ('AC', 'Active'),
