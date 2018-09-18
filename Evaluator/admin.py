@@ -13,12 +13,18 @@ from .models import Question
 from .models import Skill, Answer
 from .models import QuestionSet
 
+class PositionAdmin(admin.ModelAdmin):
+    model = Position
+    list_display = ('__str__', 'id_code','exp_needed', 'location', 'j_type')
+
 class AnswerInline(admin.TabularInline):
     model = Answer
     extra = 0
 
 
 class QuestionAdmin(admin.ModelAdmin):
+    search_fields = ['description']
+    list_filter = ['difficulty', 'skill']
     list_display = ('description', 'difficulty', 'skill')
     fieldsets = [
         (None,               {'fields': ['description', 'difficulty', 'skill', 'qset']}),
@@ -33,7 +39,7 @@ class InterviewAdmin(admin.ModelAdmin):
     list_filter = ['status', 'result']
 
 admin.site.register(Candidate)
-admin.site.register(Position)
+admin.site.register(Position, PositionAdmin)
 admin.site.register(Interview, InterviewAdmin)
 admin.site.register(Question, QuestionAdmin)
 admin.site.register(Skill)

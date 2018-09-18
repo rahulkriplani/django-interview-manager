@@ -9,6 +9,19 @@ from datetime import datetime
 class Position(models.Model):
     name = models.CharField(max_length=50)
     id_code = models.CharField(max_length=10)
+    exp_needed = models.PositiveIntegerField(default=0)
+    technology = models.TextField(default='')
+    location = models.CharField(max_length=100, default='Pune')
+    type_choices = (
+        ('P', 'Permanent'),
+        ('T', 'Temporary'),
+        ('I', 'Intern'),
+                     )
+    j_type = models.CharField( # This field can be shown in template as get_status_display
+                        max_length=1,
+                        choices=type_choices,
+                        default='P'
+                             )
 
     def __str__(self):  # __unicode__ on Python 2
         return self.name
