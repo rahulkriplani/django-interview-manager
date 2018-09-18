@@ -4,6 +4,8 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.core.validators import RegexValidator
 from django.shortcuts import redirect
+from simple_history.models import HistoricalRecords
+
 from datetime import datetime
 
 class Position(models.Model):
@@ -53,6 +55,7 @@ class Interview(models.Model):
     date = models.DateField()
     position = models.ForeignKey(Position)
     question_set = models.ForeignKey(QuestionSet, null=True)
+    history = HistoricalRecords()
     status_choices = (
         ('AC', 'Active'),
         ('CN', 'Cancelled'),

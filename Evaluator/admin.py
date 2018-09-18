@@ -5,6 +5,7 @@ from django.contrib import admin
 
 # Register your models here.
 from django.contrib import admin
+from simple_history.admin import SimpleHistoryAdmin
 
 from .models import Candidate
 from .models import Position
@@ -32,11 +33,12 @@ class QuestionAdmin(admin.ModelAdmin):
     ]
     inlines = [AnswerInline]
 
-class InterviewAdmin(admin.ModelAdmin):
+class InterviewAdmin(SimpleHistoryAdmin):
     list_display = ('__str__', 'candidate','date', 'position', 'status', 'result')
     search_fields = ['candidate__name']
     list_editable = ['status', 'result']
     list_filter = ['status', 'result']
+    history_list_display = ["status", "result"]
 
 admin.site.register(Candidate)
 admin.site.register(Position, PositionAdmin)
