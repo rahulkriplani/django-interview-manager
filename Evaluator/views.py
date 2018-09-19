@@ -17,6 +17,10 @@ from .models import Interview, Question, Candidate, Answer, QuestionSet
 def index(request):
     return render(request, 'Evaluator/home.html')
 
+#***********************************************************************
+#-------------------------------- USER ---------------------------
+#***********************************************************************
+
 def user_login(request):
     if request.method == 'POST':
         username = request.POST.get('username')
@@ -35,6 +39,54 @@ def user_login(request):
     else:
         return render(request, 'login_form.html')
 
+@user_passes_test(lambda u: u.is_staff)
+@login_required
+def profile(request):
+    i = Interview()
+    args = {'user': request.user, 'interview_today': i.all_interviews()}
+    return render(request, 'profile.html', args)
+
+def register(request):
+    if request.method == 'POST':
+        form = forms.RegistrationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('/')
+    else:
+        form = forms.RegistrationForm()
+        args = {'form': form}
+        return render(request, 'register.html', args)
+
+@user_passes_test(lambda u: u.is_staff)
+@login_required
+def edit_profile(request):
+    if request.method == 'POST':
+        form = forms.EditProfileForm(request.POST, instance=request.user)
+        if form.is_valid():
+            form.save()
+            return redirect('/profile')
+    else:
+        form = forms.EditProfileForm(instance=request.user)
+        args = {'form' : form}
+        return render(request, 'edit_profile.html', args)
+
+def change_password(request):
+    if request.method == 'POST':
+        form = forms.PasswordChangeForm(data=request.POST, user=request.user)
+        if form.is_valid():
+            form.save()
+            update_session_auth_hash(request, form.user)
+            return redirect('/profile')
+        else:
+            return redirect('/profile/password')
+    else:
+        form = forms.PasswordChangeForm(user=request.user)
+        args = {'form':form}
+        return render(request, 'password_change.html', args)
+
+#***********************************************************************
+#-------------------------------- INTERVIEW ---------------------------
+#***********************************************************************
 
 @user_passes_test(lambda u: u.is_staff)
 @login_required
@@ -67,12 +119,7 @@ def interviews_details(request, interview_pk):
     args = {'interview': interview}
     return render(request, 'interview_details.html', args)
 
-@user_passes_test(lambda u: u.is_staff)
-@login_required
-def profile(request):
-    i = Interview()
-    args = {'user': request.user, 'interview_today': i.all_interviews()}
-    return render(request, 'profile.html', args)
+
 
 @login_required
 def question_detail(request, question_id):
@@ -83,16 +130,10 @@ def question_detail(request, question_id):
     args = {'question': question}
     return render(request, 'question_details.html', args)
 
-def register(request):
-    if request.method == 'POST':
-        form = forms.RegistrationForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('/')
-    else:
-        form = forms.RegistrationForm()
-        args = {'form': form}
-        return render(request, 'register.html', args)
+#***********************************************************************
+#-------------------------------- CANDIDATE ---------------------------
+#***********************************************************************
+
 
 @user_passes_test(lambda u: u.is_staff)
 @login_required
@@ -126,18 +167,7 @@ def search_candidate(request):
         else:
             return render(request, 'search_candidate.html')
 
-@user_passes_test(lambda u: u.is_staff)
-@login_required
-def edit_profile(request):
-    if request.method == 'POST':
-        form = forms.EditProfileForm(request.POST, instance=request.user)
-        if form.is_valid():
-            form.save()
-            return redirect('/profile')
-    else:
-        form = forms.EditProfileForm(instance=request.user)
-        args = {'form' : form}
-        return render(request, 'edit_profile.html', args)
+
 
 @login_required
 def edit_candidate(request, candidate_pk):
@@ -152,20 +182,16 @@ def edit_candidate(request, candidate_pk):
         args = {'form':form}
         return render(request, 'edit_profile.html', args)
 
+def candi_details(request, candidate_pk):
+    candidate = Candidate.objects.get(pk=candidate_pk)
+    interviews = Interview.objects.filter(candidate=candidate)
+    args = {'candidate': candidate, 'interviews': interviews}
+    return render(request, 'candi_details.html', args)
 
-def change_password(request):
-    if request.method == 'POST':
-        form = forms.PasswordChangeForm(data=request.POST, user=request.user)
-        if form.is_valid():
-            form.save()
-            update_session_auth_hash(request, form.user)
-            return redirect('/profile')
-        else:
-            return redirect('/profile/password')
-    else:
-        form = forms.PasswordChangeForm(user=request.user)
-        args = {'form':form}
-        return render(request, 'password_change.html', args)
+#***********************************************************************
+#-------------------------------- QUESTION ---------------------------
+#***********************************************************************
+
 
 @user_passes_test(lambda u: u.is_staff)
 @login_required
@@ -240,6 +266,11 @@ def edit_question(request, que_pk):
                 'formset':answer_forms
             })
 
+#***********************************************************************
+#-------------------------------- QUESTION SET -------------------------
+#***********************************************************************
+
+
 @user_passes_test(lambda u: u.is_staff)
 @login_required
 def create_question_set(request):
@@ -259,6 +290,20 @@ def question_set_details(request, qset_pk):
     questions = Question.objects.filter(qset=question_set)
     return render(request, 'qset_details.html', {'question_set': question_set, 'questions':questions})
 
+@login_required
+def get_question_sets(request):
+    question_sets = QuestionSet.objects.all()
+    return render(request, 'all_qsets.html',{'question_sets':question_sets})
+
+@login_required
+def question_sets(request):
+    question_sets = QuestionSet.objects.all()
+    return render(request, 'all_qsets.html',{'question_sets':question_sets})
+
+#***********************************************************************
+#-------------------------------- EXAM ---------------------------
+#***********************************************************************
+
 @user_passes_test(lambda u: u.is_staff)
 @login_required
 def exams(request):
@@ -268,8 +313,3 @@ def exams(request):
 @login_required
 def exam_launch_page(request):
     return render(request, 'exams_launch.html')
-
-@login_required
-def question_sets(request):
-    question_sets = QuestionSet.objects.all()
-    return render(request, 'all_qsets.html',{'question_sets':question_sets})
