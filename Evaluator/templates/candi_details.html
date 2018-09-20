@@ -13,8 +13,8 @@
             <h4>{{ interview }}</h4>
             <li>Creation Date:{{ interview.date }}</li>
             <li>Position: {{ interview.position }}</li>
-            <li>Status: {{ interview.status }}</li>
-            <li>Result: {{ interview.result }}</li>
+            <li>Status: {{ interview.get_status_display }}</li>
+            <li>Result: {{ interview.get_result_display }}</li>
 
             <h4>History</h4>
         <table class="table">
@@ -28,8 +28,8 @@
             {% for line in interview.history.all %}
             <tr>
                 <td>{{ line.history_date }}</td>
-                <td>{{ line.status}}</td>
-                <td>{{ line.result}}</td>
+                <td>{{ line.get_status_display }}</td>
+                <td>{{ line.get_result_display }}</td>
                 <td>{{ line.history_user }}</td>
             </tr>
             {% endfor %}

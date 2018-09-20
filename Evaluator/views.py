@@ -115,8 +115,11 @@ def interviews_details(request, interview_pk):
     try:
         interview = Interview.objects.get(pk=interview_pk)
     except Interview.DoesNotExist:
-        raise Http404("Question does not exists!")
-    args = {'interview': interview}
+        raise Http404("Interview does not exists!")
+
+    all_rounds = interview.round_set.order_by('created_at')
+    args = {'interview': interview, 'rounds': all_rounds}
+
     return render(request, 'interview_details.html', args)
 
 

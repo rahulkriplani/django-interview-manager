@@ -11,4 +11,27 @@
               <p>Exam Link : <a href={% url 'Evaluator:question_set_details' interview.question_set.pk %}>{{interview.question_set.name}}</a></p>
             {% endif %}
 
+        <h3>Round Details</h3>
+        {% if rounds %}
+            <table class="table">
+                <tr>
+                    <th>Name</th>
+                    <th>Created On</th>
+                    <th>Date Scheduled</th>
+                    <th>Assignee</th>
+                    <th>Type</th>
+                    <th>Result</th>
+                </tr>
+            {% for round in rounds %}
+            <tr>
+                <td>{{ round.name }}</td>
+                <td>{{ round.created_at }}</td>
+                <td>{{ round.date}}</td>
+                <td>{{ round.assignee.username }}</td>
+                <td>{{ round.get_round_type_display  }}</td>
+                <td>{{ round.get_result_display }}</td>
+            </tr>
+            {% endfor %}
+        {% endif %}
+
 {% endblock %}

@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.core.validators import RegexValidator
 from django.shortcuts import redirect
+from django.utils import timezone
 from simple_history.models import HistoricalRecords
 
 from datetime import datetime
@@ -98,6 +99,15 @@ class Round(models.Model):
     date = models.DateField()
     assignee = models.ForeignKey(User)
     interview = models.ForeignKey(Interview)
+    created_at = models.DateTimeField(default=datetime.now, editable=False)
+    modified_on = models.DateTimeField(default=datetime.now, editable=False)
+
+    def save(self, *args, **kwargs):
+        ''' On save, update timestamps '''
+        if not self.id:
+            self.created_at = timezone.now()
+        self.modified_on = timezone.now()
+        return super(Round, self).save(*args, **kwargs)
 
     type_choices = (
         ('U', 'Undecided'),
