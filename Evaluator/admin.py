@@ -10,9 +10,10 @@ from simple_history.admin import SimpleHistoryAdmin
 from .models import Candidate
 from .models import Position
 from .models import Interview
-from .models import Question
-from .models import Skill, Answer
+from .models import Question, Answer
+from .models import Skill
 from .models import QuestionSet
+from .models import Round
 
 class PositionAdmin(admin.ModelAdmin):
     model = Position
@@ -33,6 +34,10 @@ class QuestionAdmin(admin.ModelAdmin):
     ]
     inlines = [AnswerInline]
 
+class RoundInline(admin.TabularInline):
+    model = Round
+    extra = 0
+
 class InterviewAdmin(SimpleHistoryAdmin):
     list_display = ('__str__', 'candidate','date', 'position', 'status', 'result')
     search_fields = ['candidate__name']
@@ -40,11 +45,11 @@ class InterviewAdmin(SimpleHistoryAdmin):
     list_filter = ['status', 'result']
     history_list_display = ["status", "result"]
 
+    inlines = [RoundInline]
+
 admin.site.register(Candidate)
 admin.site.register(Position, PositionAdmin)
 admin.site.register(Interview, InterviewAdmin)
 admin.site.register(Question, QuestionAdmin)
 admin.site.register(Skill)
 admin.site.register(QuestionSet)
-
-

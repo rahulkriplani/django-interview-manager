@@ -69,8 +69,10 @@ class Interview(models.Model):
 
     # This is to mark if the candidate passed the test.
     result_choices = (
-        ('P', 'Pass'),
-        ('F', 'Fail'),
+        ('S', 'Selected'),
+        ('R', 'Rejected'),
+        ('J', 'Joined'),
+        ('DNJ', 'Did Not Join'),
         ('TBD', 'Pending'),
                     )
 
@@ -90,6 +92,48 @@ class Interview(models.Model):
     @classmethod
     def all_interviews(cls):
         return Interview.objects.all()
+
+class Round(models.Model):
+    name = models.CharField(max_length=100)
+    date = models.DateField()
+    assignee = models.ForeignKey(User)
+    interview = models.ForeignKey(Interview)
+
+    type_choices = (
+        ('U', 'Undecided'),
+        ('F2F', 'Face to Face'),
+        ('SKYPE', 'Skype Call'),
+        ('TP', 'Telephonic'),
+        ('VC', 'Client Video Call'),
+        ('FD', 'Final Discussion'),
+                    )
+
+    round_type = models.CharField( # This field can be shown in template as get_status_display
+                        max_length=10,
+                        choices=type_choices,
+                        default='U'
+                             )
+
+    result_choice = (
+        ('ADV', 'Advanced'),
+        ('RJ', 'Rejected'),
+        ('CN', 'Cancelled'),
+        ('DNA', 'Did Not Appear'),
+        ('DNO', 'Did Not Accept Offer'),
+        ('RS', 'Rescheduled'),
+        ('W', 'Waiting'),
+        ('S', 'Selected'),
+                    )
+
+    result = models.CharField( # This field can be shown in template as get_status_display
+                        max_length=5,
+                        choices=result_choice,
+                        default='W'
+                             )
+
+    def __str__(self):  # __unicode__ on Python 2
+        return "{0}_{1}".format(self.name, str(self.date), self.round_type)
+
 
 class Skill(models.Model):
     name = models.CharField('Name', max_length=20)
