@@ -78,3 +78,23 @@ class AddInterview(forms.ModelForm):
     class Meta:
         model = models.Interview
         fields = ['candidate', 'date', 'position', 'question_set']
+
+class RoundForm(forms.ModelForm):
+    class Meta:
+        models = models.Round
+        fields = ['name', 'date', 'contact_time', 'assignee', 'round_type', 'result']
+
+RoundFormSet = forms.modelformset_factory(
+        models.Round,
+        form=RoundForm,
+        extra=0
+        )
+
+RoundInLineFormSet = forms.inlineformset_factory(
+        models.Interview,
+        models.Round,
+        extra=1,
+        fields=('name', 'date', 'contact_time', 'assignee', 'round_type', 'result'),
+        formset=RoundFormSet,
+        min_num=0,
+        )

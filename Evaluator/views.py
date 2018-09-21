@@ -11,7 +11,7 @@ from django.utils.decorators import method_decorator
 from django.contrib.auth import authenticate, login
 
 from . import forms
-from .models import Interview, Question, Candidate, Answer, QuestionSet
+from .models import Interview, Question, Candidate, Answer, QuestionSet, Round
 
 # Create your views here.
 def index(request):
@@ -98,6 +98,7 @@ def all_interviews(request):
 @user_passes_test(lambda u: u.is_staff)
 @login_required
 def add_interview(request):
+    """
     if request.method == 'POST':
         form = forms.AddInterview(request.POST)
         if form.is_valid():
@@ -108,6 +109,35 @@ def add_interview(request):
         form = forms.AddInterview()
         args = {'form': form}
         return render(request, 'add_interview.html', args)
+    """
+
+    round_forms = forms.RoundInLineFormSet(
+            queryset=Round.objects.none()
+            )
+    form = forms.AddInterview()
+    if request.method == 'POST':
+        form = forms.AddInterview(request.POST)
+        round_forms = forms.RoundInLineFormSet(
+                request.POST,
+                queryset=Round.objects.none()
+                )
+        if form.is_valid() and round_forms.is_valid():
+            interview = form.save()
+            rounds = round_forms.save(commit=False)
+            for a_round in rounds:
+                a_round.interview = interview
+                a_round.save()
+            return HttpResponseRedirect(reverse('Evaluator:profile'))
+    return render(request, 'add_interview.html',
+            {
+                'form':form,
+                'formset':round_forms
+            })
+
+
+
+
+
 
 @user_passes_test(lambda u: u.is_staff)
 @login_required
