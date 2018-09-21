@@ -97,6 +97,7 @@ class Interview(models.Model):
 class Round(models.Model):
     name = models.CharField(max_length=100)
     date = models.DateField()
+    contact_time = models.TimeField(default=timezone.now)
     assignee = models.ForeignKey(User)
     interview = models.ForeignKey(Interview)
     created_at = models.DateTimeField(default=datetime.now, editable=False)

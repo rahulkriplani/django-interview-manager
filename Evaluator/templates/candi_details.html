@@ -16,7 +16,7 @@
             <li>Status: {{ interview.get_status_display }}</li>
             <li>Result: {{ interview.get_result_display }}</li>
 
-            <h4>History</h4>
+            <h4>History:</h4>
         <table class="table">
             <tr>
                 <th>Change Date</th>
@@ -33,6 +33,24 @@
                 <td>{{ line.history_user }}</td>
             </tr>
             {% endfor %}
+
+        </table>
+
+        <h4>Rounds Details: </h4>
+
+        <table class="table">
+            <tr>
+            {% for round in interview.round_set.all %}
+                <th>{{ round.name }}</th>
+            {% endfor %}
+            </tr>
+
+            <tr>
+            {% for round in interview.round_set.all %}
+                <td>{{ round.result }}</td>
+            {% endfor %}
+            </tr>
+
 
         </table>
         </ul>

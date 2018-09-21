@@ -18,6 +18,7 @@
                     <th>Name</th>
                     <th>Created On</th>
                     <th>Date Scheduled</th>
+                    <th>Time</th>
                     <th>Assignee</th>
                     <th>Type</th>
                     <th>Result</th>
@@ -27,6 +28,7 @@
                 <td>{{ round.name }}</td>
                 <td>{{ round.created_at }}</td>
                 <td>{{ round.date}}</td>
+                <td>{{ round.contact_time }}</td>
                 <td>{{ round.assignee.username }}</td>
                 <td>{{ round.get_round_type_display  }}</td>
                 <td>{{ round.get_result_display }}</td>
