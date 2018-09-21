@@ -116,6 +116,8 @@ class Round(models.Model):
         ('TP', 'Telephonic'),
         ('VC', 'Client Video Call'),
         ('FD', 'Final Discussion'),
+        ('HR', 'HR Discussion'),
+        ('Other', 'Other Types'),
                     )
 
     round_type = models.CharField( # This field can be shown in template as get_status_display
@@ -133,6 +135,7 @@ class Round(models.Model):
         ('RS', 'Rescheduled'),
         ('W', 'Waiting'),
         ('S', 'Selected'),
+        ('OH', 'On Hold'),
                     )
 
     result = models.CharField( # This field can be shown in template as get_status_display
