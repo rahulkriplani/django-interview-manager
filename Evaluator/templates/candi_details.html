@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h1>Name : {{ candidate.name }}</h1>
+<h3>Contact: {{ candidate.contact_primary }}</h3>
+<h3>Experience: {{ candidate.experience }}</h3>
+<h3>Position Applied: {{ candidate.position_applied }}</h3>
+
+
+{% for interview in interviews %}
+    <div class="panel panel-default">
+        <ul>
+            <h4>{{ interview }}</h4>
+            <li>Creation Date:{{ interview.date }}</li>
+            <li>Position: {{ interview.position }}</li>
+            <li>Status: {{ interview.get_status_display }}</li>
+            <li>Result: {{ interview.get_result_display }}</li>
+
+            <h4>History:</h4>
+        <table class="table">
+            <tr>
+                <th>Change Date</th>
+                <th>Status</th>
+                <th>Result</th>
+                <th>Modified By</th>
+            </tr>
+
+            {% for line in interview.history.all %}
+            <tr>
+                <td>{{ line.history_date }}</td>
+                <td>{{ line.get_status_display }}</td>
+                <td>{{ line.get_result_display }}</td>
+                <td>{{ line.history_user }}</td>
+            </tr>
+            {% endfor %}
+
+        </table>
+
+        <h4>Rounds Details: </h4>
+
+        <table class="table">
+            <tr>
+            {% for round in interview.round_set.all %}
+                <th>{{ round.name }}</th>
+            {% endfor %}
+            </tr>
+
+            <tr>
+            {% for round in interview.round_set.all %}
+                <td>{{ round.result }}</td>
+            {% endfor %}
+            </tr>
+
+
+        </table>
+        </ul>
+
+    </div>
+{% endfor %}
+{% endblock %}

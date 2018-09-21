@@ -29,7 +29,7 @@ urlpatterns = [
     url(r'^detailInterview/(?P<interview_pk>\d+)/$', views.interviews_details, name='interview_details'),
 
     #Candidate URLS
-    url(r'^candidate/$', views.profile, name='profile'),
+    url(r'^candidateDetails/(?P<candidate_pk>\d+)/$', views.candi_details, name='candi_details'),
     url(r'^addCandidate/$', views.add_candidate, name='add_candidate'),
     url(r'^editCandidate/(?P<candidate_pk>\d+)/$', views.edit_candidate, name='edit_candidate'),
     url(r'^search/candidate/$', views.search_candidate, name='search_candidate'),
@@ -41,7 +41,7 @@ urlpatterns = [
     url(r'^examPreface/$', views.exam_launch_page, name='examLaunch'),
 
     #Question Set URLs
-    url(r'questionSets/$', views.question_sets, name="allQueSets"),
+    url(r'questionSets/$', views.get_question_sets, name="allQueSets"),
     url(r'addQuestionSet/$', views.create_question_set, name="createQuestionSet"),
     url(r'^qset/(?P<qset_pk>\d+)/$', views.question_set_details, name='question_set_details'),
 

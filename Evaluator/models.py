@@ -4,11 +4,27 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.core.validators import RegexValidator
 from django.shortcuts import redirect
+from django.utils import timezone
+from simple_history.models import HistoricalRecords
+
 from datetime import datetime
 
 class Position(models.Model):
     name = models.CharField(max_length=50)
     id_code = models.CharField(max_length=10)
+    exp_needed = models.PositiveIntegerField(default=0)
+    technology = models.TextField(default='')
+    location = models.CharField(max_length=100, default='Pune')
+    type_choices = (
+        ('P', 'Permanent'),
+        ('T', 'Temporary'),
+        ('I', 'Intern'),
+                     )
+    j_type = models.CharField( # This field can be shown in template as get_status_display
+                        max_length=1,
+                        choices=type_choices,
+                        default='P'
+                             )
 
     def __str__(self):  # __unicode__ on Python 2
         return self.name
@@ -39,7 +55,8 @@ class Interview(models.Model):
     candidate = models.ForeignKey(Candidate)
     date = models.DateField()
     position = models.ForeignKey(Position)
-    question_set = models.ForeignKey(QuestionSet, null=True)
+    question_set = models.ForeignKey(QuestionSet, null=True, blank=True)
+    history = HistoricalRecords()
     status_choices = (
         ('AC', 'Active'),
         ('CN', 'Cancelled'),
@@ -53,8 +70,10 @@ class Interview(models.Model):
 
     # This is to mark if the candidate passed the test.
     result_choices = (
-        ('P', 'Pass'),
-        ('F', 'Fail'),
+        ('S', 'Selected'),
+        ('R', 'Rejected'),
+        ('J', 'Joined'),
+        ('DNJ', 'Did Not Join'),
         ('TBD', 'Pending'),
                     )
 
@@ -74,6 +93,61 @@ class Interview(models.Model):
     @classmethod
     def all_interviews(cls):
         return Interview.objects.all()
+
+class Round(models.Model):
+    name = models.CharField(max_length=100)
+    date = models.DateField()
+    contact_time = models.TimeField(default=timezone.now)
+    assignee = models.ForeignKey(User)
+    interview = models.ForeignKey(Interview)
+    created_at = models.DateTimeField(default=datetime.now, editable=False)
+    modified_on = models.DateTimeField(default=datetime.now, editable=False)
+
+    def save(self, *args, **kwargs):
+        ''' On save, update timestamps '''
+        if not self.id:
+            self.created_at = timezone.now()
+        self.modified_on = timezone.now()
+        return super(Round, self).save(*args, **kwargs)
+
+    type_choices = (
+        ('U', 'Undecided'),
+        ('F2F', 'Face to Face'),
+        ('SKYPE', 'Skype Call'),
+        ('TP', 'Telephonic'),
+        ('VC', 'Client Video Call'),
+        ('FD', 'Final Discussion'),
+        ('HR', 'HR Discussion'),
+        ('Other', 'Other Types'),
+                    )
+
+    round_type = models.CharField( # This field can be shown in template as get_status_display
+                        max_length=10,
+                        choices=type_choices,
+                        default='U'
+                             )
+
+    result_choice = (
+        ('ADV', 'Advanced'),
+        ('RJ', 'Rejected'),
+        ('CN', 'Cancelled'),
+        ('DNA', 'Did Not Appear'),
+        ('DNO', 'Did Not Accept Offer'),
+        ('RS', 'Rescheduled'),
+        ('W', 'Waiting'),
+        ('S', 'Selected'),
+        ('OH', 'On Hold'),
+                    )
+
+    result = models.CharField( # This field can be shown in template as get_status_display
+                        max_length=5,
+                        choices=result_choice,
+                        default='W'
+                             )
+
+    def __str__(self):  # __unicode__ on Python 2
+        return "{0}_{1}".format(self.name, str(self.date), self.round_type)
+
 
 class Skill(models.Model):
     name = models.CharField('Name', max_length=20)

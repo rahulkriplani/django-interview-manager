@@ -5,13 +5,19 @@ from django.contrib import admin
 
 # Register your models here.
 from django.contrib import admin
+from simple_history.admin import SimpleHistoryAdmin
 
 from .models import Candidate
 from .models import Position
 from .models import Interview
-from .models import Question
-from .models import Skill, Answer
+from .models import Question, Answer
+from .models import Skill
 from .models import QuestionSet
+from .models import Round
+
+class PositionAdmin(admin.ModelAdmin):
+    model = Position
+    list_display = ('__str__', 'id_code','exp_needed', 'location', 'j_type')
 
 class AnswerInline(admin.TabularInline):
     model = Answer
@@ -19,6 +25,8 @@ class AnswerInline(admin.TabularInline):
 
 
 class QuestionAdmin(admin.ModelAdmin):
+    search_fields = ['description']
+    list_filter = ['difficulty', 'skill']
     list_display = ('description', 'difficulty', 'skill')
     fieldsets = [
         (None,               {'fields': ['description', 'difficulty', 'skill', 'qset']}),
@@ -26,17 +34,22 @@ class QuestionAdmin(admin.ModelAdmin):
     ]
     inlines = [AnswerInline]
 
-class InterviewAdmin(admin.ModelAdmin):
+class RoundInline(admin.TabularInline):
+    model = Round
+    extra = 0
+
+class InterviewAdmin(SimpleHistoryAdmin):
     list_display = ('__str__', 'candidate','date', 'position', 'status', 'result')
     search_fields = ['candidate__name']
     list_editable = ['status', 'result']
     list_filter = ['status', 'result']
+    history_list_display = ["status", "result"]
+
+    inlines = [RoundInline]
 
 admin.site.register(Candidate)
-admin.site.register(Position)
+admin.site.register(Position, PositionAdmin)
 admin.site.register(Interview, InterviewAdmin)
 admin.site.register(Question, QuestionAdmin)
 admin.site.register(Skill)
 admin.site.register(QuestionSet)
-
-
