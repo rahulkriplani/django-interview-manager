@@ -12,6 +12,7 @@ from django.contrib.auth import authenticate, login
 
 from . import forms
 from .models import Interview, Question, Candidate, Answer, QuestionSet, Round
+from .filters import InterviewFilter
 
 # Create your views here.
 def index(request):
@@ -92,7 +93,8 @@ def change_password(request):
 @login_required
 def all_interviews(request):
     interviews = Interview.all_interviews()
-    return render(request, 'all_interviews.html', {'interviews': interviews})
+    interview_filter = InterviewFilter(request.GET, queryset=interviews)
+    return render(request, 'all_interviews.html', {'interviews': interviews, 'filter': interview_filter})
 
 
 @user_passes_test(lambda u: u.is_staff)
