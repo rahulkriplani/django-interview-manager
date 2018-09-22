@@ -1,11 +1,25 @@
 {% extends 'base.html' %}
 {% block content %}
 <h1>All Interviews</h1>
-<div class="row">
-    <ul>
+<div class="panel panel-default">
+    <table class="table">
+    	<tr>
+                <th>Name</th>
+                <th>Date</th>
+                <th>Position</th>
+                <th>Status</th>
+                <th>Result</th>
+            </tr>
     {% for interview in interviews %}
-        <li><a href={% url 'Evaluator:interview_details' interview.pk %}>{{ interview }}</a></li>
+    <tr>
+        <td><a href={% url 'Evaluator:interview_details' interview.pk %}>{{ interview }}</a></td>
+        <td>{{ interview.date }} </td>
+        <td>{{ interview.position.name }} </td>
+        <td>{{ interview.get_status_display }} </td>
+        <td>{{ interview.get_result_display }} </td>
+    </tr>
     {% endfor %}
-    </ul>
+	</table>
+    
 </div>
 {% endblock %}
