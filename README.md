@@ -10,6 +10,11 @@
 - Django 1.11
 - Bootstrap 3.7
 
+### 3rd party modules needed:
+
+- django-filter
+- simple-history
+
 ### Features:
 
 - Staff (HR , Question Setters or Employee)  login and separate dashboard with tools to create , add, delete questions .
