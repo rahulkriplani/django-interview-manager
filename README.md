@@ -12,7 +12,7 @@
 
 ### 3rd party modules needed:
 
-- django-filter
+- django-filter==1.1.0
 - simple-history
 
 ### Features:
