@@ -57,10 +57,10 @@ AnswerFormSet = forms.modelformset_factory(
 AnswerInLineFormSet = forms.inlineformset_factory(
         models.Question,
         models.Answer,
-        extra=2,
+        extra=1,
         fields=('detail', 'correct'),
         formset=AnswerFormSet,
-        min_num=1,
+        min_num=0,
         )
 
 class AddCandidateForm(forms.ModelForm):

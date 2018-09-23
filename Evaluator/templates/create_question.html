@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-
+{% load static %}
 {% block content %}
 
 <form method='POST'>
@@ -20,7 +20,7 @@
     <tbody class="table">
     {% for form in formset %}
         {{ form.id }} <!--This is just for handling an error during save after editing -->
-    	<tr>
+    	<tr class="{% cycle 'row1' 'row2' %} formset_row">
 	<td> {{ form.detail }}</td>
 	<td>{{ form.correct }}</td>
 	<td>{{ form.DELETE }}</td>
@@ -31,4 +31,13 @@
 	<input type="submit" name="Save" value="Save">
 	</div>
 </form>
+<script src="https://code.jquery.com/jquery-3.2.1.js"></script>
+<script src="{% static 'formset/jquery.formset.js' %}"></script>
+<script type="text/javascript">
+        $('.formset_row').formset({
+            addText: 'add answer',
+            deleteText: 'remove',
+            prefix: 'formset_set'
+        });
+    </script>
 {% endblock %}
