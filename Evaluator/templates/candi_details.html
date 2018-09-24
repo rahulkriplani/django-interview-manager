@@ -3,7 +3,7 @@
 
 <h1>Name : {{ candidate.name }}</h1>
 <h3>Contact: {{ candidate.contact_primary }}</h3>
-<h3>Experience: {{ candidate.experience }}</h3>
+<h3>Experience: {{ candidate.experience }} yrs </h3>
 <h3>Position Applied: {{ candidate.position_applied }}</h3>
 
 
@@ -11,12 +11,12 @@
     <div class="panel panel-default">
         <ul>
             <h4>{{ interview }}</h4>
-            <li>Creation Date:{{ interview.date }}</li>
+            <li>Creation Date: {{ interview.date }}</li>
             <li>Position: {{ interview.position }}</li>
             <li>Status: {{ interview.get_status_display }}</li>
             <li>Result: {{ interview.get_result_display }}</li>
 
-            <h4>History:</h4>
+            <h4 class="mt-3">History:</h4>
         <table class="table">
             <tr>
                 <th>Change Date</th>
@@ -35,24 +35,26 @@
             {% endfor %}
 
         </table>
+        {% if interview.round_set.all %}
 
-        <h4>Rounds Details: </h4>
+            <h4>Rounds Details: </h4>
 
-        <table class="table">
-            <tr>
-            {% for round in interview.round_set.all %}
-                <th>{{ round.name }}</th>
-            {% endfor %}
-            </tr>
+            <table class="table">
+                <tr>
+                {% for round in interview.round_set.all %}
+                    <th>{{ round.name }}</th>
+                {% endfor %}
+                </tr>
 
-            <tr>
-            {% for round in interview.round_set.all %}
-                <td>{{ round.result }}</td>
-            {% endfor %}
-            </tr>
+                <tr>
+                {% for round in interview.round_set.all %}
+                    <td>{{ round.get_result_display }}</td>
+                {% endfor %}
+                </tr>
 
 
-        </table>
+            </table>
+        {% endif %}
         </ul>
 
     </div>

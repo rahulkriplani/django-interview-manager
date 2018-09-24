@@ -11,7 +11,8 @@ from django.utils.decorators import method_decorator
 from django.contrib.auth import authenticate, login
 
 from . import forms
-from .models import Interview, Question, Candidate, Answer, QuestionSet
+from .models import Interview, Question, Candidate, Answer, QuestionSet, Round
+from .filters import InterviewFilter
 
 # Create your views here.
 def index(request):
@@ -92,12 +93,14 @@ def change_password(request):
 @login_required
 def all_interviews(request):
     interviews = Interview.all_interviews()
-    return render(request, 'all_interviews.html', {'interviews': interviews})
+    interview_filter = InterviewFilter(request.GET, queryset=interviews)
+    return render(request, 'all_interviews.html', {'interviews': interviews, 'filter': interview_filter})
 
 
 @user_passes_test(lambda u: u.is_staff)
 @login_required
 def add_interview(request):
+    """
     if request.method == 'POST':
         form = forms.AddInterview(request.POST)
         if form.is_valid():
@@ -108,6 +111,31 @@ def add_interview(request):
         form = forms.AddInterview()
         args = {'form': form}
         return render(request, 'add_interview.html', args)
+    """
+
+    round_forms = forms.RoundInLineFormSet(
+            queryset=Round.objects.none()
+            )
+    form = forms.AddInterview()
+    if request.method == 'POST':
+        form = forms.AddInterview(request.POST)
+        round_forms = forms.RoundInLineFormSet(
+                request.POST,
+                queryset=Round.objects.none()
+                )
+        if form.is_valid() and round_forms.is_valid():
+            interview = form.save()
+            rounds = round_forms.save(commit=False)
+            for a_round in rounds:
+                a_round.interview = interview
+                a_round.save()
+            return HttpResponseRedirect(interview.get_absolute_url())
+    return render(request, 'add_interview.html',
+            {
+                'form':form,
+                'formset':round_forms
+            })
+
 
 @user_passes_test(lambda u: u.is_staff)
 @login_required
@@ -235,7 +263,8 @@ def create_question(request):
             for answer in answers:
                 answer.question = question
                 answer.save()
-            return HttpResponseRedirect(reverse('Evaluator:profile'))
+            #return HttpResponseRedirect(reverse('Evaluator:profile'))
+            return HttpResponseRedirect(question.get_absolute_url())
     return render(request, 'create_question.html',
             {
                 'form':form,
@@ -262,7 +291,7 @@ def edit_question(request, que_pk):
             for answer in answers:
                 answer.question = question
                 answer.save()
-            return HttpResponseRedirect(reverse('Evaluator:profile'))
+            return HttpResponseRedirect(question.get_absolute_url())
     return render(request, 'create_question.html',
             {
                 'form':form,
@@ -281,8 +310,8 @@ def create_question_set(request):
     if request.method == 'POST':
         question_set_form = forms.QuestionSetForm(request.POST)
         if question_set_form.is_valid():
-            question_set_form.save()
-            return HttpResponseRedirect(reverse('Evaluator:profile'))
+            question_set = question_set_form.save()
+            return HttpResponseRedirect(question_set.get_absolute_url())
     return render(request, 'create_exam.html',
             {
                 'form':question_set_form

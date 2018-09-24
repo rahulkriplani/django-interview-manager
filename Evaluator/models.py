@@ -6,6 +6,7 @@ from django.core.validators import RegexValidator
 from django.shortcuts import redirect
 from django.utils import timezone
 from simple_history.models import HistoricalRecords
+from django.core.urlresolvers import reverse
 
 from datetime import datetime
 
@@ -40,6 +41,9 @@ class Candidate(models.Model):
     def __str__(self):  # __unicode__ on Python 2
         return self.name
 
+    def get_absolute_url(self):
+        return reverse('candi_details', args=[str(self.id)])
+
 class QuestionSet(models.Model):
     name = models.CharField(max_length=200, default='QuestionSet')
     times_taken = models.IntegerField(default=0, editable=False)
@@ -48,7 +52,7 @@ class QuestionSet(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        return "/qset/%s" % self.name
+        return reverse('Evaluator:question_set_details', args=[str(self.id)])
 
 
 class Interview(models.Model):
@@ -86,6 +90,9 @@ class Interview(models.Model):
     def __str__(self):  # __unicode__ on Python 2
         return "{0}_{1}_{2}".format(self.candidate, str(self.date), self.position)
 
+    def get_absolute_url(self):
+        return reverse('Evaluator:interview_details', args=[str(self.id)])
+
     @classmethod
     def interviews_today(cls):
         return Interview.objects.filter(date=datetime.today())
@@ -93,6 +100,8 @@ class Interview(models.Model):
     @classmethod
     def all_interviews(cls):
         return Interview.objects.all()
+
+
 
 class Round(models.Model):
     name = models.CharField(max_length=100)
@@ -177,6 +186,9 @@ class Question(models.Model):
 
     def __str__(self):  # __unicode__ on Python 2
         return "{0}".format(self.description)
+
+    def get_absolute_url(self):
+        return reverse('Evaluator:question_detail', args=[str(self.id)])
 
 
 class Answer(models.Model):

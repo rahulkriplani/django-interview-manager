@@ -3,13 +3,47 @@
 {% block content %}
 
 <div class="container">
+
     <h1>Create Interview</h1>
+
         <form method="post">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <p>Note: Date format is yyyy-mm-dd</p>
-            <button type="submit">Save</button>
+            <div class="form-group">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <p>Note: Date format is yyyy-mm-dd</p>
+                <button type="submit">Save</button>
+            </div>
+            {{formset.management_form}}
+            <hr>
+            <table class="table">
+            <thead>
+                        <tr>
+                            <th>Heading</th>
+                            <th>Date</th>
+                            <th>Time</th>
+                            <th>Assigned To</th>
+                            <th>Round Type</th>
+                            <th>Result</th>
+                        </tr>
+                    </thead>
+            <tbody class="table">
+            {% for form in formset %}
+                {{ form.id }} <!--This is just for handling an error during save after editing -->
+                <tr>
+            <td> {{ form.name }}</td>
+            <td>{{ form.date }}</td>
+            <td>{{ form.contact_time }}</td>
+            <td>{{ form.assignee }}</td>
+            <td>{{ form.round_type }}</td>
+            <td>{{ form.result }}</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+            </table>
+            <input type="submit" name="Save" value="Save">
+            </div>
         </form>
+
 </div>
 
 {% endblock %}
