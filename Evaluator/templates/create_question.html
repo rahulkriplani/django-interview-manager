@@ -3,41 +3,38 @@
 {% block content %}
 
 <form method='POST'>
-    <div class="form-group">	
+    <div class="form-group">
     {% csrf_token %}
     {{ form.as_p }}
     </div>
     {{formset.management_form}}
     <hr>
     <table class="table">
-    <thead>
-                <tr>
-                    <th>Text</th>
-                    <th>Correct?</th>
-                    <th>Delete?</th>
-                </tr>
-            </thead>
-    <tbody class="table">
-    {% for form in formset %}
-        {{ form.id }} <!--This is just for handling an error during save after editing -->
-    	<tr class="{% cycle 'row1' 'row2' %} formset_row">
-	<td> {{ form.detail }}</td>
-	<td>{{ form.correct }}</td>
-	<td>{{ form.DELETE }}</td>
-	</tr>
-    {% endfor %}
-    </tbody>
+        <thead>
+                    <tr>
+                        <th>Text</th>
+                        <th>Correct?</th>
+                        <th>Delete?</th>
+                    </tr>
+                </thead>
+        <tbody class="table">
+            {% for form in formset %}
+                {{ form.id }} <!--This is just for handling an error during save after editing -->
+            	<tr >
+            	<td> {{ form.detail }}{{ form.detail.errors }}</td>
+            	<td>{{ form.correct }}</td>
+                {% if form.instance.pk %}
+            	   <td>{{ form.DELETE }}</td>
+                {% else %}
+                    <td></td>
+                {% endif %}
+            	</tr>
+                {% endfor %}
+
+        </tbody>
     </table>
+
 	<input type="submit" name="Save" value="Save">
 	</div>
 </form>
-<script src="https://code.jquery.com/jquery-3.2.1.js"></script>
-<script src="{% static 'formset/jquery.formset.js' %}"></script>
-<script type="text/javascript">
-        $('.formset_row').formset({
-            addText: 'add answer',
-            deleteText: 'remove',
-            prefix: 'formset_set'
-        });
-    </script>
 {% endblock %}

@@ -267,7 +267,8 @@ def create_question(request):
             for answer in answers:
                 answer.question = question
                 answer.save()
-            return HttpResponseRedirect(reverse('Evaluator:profile'))
+            #return HttpResponseRedirect(reverse('Evaluator:profile'))
+            return HttpResponseRedirect(question.get_absolute_url())
     return render(request, 'create_question.html',
             {
                 'form':form,
@@ -294,7 +295,7 @@ def edit_question(request, que_pk):
             for answer in answers:
                 answer.question = question
                 answer.save()
-            return HttpResponseRedirect(reverse('Evaluator:profile'))
+            return HttpResponseRedirect(question.get_absolute_url())
     return render(request, 'create_question.html',
             {
                 'form':form,
@@ -313,8 +314,8 @@ def create_question_set(request):
     if request.method == 'POST':
         question_set_form = forms.QuestionSetForm(request.POST)
         if question_set_form.is_valid():
-            question_set_form.save()
-            return HttpResponseRedirect(reverse('Evaluator:profile'))
+            question_set = question_set_form.save()
+            return HttpResponseRedirect(question_set.get_absolute_url())
     return render(request, 'create_exam.html',
             {
                 'form':question_set_form
