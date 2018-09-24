@@ -129,16 +129,12 @@ def add_interview(request):
             for a_round in rounds:
                 a_round.interview = interview
                 a_round.save()
-            return HttpResponseRedirect(reverse('Evaluator:profile'))
+            return HttpResponseRedirect(interview.get_absolute_url())
     return render(request, 'add_interview.html',
             {
                 'form':form,
                 'formset':round_forms
             })
-
-
-
-
 
 
 @user_passes_test(lambda u: u.is_staff)

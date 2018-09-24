@@ -90,6 +90,9 @@ class Interview(models.Model):
     def __str__(self):  # __unicode__ on Python 2
         return "{0}_{1}_{2}".format(self.candidate, str(self.date), self.position)
 
+    def get_absolute_url(self):
+        return reverse('Evaluator:interview_details', args=[str(self.id)])
+
     @classmethod
     def interviews_today(cls):
         return Interview.objects.filter(date=datetime.today())
@@ -97,6 +100,8 @@ class Interview(models.Model):
     @classmethod
     def all_interviews(cls):
         return Interview.objects.all()
+
+
 
 class Round(models.Model):
     name = models.CharField(max_length=100)
