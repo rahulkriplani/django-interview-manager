@@ -9,6 +9,7 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from django.http import Http404, HttpResponseRedirect
 from django.utils.decorators import method_decorator
 from django.contrib.auth import authenticate, login
+from django.utils import timezone
 
 from . import forms
 from .models import Interview, Question, Candidate, Answer, QuestionSet, Round
@@ -43,8 +44,9 @@ def user_login(request):
 @user_passes_test(lambda u: u.is_staff)
 @login_required
 def profile(request):
-    i = Interview()
-    args = {'user': request.user, 'interview_today': i.all_interviews()}
+    today_date = timezone.now().date()
+    user_rounds = Round.objects.filter(assignee=request.user, date__gte=today_date, interview__status='AC')
+    args = {'user': request.user, 'my_rounds': user_rounds}
     return render(request, 'profile.html', args)
 
 def register(request):
