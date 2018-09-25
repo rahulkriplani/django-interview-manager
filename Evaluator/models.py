@@ -140,6 +140,7 @@ class Round(models.Model):
     interview = models.ForeignKey(Interview)
     created_at = models.DateTimeField(default=datetime.now, editable=False)
     modified_on = models.DateTimeField(default=datetime.now, editable=False)
+    comments = models.CharField(max_length=300, default='', null=True)
 
     def save(self, *args, **kwargs):
         ''' On save, update timestamps '''
