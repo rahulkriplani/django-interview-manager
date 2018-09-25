@@ -14,6 +14,11 @@ from .models import Question, Answer
 from .models import Skill
 from .models import QuestionSet
 from .models import Round
+from .models import Vendor
+
+class VendorAdmin(admin.ModelAdmin):
+    model = Position
+    list_display = ('name', 'v_type')
 
 class PositionAdmin(admin.ModelAdmin):
     model = Position
@@ -47,6 +52,7 @@ class InterviewAdmin(SimpleHistoryAdmin):
 
     inlines = [RoundInline]
 
+admin.site.register(Vendor, VendorAdmin)
 admin.site.register(Candidate)
 admin.site.register(Position, PositionAdmin)
 admin.site.register(Interview, InterviewAdmin)

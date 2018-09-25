@@ -31,7 +31,18 @@
                     <ul class="nav navbar-nav">
                       <li class="active"><a href="/profile">Home</a></li>
                       <li><a href="/profile/edit">Edit Profile</a></li>
-                      <li><a href="#">Contact</a></li>
+                       <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Tools <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                          <li><a href="#">Candidate Tools</a></li>
+                          <li><a href="#">Question Tools</a></li>
+                          <li><a href="#">Candidate Tools</a></li>
+                          <li><a href="#">Interview Tools</a></li>
+                          <li role="separator" class="divider"></li>
+                          <li><a href="#">Raise Ticket</a></li>
+                          <li role="separator" class="divider"></li>
+                          <li><a href="#">Calendar</a></li>
+                        </ul>
+                      </li>
                     </ul>
                       <ul class="nav navbar-nav">
 			      <li><a href="{% url 'Evaluator:question_list' %}">Question</a></li>
