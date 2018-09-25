@@ -15,6 +15,7 @@
                 <th>Phone</th>
                 <th>Experience</th>
                 <th>Position Applied</th>
+                <th>Registered On</th>
                 <th>Vendor</th>
             </tr>
     {% for candidate in filter.qs %}
@@ -23,6 +24,7 @@
         <td>{{ candidate.contact_primary }} </td>
         <td>{{ candidate.experience }} </td>
         <td>{{ candidate.position_applied }} </td>
+        <td>{{ candidate.created_at }} </td>
         <td><a href={% url 'Evaluator:vendor_details' candidate.vendor.pk %}>{{ candidate.vendor }} </td>
     </tr>
     {% endfor %}

@@ -62,6 +62,7 @@ class Candidate(models.Model):
     experience = models.PositiveIntegerField()
     position_applied = models.ForeignKey(Position)
     vendor = models.ForeignKey(Vendor, null=True)
+    created_at = models.DateTimeField(default=timezone.now, editable=False)
 
 
     def __str__(self):  # __unicode__ on Python 2
