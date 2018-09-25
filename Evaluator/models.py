@@ -30,12 +30,39 @@ class Position(models.Model):
     def __str__(self):  # __unicode__ on Python 2
         return self.name
 
+class Vendor(models.Model):
+    name = models.CharField(max_length=100)
+    contact_validator = RegexValidator(regex='\d+')
+    phone_number = models.CharField(max_length=20, validators=[contact_validator], null=True)
+    address = models.TextField()
+    type_choices = (
+        ('O', 'Online'),
+        ('R', 'Reference'),
+        ('RS', 'Recruitment Service'),
+        ('OT', 'Other'),
+        ('N', 'None')
+                     )
+    v_type = models.CharField( # This field can be shown in template as get_status_display
+                        max_length=2,
+                        choices=type_choices,
+                        default='N'
+                             )
+
+    def __str__(self):  # __unicode__ on Python 2
+        return self.name
+
+    def get_absolute_url(self):
+        return reverse('vendor_details', args=[str(self.id)])
+
+
 class Candidate(models.Model):
     name = models.CharField(max_length=40)
     contact_validator = RegexValidator(regex='\d+')
     contact_primary = models.CharField(max_length=20, validators=[contact_validator], null=True)
     experience = models.PositiveIntegerField()
     position_applied = models.ForeignKey(Position)
+    vendor = models.ForeignKey(Vendor, null=True)
+    created_at = models.DateTimeField(default=timezone.now, editable=False)
 
 
     def __str__(self):  # __unicode__ on Python 2
@@ -43,6 +70,8 @@ class Candidate(models.Model):
 
     def get_absolute_url(self):
         return reverse('candi_details', args=[str(self.id)])
+
+
 
 class QuestionSet(models.Model):
     name = models.CharField(max_length=200, default='QuestionSet')

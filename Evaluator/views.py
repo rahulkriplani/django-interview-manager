@@ -9,10 +9,11 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from django.http import Http404, HttpResponseRedirect
 from django.utils.decorators import method_decorator
 from django.contrib.auth import authenticate, login
+from django.utils import timezone
 
 from . import forms
-from .models import Interview, Question, Candidate, Answer, QuestionSet, Round
-from .filters import InterviewFilter
+from .models import Interview, Question, Candidate, Answer, QuestionSet, Round, Vendor
+from .filters import InterviewFilter, CandidateFilter
 
 # Create your views here.
 def index(request):
@@ -43,8 +44,9 @@ def user_login(request):
 @user_passes_test(lambda u: u.is_staff)
 @login_required
 def profile(request):
-    i = Interview()
-    args = {'user': request.user, 'interview_today': i.all_interviews()}
+    today_date = timezone.now().date()
+    user_rounds = Round.objects.filter(assignee=request.user, date__gte=today_date, interview__status='AC')
+    args = {'user': request.user, 'my_rounds': user_rounds}
     return render(request, 'profile.html', args)
 
 def register(request):
@@ -198,7 +200,12 @@ def search_candidate(request):
         else:
             return render(request, 'search_candidate.html')
 
-
+@user_passes_test(lambda u: u.is_staff)
+@login_required
+def all_candidates(request):
+    candidates = Candidate.objects.all()
+    candidate_filter = CandidateFilter(request.GET, queryset=candidates)
+    return render(request, 'all_candidates.html', {'candidates': candidates, 'filter': candidate_filter})
 
 @login_required
 def edit_candidate(request, candidate_pk):
@@ -345,3 +352,21 @@ def exams(request):
 @login_required
 def exam_launch_page(request):
     return render(request, 'exams_launch.html')
+
+
+#***********************************************************************
+# -------------------------------- Vendor ---------------------------
+#***********************************************************************
+
+@user_passes_test(lambda u: u.is_staff)
+@login_required
+def allVendors(request):
+    return render(request, 'all_vendors.html', {'vendors': Vendors.objects.all()})
+
+@user_passes_test(lambda u: u.is_staff)
+@login_required
+def vendor_details(request, vendor_pk):
+    vendor = Vendor.objects.get(pk=vendor_pk)
+    return render(request, 'vendors_details.html', {'vendor': vendor})
+
+

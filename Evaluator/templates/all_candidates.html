@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<form method="get">
+    {{ filter.form.as_p }}
+    <p><b>Note</b>: Year format is YYYY-mm-dd</p>
+    <button type="submit">Search</button>
+
+  </form>
+
+
+<h1>Search Results</h1>
+<div class="panel panel-default">
+    <table class="table">
+        <tr>
+                <th>Name</th>
+                <th>Phone</th>
+                <th>Experience</th>
+                <th>Position Applied</th>
+                <th>Registered On</th>
+                <th>Vendor</th>
+            </tr>
+    {% for candidate in filter.qs %}
+    <tr>
+        <td><a href={% url 'Evaluator:candi_details' candidate.pk %}>{{ candidate.name }}</a></td>
+        <td>{{ candidate.contact_primary }} </td>
+        <td>{{ candidate.experience }} </td>
+        <td>{{ candidate.position_applied }} </td>
+        <td>{{ candidate.created_at }} </td>
+        <td><a href={% url 'Evaluator:vendor_details' candidate.vendor.pk %}>{{ candidate.vendor }} </td>
+    </tr>
+    {% endfor %}
+    </table>
+
+</div>
+{% endblock %}

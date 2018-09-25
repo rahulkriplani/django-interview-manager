@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h2>Name : {{ vendor }}</h2>
+<p>Phone: {{ vendor.phone_number }}</p>
+{% if vendor.address %}
+    <p>{{ vendor.address }}</p>
+{% endif %}
+<p>Vendor Type : {{ vendor.get_v_type_display }}</p>
+
+{% endblock %}
