@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 from django.contrib.auth.models import User
 from django.db import models
 from django.core.validators import RegexValidator
+from django.core.validators import MaxValueValidator, MinValueValidator
 from django.shortcuts import redirect
 from django.utils import timezone
 from simple_history.models import HistoricalRecords
@@ -231,5 +232,3 @@ class Answer(models.Model):
 
     def __str__(self):
         return self.detail
-
-

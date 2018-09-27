@@ -1,0 +1,13 @@
+<form action="/myForm/" method="post">
+    {% csrf_token %}
+    {% for round in r_count %}
+        <select name="rates_{{forloop.counter}}">
+          <option value="volvo">Volvo</option>
+          <option value="saab">Saab</option>
+          <option value="fiat">Fiat</option>
+          <option value="audi">Audi</option>
+        </select>
+    <hr>
+    {% endfor %}
+    <input type="submit" value="OK">
+</form>

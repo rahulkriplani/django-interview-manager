@@ -15,9 +15,25 @@ from . import forms
 from .models import Interview, Question, Candidate, Answer, QuestionSet, Round, Vendor
 from .filters import InterviewFilter, CandidateFilter
 
-# Create your views here.
 def index(request):
     return render(request, 'Evaluator/home.html')
+
+
+def customForm(request, interview_pk):
+    if request.method == 'GET':
+        try:
+            interview = Interview.objects.get(pk=interview_pk)
+        except Interview.DoesNotExist:
+            raise Http404("Interview does not exists!")
+
+        count_rounds = range(Round.objects.filter(interview__pk=interview_pk).count())
+        return render(request, 'CustomForm.html', {'r_count': count_rounds})
+
+def customFormProcess(request):
+    #interview = Interview.objects.get(pk=interview_pk)
+
+    print request.POST
+
 
 #***********************************************************************
 #-------------------------------- USER ---------------------------
