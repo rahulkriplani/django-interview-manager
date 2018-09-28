@@ -15,6 +15,7 @@ from .models import Skill
 from .models import QuestionSet
 from .models import Round
 from .models import Vendor
+from .models import RatingSheet, Aspect
 
 class VendorAdmin(admin.ModelAdmin):
     model = Position
@@ -52,6 +53,20 @@ class InterviewAdmin(SimpleHistoryAdmin):
 
     inlines = [RoundInline]
 
+class AspectInline(admin.TabularInline):
+    model = Aspect
+    extra = 0
+
+
+class RatingSheetAdmin(admin.ModelAdmin):
+    def aspects_count(self, obj):
+        return obj.aspect_set.count()
+
+    list_display = ('name', 'rate_min', 'rate_max', 'aspects_count')
+    model = RatingSheet
+    inlines = [AspectInline]
+
+
 admin.site.register(Vendor, VendorAdmin)
 admin.site.register(Candidate)
 admin.site.register(Position, PositionAdmin)
@@ -59,3 +74,4 @@ admin.site.register(Interview, InterviewAdmin)
 admin.site.register(Question, QuestionAdmin)
 admin.site.register(Skill)
 admin.site.register(QuestionSet)
+admin.site.register(RatingSheet, RatingSheetAdmin)
