@@ -15,7 +15,11 @@ from .models import Skill
 from .models import QuestionSet
 from .models import Round
 from .models import Vendor
-from .models import RatingSheet, Aspect
+from .models import RatingSheet, Aspect, Rating
+
+class RatingAdmin(admin.ModelAdmin):
+    model = Rating
+    list_display = ('name',)
 
 class VendorAdmin(admin.ModelAdmin):
     model = Position
@@ -75,3 +79,4 @@ admin.site.register(Question, QuestionAdmin)
 admin.site.register(Skill)
 admin.site.register(QuestionSet)
 admin.site.register(RatingSheet, RatingSheetAdmin)
+admin.site.register(Rating, RatingAdmin)

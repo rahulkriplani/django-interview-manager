@@ -11,18 +11,28 @@ from django.core.urlresolvers import reverse
 
 from datetime import datetime
 
+
+
 class RatingSheet(models.Model):
     name = models.CharField(max_length=100)
     rate_min = models.IntegerField(default=1, validators=[MinValueValidator(0)])
     rate_max = models.IntegerField(default=6, validators=[MaxValueValidator(100)])
 
+
     def __str__(self):  # __unicode__ on Python 2
         return self.name
+
+class Rating(models.Model):
+    name = models.CharField(max_length=150)
+    rating_sheet = models.ForeignKey(RatingSheet, null=True)
+
 
 class Aspect(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField(null=True, default='')
     rating_sheet = models.ForeignKey(RatingSheet)
+
+
 
 
 class Position(models.Model):
