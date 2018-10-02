@@ -14,10 +14,15 @@
    			<li>{{ round.name }}</li>
    		{% endfor %}
    		</ul>
+   		{{ form }}
+   		<input type="submit" value="Submit" />
+   	{% else %}
+   		<h3>No rounds found</h3>
    	{% endif %}
+
    	
-    {{ form }}
-    <input type="submit" value="Submit" />
+    
+    
 </form>
 
 {% endblock %}
