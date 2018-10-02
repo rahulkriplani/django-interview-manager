@@ -11,7 +11,6 @@
               <p>Exam Link : <a href={% url 'Evaluator:question_set_details' interview.question_set.pk %}>{{interview.question_set.name}}</a></p>
             {% endif %}
 
-
         {% if rounds %}
         <h3>Round Details</h3>
             <table class="table">
@@ -36,5 +35,8 @@
             </tr>
             {% endfor %}
         {% endif %}
+
+        <a href={% url 'Evaluator:addRating' %}>Add Ratings</a>
+
 
 {% endblock %}

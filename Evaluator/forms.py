@@ -3,6 +3,9 @@ from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from . import models
 
+class AddRatingForRound(forms.Form):
+    round_name = forms.CharField(label='Round Name', max_length=100)
+
 class RegistrationForm(UserCreationForm):
     email = forms.EmailField(required=True)
 

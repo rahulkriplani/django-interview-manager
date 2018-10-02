@@ -15,6 +15,18 @@ from . import forms
 from .models import Interview, Question, Candidate, Answer, QuestionSet, Round, Vendor
 from .filters import InterviewFilter, CandidateFilter
 
+
+def add_ratings(request):
+    if request.method == 'POST':
+        form = forms.AddRatingForRound(request.POST)
+        if form.is_valid():
+            print 'Form is good'
+            return redirect('/profile')
+    else:
+        form = forms.AddRatingForRound()
+    return render(request, 'add_rating.html', {'form': form })
+
+
 def index(request):
     return render(request, 'Evaluator/home.html')
 
