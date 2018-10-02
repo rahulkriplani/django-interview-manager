@@ -16,7 +16,16 @@ from .models import Interview, Question, Candidate, Answer, QuestionSet, Round, 
 from .filters import InterviewFilter, CandidateFilter
 
 
-def add_ratings(request):
+def add_ratings(request, interview_pk):
+    if interview_pk:
+        try:
+            interview = Interview.objects.get(pk=interview_pk)
+            all_rounds = interview.round_set.order_by('created_at')
+            
+        except Interview.DoesNotExist:
+            raise Http404("Interview does not exists!")
+
+    
     if request.method == 'POST':
         form = forms.AddRatingForRound(request.POST)
         if form.is_valid():
@@ -24,7 +33,7 @@ def add_ratings(request):
             return redirect('/profile')
     else:
         form = forms.AddRatingForRound()
-    return render(request, 'add_rating.html', {'form': form })
+    return render(request, 'add_rating.html', {'form': form, 'interview': interview, 'rounds': all_rounds})
 
 
 def index(request):

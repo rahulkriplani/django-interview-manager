@@ -36,7 +36,7 @@
             {% endfor %}
         {% endif %}
 
-        <a href={% url 'Evaluator:addRating' %}>Add Ratings</a>
+        <a href={% url 'Evaluator:addRating' interview.pk %}>Add Ratings</a>
 
 
 {% endblock %}

@@ -4,6 +4,18 @@
 
 <form method="post">
     {% csrf_token %}
+    {% if interview %}
+   		 {{ interview }}
+    {% endif %}	 
+   	{% if rounds %}
+   		<h2>Available rounds</h2>
+   		<ul>
+   		{% for round in rounds %}
+   			<li>{{ round.name }}</li>
+   		{% endfor %}
+   		</ul>
+   	{% endif %}
+   	
     {{ form }}
     <input type="submit" value="Submit" />
 </form>

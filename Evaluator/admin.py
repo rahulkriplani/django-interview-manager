@@ -48,7 +48,6 @@ class RoundInline(admin.TabularInline):
 
 class InterviewAdmin(SimpleHistoryAdmin):
     model = Interview
-    fields = ['rating_sheet']
     list_display = ('__str__', 'candidate','date', 'position', 'status', 'result')
     search_fields = ['candidate__name']
     list_editable = ['status', 'result']
