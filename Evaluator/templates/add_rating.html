@@ -6,23 +6,15 @@
     {% csrf_token %}
     {% if interview %}
    		 {{ interview }}
-    {% endif %}	 
+    {% endif %}
    	{% if rounds %}
-   		<h2>Available rounds</h2>
-   		<ul>
-   		{% for round in rounds %}
-   			<li>{{ round.name }}</li>
-   		{% endfor %}
-   		</ul>
-   		{{ form }}
+    <hr>
+   		{{ form.as_p }}
    		<input type="submit" value="Submit" />
    	{% else %}
    		<h3>No rounds found</h3>
    	{% endif %}
 
-   	
-    
-    
 </form>
 
 {% endblock %}

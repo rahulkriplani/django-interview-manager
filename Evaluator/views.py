@@ -21,18 +21,18 @@ def add_ratings(request, interview_pk):
         try:
             interview = Interview.objects.get(pk=interview_pk)
             all_rounds = interview.round_set.order_by('created_at')
-            
+            all_round_names = [rnd.name for rnd in all_rounds]
         except Interview.DoesNotExist:
             raise Http404("Interview does not exists!")
 
-    
+
     if request.method == 'POST':
         form = forms.AddRatingForRound(request.POST)
         if form.is_valid():
             print 'Form is good'
             return redirect('/profile')
     else:
-        form = forms.AddRatingForRound()
+        form = forms.AddRatingForRound(all_round_names)
     return render(request, 'add_rating.html', {'form': form, 'interview': interview, 'rounds': all_rounds})
 
 

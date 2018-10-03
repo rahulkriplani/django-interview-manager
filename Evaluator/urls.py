@@ -55,5 +55,5 @@ urlpatterns = [
     url(r'^myForm_process/$', views.customFormProcess, name="customFormProcess"),
 
     # Rating Sheet
-    url(r'addRating/(?P<interview_pk>\d+)/$', views.add_ratings, name='addRating'),
+    url(r'addRating/interview/(?P<interview_pk>\d+)/$', views.add_ratings, name='addRating'),
     ]
