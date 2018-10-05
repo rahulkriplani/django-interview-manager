@@ -12,7 +12,6 @@ from django.core.urlresolvers import reverse
 from datetime import datetime
 
 
-
 class RatingSheet(models.Model):
     name = models.CharField(max_length=100)
     rate_min = models.IntegerField(default=1, validators=[MinValueValidator(0)])
@@ -28,7 +27,6 @@ class Aspect(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField(null=True, default='')
     rating_sheet = models.ForeignKey(RatingSheet)
-    points = models.PositiveIntegerField(default=0, validators=[MinValueValidator(0)])
 
     def __str__(self):  # __unicode__ on Python 2
         return self.name
@@ -267,4 +265,11 @@ class InterviewRatingSheet(models.Model):
     def __str__(self):  # __unicode__ on Python 2
         return self.name
 
+class RatingAspect(models.Model):
+    name = models.CharField(max_length=100)
+    description = models.TextField(null=True, default='')
+    interview_rating_sheet = models.ForeignKey(InterviewRatingSheet)
+    points = models.PositiveIntegerField(default=0)
 
+    def __str__(self):  # __unicode__ on Python 2
+        return self.name

@@ -15,7 +15,7 @@ from .models import Skill
 from .models import QuestionSet
 from .models import Round
 from .models import Vendor
-from .models import RatingSheet, Aspect
+from .models import RatingSheet, Aspect, RatingAspect
 from .models import InterviewRatingSheet
 
 
@@ -60,6 +60,10 @@ class AspectInline(admin.TabularInline):
     model = Aspect
     extra = 0
 
+class RatingAspectInline(admin.TabularInline):
+    model = RatingAspect
+    extra = 0
+
 
 class RatingSheetAdmin(admin.ModelAdmin):
     def aspects_count(self, obj):
@@ -72,12 +76,14 @@ class RatingSheetAdmin(admin.ModelAdmin):
 
 class InterviewRatingSheetAdmin(admin.ModelAdmin):
     def get_all_aspects(self, obj):
-        return obj.rate_sheet.aspect_set.count()
-        
+        return obj.ratingaspect_set.all()
+
     model = InterviewRatingSheet
 
-    list_display = ['name', 'rate_sheet', 'get_all_aspects']
-    
+    list_display = ['name', 'rate_sheet']
+    inlines = [RatingAspectInline]
+
+
 
 admin.site.register(Vendor, VendorAdmin)
 admin.site.register(Candidate)
