@@ -7,11 +7,12 @@ class AddRatingForRound(forms.ModelForm):
 
     def __init__(self, round_list, *args, **kwargs):
         super(AddRatingForRound, self).__init__(*args, **kwargs)
+
         self.fields['round_name'] = forms.ChoiceField(label="Round Name", choices=tuple([(name, name) for name in round_list]))
 
     class Meta:
         model = models.InterviewRatingSheet
-        fields = ('name', 'rate_sheet')
+        fields = ('name',)
 
 
 class RegistrationForm(UserCreationForm):

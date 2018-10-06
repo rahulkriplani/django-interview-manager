@@ -13,6 +13,7 @@ from django.utils import timezone
 
 from . import forms
 from .models import Interview, Question, Candidate, Answer, QuestionSet, Round, Vendor
+from .models import RatingAspect, InterviewRatingSheet
 from .filters import InterviewFilter, CandidateFilter
 
 
@@ -20,6 +21,8 @@ def add_ratings(request, interview_pk):
     if interview_pk:
         try:
             interview = Interview.objects.get(pk=interview_pk)
+            max_range = interview.position.rating_sheet.rate_max
+            min_range = interview.position.rating_sheet.rate_min
             all_rounds = interview.round_set.order_by('created_at')
             all_round_names = [rnd.name for rnd in all_rounds]
         except Interview.DoesNotExist:
@@ -27,13 +30,29 @@ def add_ratings(request, interview_pk):
 
 
     if request.method == 'POST':
-        form = forms.AddRatingForRound(request.POST)
+        irs = InterviewRatingSheet.objects.get(name=request.POST['name'])
+        form = forms.AddRatingForRound(all_round_names, request.POST)
         if form.is_valid():
             print 'Form is good'
+            for key in request.POST.keys():
+                if '_aspect' in key:
+                    rating_aspect = RatingAspect(
+                        name=key.split('_')[0],
+                        interview_rating_sheet=irs,
+                        points=request.POST[key]
+                        )
+                    rating_aspect.save()
+                
+
             return redirect('/profile')
     else:
         form = forms.AddRatingForRound(all_round_names)
-    return render(request, 'add_rating.html', {'form': form, 'interview': interview, 'rounds': all_rounds})
+    return render(request, 'add_rating.html', 
+        {'form': form, 
+         'interview': interview,
+          'rounds': all_round_names,
+          'rating_range': range(min_range, max_range+1),
+          })
 
 
 def index(request):

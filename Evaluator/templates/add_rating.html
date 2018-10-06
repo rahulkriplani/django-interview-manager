@@ -10,10 +10,23 @@
    	{% if rounds %}
     <hr>
    		{{ form.as_p }}
+      <p> {{ interview.position.rating_sheet }} Fields </p>
+      {% for aspect in interview.position.rating_sheet.aspect_set.all %}
+        <p>
+          {{ aspect }}
+          <select name="{{aspect}}_aspect"><
+          {% for num in rating_range %}
+            <option value={{num}}>{{num}}</option>
+            {% endfor %}
+          </select>
+        </p>
+      {% endfor %}
    		<input type="submit" value="Submit" />
    	{% else %}
    		<h3>No rounds found</h3>
    	{% endif %}
+
+
 
 </form>
 

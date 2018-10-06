@@ -80,7 +80,7 @@ class InterviewRatingSheetAdmin(admin.ModelAdmin):
 
     model = InterviewRatingSheet
 
-    list_display = ['name', 'rate_sheet']
+    list_display = ['name', ]
     inlines = [RatingAspectInline]
 
 

@@ -258,7 +258,6 @@ class Answer(models.Model):
 
 class InterviewRatingSheet(models.Model):
     name = models.CharField(max_length=200, default='MySheet')
-    rate_sheet = models.ForeignKey(RatingSheet)
     interview = models.ForeignKey(Interview, null=True)
     round_name = models.CharField(max_length=100, default='')
 
