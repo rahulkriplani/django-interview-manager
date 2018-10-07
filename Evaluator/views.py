@@ -17,43 +17,55 @@ from .models import RatingAspect, InterviewRatingSheet
 from .filters import InterviewFilter, CandidateFilter
 
 
-def add_ratings(request, interview_pk):
+def add_ratings(request, interview_pk, round_pk):
     if interview_pk:
         try:
             interview = Interview.objects.get(pk=interview_pk)
             max_range = interview.position.rating_sheet.rate_max
             min_range = interview.position.rating_sheet.rate_min
-            all_rounds = interview.round_set.order_by('created_at')
-            all_round_names = [rnd.name for rnd in all_rounds]
         except Interview.DoesNotExist:
             raise Http404("Interview does not exists!")
 
+    if round_pk:
+        try:
+            rnd = Round.objects.get(pk=round_pk)
+        except Round.DoesNotExist:
+            raise Http404("Round Name not provided")
+
 
     if request.method == 'POST':
-        irs = InterviewRatingSheet.objects.get(name=request.POST['name'])
-        form = forms.AddRatingForRound(all_round_names, request.POST)
-        if form.is_valid():
-            print 'Form is good'
-            for key in request.POST.keys():
-                if '_aspect' in key:
-                    rating_aspect = RatingAspect(
-                        name=key.split('_')[0],
-                        interview_rating_sheet=irs,
-                        points=request.POST[key]
-                        )
-                    rating_aspect.save()
-                
+        irs = InterviewRatingSheet.objects.create(
+            name=str(interview) + rnd.name, 
+            interview=interview,
+            round_name=rnd.name,
+            )
 
-            return redirect('/profile')
-    else:
-        form = forms.AddRatingForRound(all_round_names)
+        for key in request.POST.keys():
+            if '_aspect' in key:
+                rating_aspect = RatingAspect(
+                    name=key.split('_')[0],
+                    interview_rating_sheet=irs,
+                    points=request.POST[key]
+                    )
+                rating_aspect.save()
+        return redirect('/profile')
+
     return render(request, 'add_rating.html', 
-        {'form': form, 
+        {
          'interview': interview,
-          'rounds': all_round_names,
+          'round': rnd,
           'rating_range': range(min_range, max_range+1),
           })
 
+
+def rating_details(request, rating_pk):
+    try:
+        rating = InterviewRatingSheet.objects.get(pk=rating_pk)
+    except InterviewRatingSheet.DoesNotExist:
+        raise Http404("Ratings does not exists!")
+
+    rating_aspects = RatingAspect.objects.filter(interview_rating_sheet=rating)
+    render(request, 'ratingDetails.html', {'rating_sheet':rating, 'aspects': rating_aspects})
 
 def index(request):
     return render(request, 'Evaluator/home.html')

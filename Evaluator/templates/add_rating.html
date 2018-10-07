@@ -5,12 +5,16 @@
 <form method="post">
     {% csrf_token %}
     {% if interview %}
-   		 {{ interview }}
+   		 <h1>Candidate :{{ interview.candidate.name }}</h1>
+       <h3>Position : {{ interview.position.name }}</h3>
+       <h3>Round: {{ round.name }}</h3>
+       <h3>Round Date: {{ round.date }}, {{ round.contact_time }}</h3>
+       <h3>Taken By: {{ round.assignee.username }}</h3>
     {% endif %}
-   	{% if rounds %}
+   	{% if round %}
     <hr>
    		{{ form.as_p }}
-      <p> {{ interview.position.rating_sheet }} Fields </p>
+      <p><h2> Please fill below fields</h2> </p>
       {% for aspect in interview.position.rating_sheet.aspect_set.all %}
         <p>
           {{ aspect }}

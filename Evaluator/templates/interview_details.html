@@ -32,11 +32,13 @@
                 <td>{{ round.assignee.username }}</td>
                 <td>{{ round.get_round_type_display  }}</td>
                 <td>{{ round.get_result_display }}</td>
+                <td><a href={% url 'Evaluator:addRating' interview.pk round.pk %}>Add Ratings</a></td>
+                
             </tr>
             {% endfor %}
         {% endif %}
 
-        <a href={% url 'Evaluator:addRating' interview.pk %}>Add Ratings</a>
+        
 
 
 {% endblock %}

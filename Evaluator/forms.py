@@ -3,17 +3,6 @@ from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from . import models
 
-class AddRatingForRound(forms.ModelForm):
-
-    def __init__(self, round_list, *args, **kwargs):
-        super(AddRatingForRound, self).__init__(*args, **kwargs)
-
-        self.fields['round_name'] = forms.ChoiceField(label="Round Name", choices=tuple([(name, name) for name in round_list]))
-
-    class Meta:
-        model = models.InterviewRatingSheet
-        fields = ('name',)
-
 
 class RegistrationForm(UserCreationForm):
     email = forms.EmailField(required=True)
