@@ -49,4 +49,12 @@ urlpatterns = [
     # Vendor URLs
     url(r'^allVendors/$', views.allVendors, name="allVendors"),
     url(r'^vendorDetails/(?P<vendor_pk>\d+)/$', views.vendor_details, name="vendor_details"),
+
+    # Custom Form URL
+    url(r'^myForm/(?P<interview_pk>\d+)/$', views.customForm, name="customForm"),
+    url(r'^myForm_process/$', views.customFormProcess, name="customFormProcess"),
+
+    # Rating Sheet
+    url(r'addRating/interview/(?P<interview_pk>\d+)/(?P<round_pk>\d+)/$', views.add_ratings, name='addRating'),
+    url(r'ratingDetails/(?P<rating_pk>\d+)/$', views.rating_details, name='rating_details'),
     ]

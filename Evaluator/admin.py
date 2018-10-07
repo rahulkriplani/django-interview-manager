@@ -15,6 +15,9 @@ from .models import Skill
 from .models import QuestionSet
 from .models import Round
 from .models import Vendor
+from .models import RatingSheet, Aspect, RatingAspect
+from .models import InterviewRatingSheet
+
 
 class VendorAdmin(admin.ModelAdmin):
     model = Position
@@ -44,6 +47,7 @@ class RoundInline(admin.TabularInline):
     extra = 0
 
 class InterviewAdmin(SimpleHistoryAdmin):
+    model = Interview
     list_display = ('__str__', 'candidate','date', 'position', 'status', 'result')
     search_fields = ['candidate__name']
     list_editable = ['status', 'result']
@@ -52,6 +56,36 @@ class InterviewAdmin(SimpleHistoryAdmin):
 
     inlines = [RoundInline]
 
+class AspectInline(admin.TabularInline):
+    model = Aspect
+    extra = 0
+
+class RatingAspectInline(admin.TabularInline):
+    model = RatingAspect
+    extra = 0
+
+
+class RatingSheetAdmin(admin.ModelAdmin):
+    def aspects_count(self, obj):
+        return obj.aspect_set.count()
+
+    list_display = ('name', 'rate_min', 'rate_max', 'aspects_count')
+    model = RatingSheet
+    inlines = [AspectInline]
+
+
+class InterviewRatingSheetAdmin(admin.ModelAdmin):
+    def get_all_aspects(self, obj):
+        return obj.ratingaspect_set.all()
+
+    model = InterviewRatingSheet
+
+    list_display = ['name']
+    readonly_fields = ['interview', 'round_name', ]
+    inlines = [RatingAspectInline]
+
+
+
 admin.site.register(Vendor, VendorAdmin)
 admin.site.register(Candidate)
 admin.site.register(Position, PositionAdmin)
@@ -59,3 +93,5 @@ admin.site.register(Interview, InterviewAdmin)
 admin.site.register(Question, QuestionAdmin)
 admin.site.register(Skill)
 admin.site.register(QuestionSet)
+admin.site.register(RatingSheet, RatingSheetAdmin)
+admin.site.register(InterviewRatingSheet, InterviewRatingSheetAdmin)

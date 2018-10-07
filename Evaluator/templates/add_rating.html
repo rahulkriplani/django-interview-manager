@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<form method="post">
+    {% csrf_token %}
+    {% if interview %}
+   		 <h1>Candidate :{{ interview.candidate.name }}</h1>
+       <h3>Position : {{ interview.position.name }}</h3>
+       <h3>Round: {{ round.name }}</h3>
+       <h3>Round Date: {{ round.date }}, {{ round.contact_time }}</h3>
+       <h3>Taken By: {{ round.assignee.username }}</h3>
+    {% endif %}
+   	{% if round %}
+    <hr>
+   		{{ form.as_p }}
+      <p><h2> Please fill below fields</h2> </p>
+      {% for aspect in interview.position.rating_sheet.aspect_set.all %}
+        <p>
+          {{ aspect }}
+          <select name="{{aspect}}_aspect"><
+          {% for num in rating_range %}
+            <option value={{num}}>{{num}}</option>
+            {% endfor %}
+          </select>
+        </p>
+      {% endfor %}
+   		<input type="submit" value="Submit" />
+   	{% else %}
+   		<h3>No rounds found</h3>
+   	{% endif %}
+
+
+
+</form>
+
+{% endblock %}

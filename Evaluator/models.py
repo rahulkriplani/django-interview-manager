@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 from django.contrib.auth.models import User
 from django.db import models
 from django.core.validators import RegexValidator
+from django.core.validators import MaxValueValidator, MinValueValidator
 from django.shortcuts import redirect
 from django.utils import timezone
 from simple_history.models import HistoricalRecords
@@ -10,12 +11,35 @@ from django.core.urlresolvers import reverse
 
 from datetime import datetime
 
+
+class RatingSheet(models.Model):
+    name = models.CharField(max_length=100)
+    rate_min = models.IntegerField(default=1, validators=[MinValueValidator(0)])
+    rate_max = models.IntegerField(default=6, validators=[MaxValueValidator(100)])
+
+
+    def __str__(self):  # __unicode__ on Python 2
+        return self.name
+
+
+
+class Aspect(models.Model):
+    name = models.CharField(max_length=100)
+    description = models.TextField(null=True, default='')
+    rating_sheet = models.ForeignKey(RatingSheet)
+
+    def __str__(self):  # __unicode__ on Python 2
+        return self.name
+
+
+
 class Position(models.Model):
     name = models.CharField(max_length=50)
     id_code = models.CharField(max_length=10)
     exp_needed = models.PositiveIntegerField(default=0)
     technology = models.TextField(default='')
     location = models.CharField(max_length=100, default='Pune')
+    rating_sheet = models.ForeignKey(RatingSheet, null=True)
     type_choices = (
         ('P', 'Permanent'),
         ('T', 'Temporary'),
@@ -232,4 +256,19 @@ class Answer(models.Model):
     def __str__(self):
         return self.detail
 
+class InterviewRatingSheet(models.Model):
+    name = models.CharField(max_length=200, default='MySheet')
+    interview = models.ForeignKey(Interview, null=True)
+    round_name = models.OneToOneField(Round, null=True)
 
+    def __str__(self):  # __unicode__ on Python 2
+        return self.name
+
+class RatingAspect(models.Model):
+    name = models.CharField(max_length=100)
+    description = models.TextField(null=True, default='', blank=True)
+    interview_rating_sheet = models.ForeignKey(InterviewRatingSheet)
+    points = models.PositiveIntegerField(default=0)
+
+    def __str__(self):  # __unicode__ on Python 2
+        return self.name

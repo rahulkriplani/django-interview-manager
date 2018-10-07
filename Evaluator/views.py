@@ -13,11 +13,81 @@ from django.utils import timezone
 
 from . import forms
 from .models import Interview, Question, Candidate, Answer, QuestionSet, Round, Vendor
+from .models import RatingAspect, InterviewRatingSheet
 from .filters import InterviewFilter, CandidateFilter
 
-# Create your views here.
+
+def add_ratings(request, interview_pk, round_pk):
+    if interview_pk:
+        try:
+            interview = Interview.objects.get(pk=interview_pk)
+            max_range = interview.position.rating_sheet.rate_max
+            min_range = interview.position.rating_sheet.rate_min
+        except Interview.DoesNotExist:
+            raise Http404("Interview does not exists!")
+
+    if round_pk:
+        try:
+            rnd = Round.objects.get(pk=round_pk)
+        except Round.DoesNotExist:
+            raise Http404("Round Name not provided")
+
+
+    if request.method == 'POST':
+        irs = InterviewRatingSheet.objects.create(
+            name=str(interview) + rnd.name, 
+            interview=interview,
+            round_name=rnd,
+            )
+
+        for key in request.POST.keys():
+            if '_aspect' in key:
+                rating_aspect = RatingAspect(
+                    name=key.split('_')[0],
+                    interview_rating_sheet=irs,
+                    points=request.POST[key]
+                    )
+                rating_aspect.save()
+        
+        return HttpResponseRedirect(interview.get_absolute_url())
+
+    return render(request, 'add_rating.html', 
+        {
+         'interview': interview,
+          'round': rnd,
+          'rating_range': range(min_range, max_range+1),
+          })
+
+
+def rating_details(request, rating_pk):
+    try:
+        rating = InterviewRatingSheet.objects.get(pk=rating_pk)
+    except InterviewRatingSheet.DoesNotExist:
+        raise Http404("Ratings does not exists!")
+
+    rating_aspects = RatingAspect.objects.filter(interview_rating_sheet=rating)
+
+    return render(request, 'rating_details.html', {'rating_sheet':rating, 'aspects': rating_aspects})
+
 def index(request):
     return render(request, 'Evaluator/home.html')
+
+
+def customForm(request, interview_pk):
+    if request.method == 'GET':
+        try:
+            interview = Interview.objects.get(pk=interview_pk)
+        except Interview.DoesNotExist:
+            raise Http404("Interview does not exists!")
+
+        count_rounds = range(Round.objects.filter(interview__pk=interview_pk).count())
+        return render(request, 'CustomForm.html', {'r_count': count_rounds})
+
+def customFormProcess(request):
+    #interview = Interview.objects.get(pk=interview_pk)
+
+    print request.POST
+
 
 #***********************************************************************
 #-------------------------------- USER ---------------------------
