@@ -56,5 +56,5 @@ urlpatterns = [
 
     # Rating Sheet
     url(r'addRating/interview/(?P<interview_pk>\d+)/(?P<round_pk>\d+)/$', views.add_ratings, name='addRating'),
-    url(r'ratingDetails/(?P<rating_pk>\d+)/$', views.rating_details, 'rating_details'),
+    url(r'ratingDetails/(?P<rating_pk>\d+)/$', views.rating_details, name='rating_details'),
     ]

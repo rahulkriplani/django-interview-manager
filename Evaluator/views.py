@@ -48,7 +48,8 @@ def add_ratings(request, interview_pk, round_pk):
                     points=request.POST[key]
                     )
                 rating_aspect.save()
-        return redirect('/profile')
+        
+        return HttpResponseRedirect(interview.get_absolute_url())
 
     return render(request, 'add_rating.html', 
         {
@@ -65,7 +66,8 @@ def rating_details(request, rating_pk):
         raise Http404("Ratings does not exists!")
 
     rating_aspects = RatingAspect.objects.filter(interview_rating_sheet=rating)
-    render(request, 'ratingDetails.html', {'rating_sheet':rating, 'aspects': rating_aspects})
+
+    return render(request, 'rating_details.html', {'rating_sheet':rating, 'aspects': rating_aspects})
 
 def index(request):
     return render(request, 'Evaluator/home.html')

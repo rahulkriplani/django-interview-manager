@@ -259,7 +259,7 @@ class Answer(models.Model):
 class InterviewRatingSheet(models.Model):
     name = models.CharField(max_length=200, default='MySheet')
     interview = models.ForeignKey(Interview, null=True)
-    round_name = models.ForeignKey(Round, null=True)
+    round_name = models.OneToOneField(Round, null=True)
 
     def __str__(self):  # __unicode__ on Python 2
         return self.name
