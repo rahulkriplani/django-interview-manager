@@ -26,6 +26,6 @@
   - Schedule Interview for a Candidate. [Completed]
   - Add Rounds to a Interview and assign to an interviewer. [Completed]
   - See complete history of a Candidate (All interviews, rounds with results). [Completed]
-  - Add Ratings based on Aspects for each Round. [In Progress]
+  - Add Ratings based on Aspects for each Round. [Completed]
 
 
