@@ -37,7 +37,7 @@ def add_ratings(request, interview_pk, round_pk):
         irs = InterviewRatingSheet.objects.create(
             name=str(interview) + rnd.name, 
             interview=interview,
-            round_name=rnd.name,
+            round_name=rnd,
             )
 
         for key in request.POST.keys():
