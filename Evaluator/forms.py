@@ -90,6 +90,8 @@ class RoundForm(forms.ModelForm):
         models = models.Round
         fields = ['name', 'date', 'contact_time', 'assignee', 'round_type', 'result']
 
+    date = forms.DateField(widget=AdminDateWidget())
+
 RoundFormSet = forms.modelformset_factory(
         models.Round,
         form=RoundForm,

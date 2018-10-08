@@ -37,13 +37,14 @@
             <tbody class="table">
             {% for form in formset %}
                 {{ form.id }} <!--This is just for handling an error during save after editing -->
-                <tr>
-            <td> {{ form.name }} {{ form.name.errors }}</td>
-            <td>{{ form.date }} {{ form.date.errors }}</td>
-            <td>{{ form.contact_time }} {{ form.contact_time.errors }}</td>
-            <td>{{ form.assignee }} {{ form.assignee.errors }}</td>
-            <td>{{ form.round_type }} {{ form.round_type.errors }}</td>
-            <td>{{ form.result }} {{ form.result.errors }}</td>
+                {{ form.media }}
+            <tr>
+                <td> {{ form.name }} {{ form.name.errors }}</td>
+                <td>{{ form.date }} {{ form.date.errors }}</td>
+                <td>{{ form.contact_time }} {{ form.contact_time.errors }}</td>
+                <td>{{ form.assignee }} {{ form.assignee.errors }}</td>
+                <td>{{ form.round_type }} {{ form.round_type.errors }}</td>
+                <td>{{ form.result }} {{ form.result.errors }}</td>
             </tr>
 
             {% endfor %}
