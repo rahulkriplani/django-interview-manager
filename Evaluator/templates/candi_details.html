@@ -52,6 +52,15 @@
                 {% endfor %}
                 </tr>
 
+                <tr>
+                {% for round in interview.round_set.all %}
+                    {% if round.interviewratingsheet %}
+                        <td><a href={% url 'Evaluator:rating_details' round.interviewratingsheet.pk %}>View Ratings</a></td>
+                    {% else %}
+                        <td><p>Rating Sheet Unavailable</p></td>
+                    {% endif %}
+                {% endfor %}
+                </tr>
 
             </table>
         {% endif %}

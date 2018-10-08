@@ -17,6 +17,8 @@ from .models import RatingAspect, InterviewRatingSheet
 from .filters import InterviewFilter, CandidateFilter
 
 
+@user_passes_test(lambda u: u.is_staff)
+@login_required
 def add_ratings(request, interview_pk, round_pk):
     if interview_pk:
         try:
@@ -35,7 +37,7 @@ def add_ratings(request, interview_pk, round_pk):
 
     if request.method == 'POST':
         irs = InterviewRatingSheet.objects.create(
-            name=str(interview) + rnd.name, 
+            name=str(interview) + rnd.name,
             interview=interview,
             round_name=rnd,
             )
@@ -48,17 +50,18 @@ def add_ratings(request, interview_pk, round_pk):
                     points=request.POST[key]
                     )
                 rating_aspect.save()
-        
+
         return HttpResponseRedirect(interview.get_absolute_url())
 
-    return render(request, 'add_rating.html', 
+    return render(request, 'add_rating.html',
         {
          'interview': interview,
           'round': rnd,
           'rating_range': range(min_range, max_range+1),
           })
 
-
+@user_passes_test(lambda u: u.is_staff)
+@login_required
 def rating_details(request, rating_pk):
     try:
         rating = InterviewRatingSheet.objects.get(pk=rating_pk)
