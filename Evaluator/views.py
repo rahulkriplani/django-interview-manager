@@ -17,6 +17,10 @@ from .models import RatingAspect, InterviewRatingSheet
 from .filters import InterviewFilter, CandidateFilter
 
 
+#***********************************************************************
+#-------------------------------- Ratings ---------------------------
+#***********************************************************************
+
 @user_passes_test(lambda u: u.is_staff)
 @login_required
 def add_ratings(request, interview_pk, round_pk):
@@ -72,31 +76,20 @@ def rating_details(request, rating_pk):
 
     return render(request, 'rating_details.html', {'rating_sheet':rating, 'aspects': rating_aspects})
 
-def index(request):
-    return render(request, 'Evaluator/home.html')
 
-
-def customForm(request, interview_pk):
-    if request.method == 'GET':
-        try:
-            interview = Interview.objects.get(pk=interview_pk)
-        except Interview.DoesNotExist:
-            raise Http404("Interview does not exists!")
-
-        count_rounds = range(Round.objects.filter(interview__pk=interview_pk).count())
-        return render(request, 'CustomForm.html', {'r_count': count_rounds})
-
-def customFormProcess(request):
-    #interview = Interview.objects.get(pk=interview_pk)
-
-    print request.POST
 
 
 #***********************************************************************
 #-------------------------------- USER ---------------------------
 #***********************************************************************
 
+def index(request):
+    return render(request, 'Evaluator/home.html')
+
 def user_login(request):
+    if request.user.is_authenticated():
+        return redirect('/profile')
+
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
@@ -227,14 +220,6 @@ def interviews_details(request, interview_pk):
 
 
 
-@login_required
-def question_detail(request, question_id):
-    try:
-        question = Question.objects.get(pk=question_id)
-    except Question.DoesNotExist:
-        raise Http404("Question does not exists!")
-    args = {'question': question}
-    return render(request, 'question_details.html', args)
 
 #***********************************************************************
 #-------------------------------- CANDIDATE ---------------------------
@@ -318,6 +303,15 @@ def search_question(request):
         else:
             return render(request, 'search_candidate.html')
 
+
+@login_required
+def question_detail(request, question_id):
+    try:
+        question = Question.objects.get(pk=question_id)
+    except Question.DoesNotExist:
+        raise Http404("Question does not exists!")
+    args = {'question': question}
+    return render(request, 'question_details.html', args)
 
 
 @method_decorator(login_required, name='dispatch')
@@ -441,5 +435,3 @@ def allVendors(request):
 def vendor_details(request, vendor_pk):
     vendor = Vendor.objects.get(pk=vendor_pk)
     return render(request, 'vendors_details.html', {'vendor': vendor})
-
-

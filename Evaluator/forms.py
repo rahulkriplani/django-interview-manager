@@ -1,6 +1,8 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
+from django.contrib.admin.widgets import AdminDateWidget
+
 from . import models
 
 
@@ -58,7 +60,7 @@ AnswerFormSet = forms.modelformset_factory(
 AnswerInLineFormSet = forms.inlineformset_factory(
         models.Question,
         models.Answer,
-        extra=2,
+        extra=1,
         fields=('detail', 'correct'),
         formset=AnswerFormSet,
         min_num=1,
@@ -80,6 +82,9 @@ class AddInterview(forms.ModelForm):
         model = models.Interview
         fields = ['candidate', 'date', 'position', 'question_set']
 
+    date = forms.DateField(widget=AdminDateWidget())
+
+
 class RoundForm(forms.ModelForm):
     class Meta:
         models = models.Round
@@ -88,7 +93,7 @@ class RoundForm(forms.ModelForm):
 RoundFormSet = forms.modelformset_factory(
         models.Round,
         form=RoundForm,
-        extra=0
+        extra=0,
         )
 
 RoundInLineFormSet = forms.inlineformset_factory(
