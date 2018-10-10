@@ -27,7 +27,8 @@
     <script src="https://code.highcharts.com/highcharts.src.js"></script>
 
     <div id="container"></div>
-    <button id="button">Flip Y Axis</button>
+    <button class="btn btn-default" id="button">Flip Y Axis</button>
+    <hr>
 
     <script>
     var chart = new Highcharts.Chart({
@@ -52,7 +53,7 @@
       });
 
 
-var reversed = chart.options.yAxis.reversed;
+var reversed = chart.options.yAxis;
   // the button action
   $('#button').click(function () {
 

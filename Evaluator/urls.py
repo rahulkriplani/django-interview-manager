@@ -27,6 +27,7 @@ urlpatterns = [
     url(r'^addInterview/$', views.add_interview, name='add_interview'),
     url(r'^allInterview/$', views.all_interviews, name='all_interview'),
     url(r'^detailInterview/(?P<interview_pk>\d+)/$', views.interviews_details, name='interview_details'),
+    url(r'^editInterview/(?P<interview_pk>\d+)/$', views.edit_interview, name='edit_interview'),
 
     # Candidate URLS
     url(r'^candidateDetails/(?P<candidate_pk>\d+)/$', views.candi_details, name='candi_details'),

@@ -224,6 +224,34 @@ def interviews_details(request, interview_pk):
 
 
 
+@user_passes_test(lambda u: u.is_staff)
+@login_required
+def edit_interview(request, interview_pk):
+    interview = Interview.objects.get(pk=interview_pk)
+    form = forms.AddInterview(instance=interview)
+    round_forms = forms.RoundInLineFormSet(
+            queryset=form.instance.round_set.all()
+            )
+    if request.method == 'POST':
+        form = forms.AddInterview(request.POST, instance=interview)
+        round_forms = forms.RoundInLineFormSet(
+                request.POST,
+                queryset=form.instance.round_set.all()
+                )
+        if form.is_valid() and round_forms.is_valid():
+            form.save()
+            rnds = round_forms.save(commit=False)
+            for rnd in rnds:
+                rnd.interview = interview
+                rnd.save()
+            return HttpResponseRedirect(interview.get_absolute_url())
+    return render(request, 'add_interview.html',
+            {
+                'form':form,
+                'formset':round_forms
+            })
+
+
 
 #***********************************************************************
 #-------------------------------- CANDIDATE ---------------------------

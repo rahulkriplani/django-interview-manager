@@ -2,6 +2,7 @@
 
 {% block content %}
 <h1>{{ interview }}</h1>
+         <p><a class="btn btn-info" href={% url 'Evaluator:edit_interview' interview.pk %}>Edit</a></p>
          <p>Position : {{ interview.position.name }}</p>
          <p>Name : {{ interview.candidate.name }}</p>
          <p>Date : {{ interview.date|date }}</p>
