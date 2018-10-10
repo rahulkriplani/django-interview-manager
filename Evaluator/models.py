@@ -266,7 +266,7 @@ class InterviewRatingSheet(models.Model):
 
 class RatingAspect(models.Model):
     name = models.CharField(max_length=100)
-    description = models.TextField(null=True, default='', blank=True)
+    comment = models.TextField(null=True, default='', blank=True)
     interview_rating_sheet = models.ForeignKey(InterviewRatingSheet)
     points = models.PositiveIntegerField(default=0)
 

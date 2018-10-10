@@ -5,7 +5,7 @@
 <form method="post">
     {% csrf_token %}
     {% if interview %}
-   		 <h1>Candidate :{{ interview.candidate.name }}</h1>
+   		 <h1>Candidate : {{ interview.candidate.name }}</h1>
        <h3>Position : {{ interview.position.name }}</h3>
        <h3>Round: {{ round.name }}</h3>
        <h3>Round Date: {{ round.date }}, {{ round.contact_time }}</h3>
@@ -19,6 +19,7 @@
           <tr>
             <th>Aspect Title</th>
             <th>Details</th>
+            <th>Comments</th>
             <th>Rating</th>
           </tr>
 
@@ -27,6 +28,7 @@
 
             <td>{{ aspect }}</td>
             <td>{{ aspect.description }}</td>
+            <td><input type="text" size="45" name="{{aspect}}_comment"></td>
             <td>
               <select name="{{aspect}}_aspect"><
               {% for num in rating_range %}
@@ -38,13 +40,12 @@
         {% endfor %}
         </table>
 
-   		<input type="submit" value="Submit" />
+   		<input class="btn btn-lg btn-primary" type="submit" value="Submit" />
    	{% else %}
    		<h3>No rounds found</h3>
    	{% endif %}
 
-
-
 </form>
+<hr>
 
 {% endblock %}

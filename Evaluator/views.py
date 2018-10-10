@@ -16,7 +16,6 @@ from .models import Interview, Question, Candidate, Answer, QuestionSet, Round, 
 from .models import RatingAspect, InterviewRatingSheet
 from .filters import InterviewFilter, CandidateFilter
 
-from statistics import get_points_rating_sheet_for_round
 import json
 
 
@@ -51,10 +50,12 @@ def add_ratings(request, interview_pk, round_pk):
 
         for key in request.POST.keys():
             if '_aspect' in key:
+                aspect_first = key.split('_')[0]
                 rating_aspect = RatingAspect(
-                    name=key.split('_')[0],
+                    name=aspect_first,
                     interview_rating_sheet=irs,
-                    points=request.POST[key]
+                    points=request.POST[key],
+                    comment=request.POST['{}_{}'.format(aspect_first, 'comment')]
                     )
                 rating_aspect.save()
 

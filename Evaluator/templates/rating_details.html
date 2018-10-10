@@ -8,13 +8,13 @@
         <table class="table">
         	<tr>
                 <th>Title</th>
-                <th>Description</th>
+                <th>Comment</th>
                 <th>Points</th>
             </tr>
         {% for aspect in aspects %}
         <tr>
             <td>{{ aspect.name }} </td>
-            <td>{{ aspect.description }}</td>
+            <td>{{ aspect.comment }}</td>
             <td>{{ aspect.points }} </td>
         </tr>
         {% endfor %}
