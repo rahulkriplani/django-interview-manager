@@ -5,22 +5,46 @@
 {% if rating_sheet %}
 	<h1>Ratings for Interview Round: {{ rating_sheet.round_name.name }}</h1>
 	<div class="panel panel-default">
-    <table class="table">
-    	<tr>
-            <th>Title</th>
-            <th>Description</th>
-            <th>Points</th>
+        <table class="table">
+        	<tr>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Points</th>
+            </tr>
+        {% for aspect in aspects %}
+        <tr>
+            <td>{{ aspect.name }} </td>
+            <td>{{ aspect.description }}</td>
+            <td>{{ aspect.points }} </td>
         </tr>
-    {% for aspect in aspects %}
-    <tr>
-        <td>{{ aspect.name }} </td>
-        <td>{{ aspect.description }}</td>
-        <td>{{ aspect.points }} </td>
-    </tr>
-    {% endfor %}
-	</table>
-    
-</div>
+        {% endfor %}
+    	</table>
+
+
+
+    </div>
+    <script src="https://code.highcharts.com/highcharts.src.js"></script>
+
+    <div id="container"></div>
+    <script>
+    Highcharts.chart('container', {
+      chart: {
+          type: 'column'
+      },
+      title: {
+          text: 'Ratings Graph'
+      },
+      xAxis: {
+          categories: {{ aspects_name|safe }}
+      },
+      series: [{
+          name: 'Ratings Recieved',
+          data: {{ aspects_points }},
+          color: 'blue'
+      }]
+      });
+
+</script>
 {% endif %}
 
 {% endblock %}

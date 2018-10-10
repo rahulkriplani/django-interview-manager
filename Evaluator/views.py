@@ -16,6 +16,9 @@ from .models import Interview, Question, Candidate, Answer, QuestionSet, Round, 
 from .models import RatingAspect, InterviewRatingSheet
 from .filters import InterviewFilter, CandidateFilter
 
+from statistics import get_points_rating_sheet_for_round
+import json
+
 
 #***********************************************************************
 #-------------------------------- Ratings ---------------------------
@@ -73,9 +76,12 @@ def rating_details(request, rating_pk):
         raise Http404("Ratings does not exists!")
 
     rating_aspects = RatingAspect.objects.filter(interview_rating_sheet=rating)
+    aspects_name = [aspect.name for aspect in rating_aspects]
+    aspects_points = [aspect.points for aspect in rating_aspects]
 
-    return render(request, 'rating_details.html', {'rating_sheet':rating, 'aspects': rating_aspects})
+    #graph_round = get_points_rating_sheet_for_round(rating_aspects)
 
+    return render(request, 'rating_details.html', {'rating_sheet':rating, 'aspects': rating_aspects, 'aspects_name': json.dumps(aspects_name), 'aspects_points': json.dumps(aspects_points)})
 
 
 
