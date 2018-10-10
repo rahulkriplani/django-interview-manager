@@ -23,26 +23,44 @@
 
 
     </div>
+    <script src="https://code.jquery.com/jquery-3.2.1.js"></script>
     <script src="https://code.highcharts.com/highcharts.src.js"></script>
 
     <div id="container"></div>
+    <button id="button">Flip Y Axis</button>
+
     <script>
-    Highcharts.chart('container', {
+    var chart = new Highcharts.Chart({
       chart: {
-          type: 'column'
+          renderTo: 'container'
       },
       title: {
           text: 'Ratings Graph'
       },
+      yAxis: {
+        reversed: true,
+    },
       xAxis: {
-          categories: {{ aspects_name|safe }}
+          categories: {{ aspects_name|safe }},
       },
       series: [{
           name: 'Ratings Recieved',
           data: {{ aspects_points }},
-          color: 'blue'
+          color: 'blue',
+
       }]
       });
+
+
+var reversed = chart.options.yAxis.reversed;
+  // the button action
+  $('#button').click(function () {
+
+     chart.yAxis[0].update({
+            reversed: !reversed
+        });
+     reversed = !reversed;
+     });
 
 </script>
 {% endif %}
