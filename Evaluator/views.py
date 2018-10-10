@@ -44,7 +44,7 @@ def add_ratings(request, interview_pk, round_pk):
 
     if request.method == 'POST':
         irs = InterviewRatingSheet.objects.create(
-            name=str(interview) + rnd.name,
+            name=str(interview) + '_' + rnd.name,
             interview=interview,
             round_name=rnd,
             )
@@ -78,8 +78,6 @@ def rating_details(request, rating_pk):
     rating_aspects = RatingAspect.objects.filter(interview_rating_sheet=rating)
     aspects_name = [aspect.name for aspect in rating_aspects]
     aspects_points = [aspect.points for aspect in rating_aspects]
-
-    #graph_round = get_points_rating_sheet_for_round(rating_aspects)
 
     return render(request, 'rating_details.html', {'rating_sheet':rating, 'aspects': rating_aspects, 'aspects_name': json.dumps(aspects_name), 'aspects_points': json.dumps(aspects_points)})
 

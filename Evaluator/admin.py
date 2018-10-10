@@ -75,12 +75,15 @@ class RatingSheetAdmin(admin.ModelAdmin):
 
 
 class InterviewRatingSheetAdmin(admin.ModelAdmin):
-    def get_all_aspects(self, obj):
-        return obj.ratingaspect_set.all()
+    def candidate_name(self, obj):
+        return obj.interview.candidate.name
+
+    def aspects_count(self, obj):
+        return obj.aspect_set.count()
 
     model = InterviewRatingSheet
 
-    list_display = ['name']
+    list_display = ['name', 'round_name', 'candidate_name']
     readonly_fields = ['interview', 'round_name', ]
     inlines = [RatingAspectInline]
 
