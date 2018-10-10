@@ -15,16 +15,29 @@
     <hr>
    		{{ form.as_p }}
       <p><h2> Please fill below fields</h2> </p>
-      {% for aspect in interview.position.rating_sheet.aspect_set.all %}
-        <p>
-          {{ aspect }}
-          <select name="{{aspect}}_aspect"><
-          {% for num in rating_range %}
-            <option value={{num}}>{{num}}</option>
-            {% endfor %}
-          </select>
-        </p>
-      {% endfor %}
+      <table class="table">
+          <tr>
+            <th>Aspect Title</th>
+            <th>Details</th>
+            <th>Rating</th>
+          </tr>
+
+          {% for aspect in interview.position.rating_sheet.aspect_set.all %}
+          <tr>
+
+            <td>{{ aspect }}</td>
+            <td>{{ aspect.description }}</td>
+            <td>
+              <select name="{{aspect}}_aspect"><
+              {% for num in rating_range %}
+                <option value={{num}}>{{num}}</option>
+                {% endfor %}
+              </select>
+            </td>
+          </tr>
+        {% endfor %}
+        </table>
+
    		<input type="submit" value="Submit" />
    	{% else %}
    		<h3>No rounds found</h3>
