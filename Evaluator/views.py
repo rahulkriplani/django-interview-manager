@@ -33,6 +33,8 @@ def add_ratings(request, interview_pk, round_pk):
             min_range = interview.position.rating_sheet.rate_min
         except Interview.DoesNotExist:
             raise Http404("Interview does not exists!")
+        except AttributeError:
+            raise Http404("No rating sheet template available for this position. Please create one!")
 
     if round_pk:
         try:
