@@ -11,17 +11,17 @@
     <ol class="list-group">
      <p>
         <li class="list-group-item list-group-item-info">
-            {{ forloop.counter }}. Position : {{ round.interview.position.name }}
+            <strong>{{ forloop.counter }}. Position : </strong>{{ round.interview.position.name }}
     </p>
-         <p>Candidate Name : {{ round.interview.candidate.name }}</p>
-         <p>Date : {{ round.date|date }} at {{ round.contact_time }} </p>
-         <p>Type : {{ round.get_round_type_display }}</p>
-         <p>Interview Link: <a href={% url 'Evaluator:interview_details' round.interview.pk %}>{{round.interview}}</a></p>
+         <p><strong>Candidate Name :</strong> {{ round.interview.candidate.name }}</p>
+         <p><strong>Date :</strong> {{ round.date|date }} at {{ round.contact_time }} </p>
+         <p><strong>Type : </strong>{{ round.get_round_type_display }}</p>
+         <p><strong>Interview Link: </strong><a href={% url 'Evaluator:interview_details' round.interview.pk %}>{{round.interview}}</a></p>
                 {% if request.user.is_superuser %}
-                  <p>Result : {{ round.interview.get_result_display }}</p>
+                  <p><strong>Result : </strong><span class="label label-info">{{ round.interview.get_result_display }}</span></p>
                 {% endif %}
                 {% if round.interview.question_set.pk %}
-             	  <p>Exam Link : <a href={% url 'Evaluator:question_set_details' round.interview.question_set.pk %}>{{round.interview.question_set.name}}</a></p>
+             	  <p><strong>Exam Link : </strong><a href={% url 'Evaluator:question_set_details' round.interview.question_set.pk %}>{{round.interview.question_set.name}}</a></p>
                 {% endif %}
         </li>
 

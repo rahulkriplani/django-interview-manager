@@ -34,6 +34,6 @@ global search on dashboard (all fields including Candi, intern, or skill)
 JD should be shown in interview details page. - Done
 Alignment of every edit page.
 Ratings legends and possibly color coding or symbols.
-Graphics: Tiles background for Interview Status
+Graphics: Tiles background for Interview Status - Done
 URLS should be meaningful (candi url, user profile etc)
 Rating Template aspect to have expected level - Done
