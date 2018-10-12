@@ -27,6 +27,7 @@ class Aspect(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField(null=True, default='')
     rating_sheet = models.ForeignKey(RatingSheet)
+    expected_rate = models.PositiveIntegerField(default=1)
 
     def __str__(self):  # __unicode__ on Python 2
         return self.name
@@ -50,6 +51,13 @@ class Position(models.Model):
                         choices=type_choices,
                         default='P'
                              )
+
+    def __str__(self):  # __unicode__ on Python 2
+        return self.name
+
+class Skill(models.Model):
+    name = models.CharField('Name', max_length=20)
+    position = models.ManyToManyField(Position)
 
     def __str__(self):  # __unicode__ on Python 2
         return self.name
@@ -86,6 +94,7 @@ class Candidate(models.Model):
     experience = models.PositiveIntegerField()
     position_applied = models.ForeignKey(Position)
     vendor = models.ForeignKey(Vendor, null=True)
+    skill = models.ManyToManyField(Skill)
     created_at = models.DateTimeField(default=timezone.now, editable=False)
 
 
@@ -212,14 +221,6 @@ class Round(models.Model):
         return "{0}_{1}".format(self.name, str(self.date), self.round_type)
 
 
-class Skill(models.Model):
-    name = models.CharField('Name', max_length=20)
-    position = models.ManyToManyField(Position)
-
-    def __str__(self):  # __unicode__ on Python 2
-        return self.name
-
-
 
 class Question(models.Model):
     description = models.CharField('Description', max_length=300)
@@ -269,6 +270,7 @@ class RatingAspect(models.Model):
     comment = models.TextField(null=True, default='', blank=True)
     interview_rating_sheet = models.ForeignKey(InterviewRatingSheet)
     points = models.PositiveIntegerField(default=0)
+    expected_points = models.PositiveIntegerField(default=0)
 
     def __str__(self):  # __unicode__ on Python 2
         return self.name

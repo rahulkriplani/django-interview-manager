@@ -19,6 +19,7 @@
           <tr>
             <th>Aspect Title</th>
             <th>Details</th>
+            <th>Min Expected Rating</th>
             <th>Comments</th>
             <th>Rating</th>
           </tr>
@@ -28,6 +29,8 @@
 
             <td>{{ aspect }}</td>
             <td>{{ aspect.description }}</td>
+            <td>{{ aspect.expected_rate }}</td>
+            <input type="hidden" value={{ aspect.expected_rate }} name="{{ aspect }}_expected_rate" />
             <td><input type="text" size="45" name="{{aspect}}_comment"></td>
             <td>
               <select name="{{aspect}}_aspect"><

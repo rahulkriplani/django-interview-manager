@@ -4,6 +4,7 @@
 <h1>{{ interview }}</h1>
          <p><a class="btn btn-info" href={% url 'Evaluator:edit_interview' interview.pk %}>Edit</a></p>
          <p>Position : {{ interview.position.name }}</p>
+         <p>Position : {{ interview.position.technology }}</p>
          <p>Name : {{ interview.candidate.name }}</p>
          <p>Date : {{ interview.date|date }}</p>
          <p>Status : {{ interview.get_status_display }}</p>
@@ -39,12 +40,12 @@
                 {% else %}
                     <td><a href={% url 'Evaluator:addRating' interview.pk round.pk %}>Add Ratings</a></td>
                 {% endif %}
-                
+
             </tr>
             {% endfor %}
         {% endif %}
 
-        
+
 
 
 {% endblock %}

@@ -57,7 +57,8 @@ def add_ratings(request, interview_pk, round_pk):
                     name=aspect_first,
                     interview_rating_sheet=irs,
                     points=request.POST[key],
-                    comment=request.POST['{}_{}'.format(aspect_first, 'comment')]
+                    comment=request.POST['{}_{}'.format(aspect_first, 'comment')],
+                    expected_points=int(request.POST['{}_{}'.format(aspect_first, 'expected_rate')]),
                     )
                 rating_aspect.save()
 
@@ -81,8 +82,17 @@ def rating_details(request, rating_pk):
     rating_aspects = RatingAspect.objects.filter(interview_rating_sheet=rating)
     aspects_name = [aspect.name for aspect in rating_aspects]
     aspects_points = [aspect.points for aspect in rating_aspects]
+    aspects_exp_points = [aspect.expected_points for aspect in rating_aspects]
 
-    return render(request, 'rating_details.html', {'rating_sheet':rating, 'aspects': rating_aspects, 'aspects_name': json.dumps(aspects_name), 'aspects_points': json.dumps(aspects_points)})
+    return render(request, 'rating_details.html',
+        {
+            'rating_sheet':rating,
+            'aspects': rating_aspects,
+            'aspects_name': json.dumps(aspects_name),
+            'aspects_points': json.dumps(aspects_points),
+            'aspects_exp_points': json.dumps(aspects_exp_points),
+
+            })
 
 
 
