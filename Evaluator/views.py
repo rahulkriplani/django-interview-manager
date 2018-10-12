@@ -33,6 +33,8 @@ def search_all(request):
         result = global_search(keyword)
         if result:
             return  render(request, 'search_results.html', {'result':result})
+        else:
+            return  render(request, 'search_results.html', {'message':'No results'})
 
 #***********************************************************************
 #-------------------------------- Ratings ---------------------------
@@ -365,7 +367,7 @@ def search_question(request):
 
 
 @login_required
-def question_detail(request, question_id):
+def question_details(request, question_id):
     try:
         question = Question.objects.get(pk=question_id)
     except Question.DoesNotExist:

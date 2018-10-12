@@ -18,7 +18,7 @@ urlpatterns = [
 
     # Question URLs
     url(r'^questions/$', views.QuestionList.as_view(), name='question_list'),
-    url(r'^question/details/(?P<question_id>[0-9]+)/$', views.question_detail, name='question_detail'),
+    url(r'^question/details/(?P<question_id>[0-9]+)/$', views.question_details, name='question_details'),
     url(r'^search/question/$', views.search_question, name='search_question'),
     url(r'^addQuestion/$', views.create_question, name='add_question'),
     url(r'^editQuestion/(?P<que_pk>\d+)/$', views.edit_question, name='edit_question'),

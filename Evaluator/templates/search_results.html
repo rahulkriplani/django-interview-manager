@@ -1,33 +1,40 @@
 {% extends 'base.html' %}
 {% block content %}
 
-{% if result.candidates %}
-<h2>Candidates found</h2>
-    <ul class="list-group">
-    {% for item in result.candidates %}
-        <li>{{ item }}</li>
-    {% endfor %}
-{% endif %}
+{% if result %}
 
-{% if result.questions %}
-<h2>Questions found</h2>
-{% for item in result.questions %}
-    <li>{{ item }}</li>
-{% endfor %}
-{% endif %}
+	{% if result.candidates %}
+	<h2>Candidates found</h2>
+	    <ul class="list-group">
+	    {% for candidate in result.candidates %}
+	        <li>{{ candidate }} <a href={% url 'Evaluator:candi_details' candidate.pk %}>View</a> </li>
+	    {% endfor %}
+	{% endif %}
 
-{% if result.positions %}
-<h2>Positions found</h2>
-{% for item in result.positions %}
-    <li>{{ item }}</li>
-{% endfor %}
-{% endif %}
+	{% if result.questions %}
+	<h2>Questions found</h2>
+		{% for question in result.questions %}
+		    <li>{{ question }} <a href={% url 'Evaluator:question_details' question.pk %}>View</a> </li>
+		{% endfor %}
+	{% endif %}
 
-{% if result.vendors %}
-<h2>Vendors found</h2>
-{% for item in result.vendors %}
-    <li>{{ item }}</li>
-{% endfor %}
+	{% if result.positions %}
+	<h2>Positions found</h2>
+		{% for position in result.positions %}
+		    <li>{{ position }}
+		{% endfor %}
+	{% endif %}
+
+	{% if result.vendors %}
+	<h2>Vendors found</h2>
+		{% for vendor in result.vendors %}
+	    <li>{{ vendor }} <a href={% url 'Evaluator:vendor_details' vendor.pk %}>View</a> </li>
+		{% endfor %}
+	{% endif %}
+{% else %}
+	{% if message %}
+		<h1>{{ message }}</h1>
+	{% endif %}
 {% endif %}
 
 {% endblock %}

@@ -243,7 +243,7 @@ class Question(models.Model):
         return "{0}".format(self.description)
 
     def get_absolute_url(self):
-        return reverse('Evaluator:question_detail', args=[str(self.id)])
+        return reverse('Evaluator:question_details', args=[str(self.id)])
 
 
 class Answer(models.Model):

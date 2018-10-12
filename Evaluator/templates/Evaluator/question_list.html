@@ -2,7 +2,7 @@
 
 {% block content %}
 {% for question in question_list %}
-    <li><a href="{% url 'Evaluator:question_detail' question.id %}">{{ question.description }}</a></li>
+    <li><a href="{% url 'Evaluator:question_details' question.id %}">{{ question.description }}</a></li>
 {% endfor %}
 {% endblock %}
 
