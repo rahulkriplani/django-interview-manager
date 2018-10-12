@@ -16,8 +16,23 @@ from .models import Interview, Question, Candidate, Answer, QuestionSet, Round, 
 from .models import RatingAspect, InterviewRatingSheet
 from .filters import InterviewFilter, CandidateFilter
 
+from .search import global_search
+
 import json
 
+
+#***********************************************************************
+#-------------------------------- Ratings ---------------------------
+#***********************************************************************
+
+@user_passes_test(lambda u: u.is_staff)
+@login_required
+def search_all(request):
+    if request.method == 'GET':
+        keyword = request.GET.get('searchKeyword')
+        result = global_search(keyword)
+        if result:
+            return  render(request, 'search_results.html', {'result':result})
 
 #***********************************************************************
 #-------------------------------- Ratings ---------------------------

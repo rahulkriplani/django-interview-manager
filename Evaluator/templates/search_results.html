@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block content %}
+
+{% if result.candidates %}
+<h2>Candidates found</h2>
+    <ul class="list-group">
+    {% for item in result.candidates %}
+        <li>{{ item }}</li>
+    {% endfor %}
+{% endif %}
+
+{% if result.questions %}
+<h2>Questions found</h2>
+{% for item in result.questions %}
+    <li>{{ item }}</li>
+{% endfor %}
+{% endif %}
+
+{% if result.positions %}
+<h2>Positions found</h2>
+{% for item in result.positions %}
+    <li>{{ item }}</li>
+{% endfor %}
+{% endif %}
+
+{% if result.vendors %}
+<h2>Vendors found</h2>
+{% for item in result.vendors %}
+    <li>{{ item }}</li>
+{% endfor %}
+{% endif %}
+
+{% endblock %}

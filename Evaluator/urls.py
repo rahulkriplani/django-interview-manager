@@ -55,4 +55,6 @@ urlpatterns = [
     # Rating Sheet
     url(r'addRating/interview/(?P<interview_pk>\d+)/round/(?P<round_pk>\d+)/$', views.add_ratings, name='addRating'),
     url(r'ratingDetails/(?P<rating_pk>\d+)/$', views.rating_details, name='rating_details'),
+
+    url(r'^sitesearch/$', views.search_all, name='globalsearch'),
     ]
