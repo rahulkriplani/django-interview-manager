@@ -65,6 +65,7 @@ def add_ratings(request, interview_pk, round_pk):
             name=str(interview) + '_' + rnd.name,
             interview=interview,
             round_name=rnd,
+            comment = request.POST['comments']
             )
 
         for key in request.POST.keys():

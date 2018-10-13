@@ -30,6 +30,7 @@
                             <th>Date</th>
                             <th>Time</th>
                             <th>Assigned To</th>
+                            <th>Additional Comments</th>
                             <th>Round Type</th>
                             <th>Result</th>
                         </tr>
@@ -43,8 +44,10 @@
                 <td>{{ form.date }} {{ form.date.errors }}</td>
                 <td>{{ form.contact_time }} {{ form.contact_time.errors }}</td>
                 <td>{{ form.assignee }} {{ form.assignee.errors }}</td>
+                <td>{{ form.comments }} {{ form.comments.errors }}</td>
                 <td>{{ form.round_type }} {{ form.round_type.errors }}</td>
                 <td>{{ form.result }} {{ form.result.errors }}</td>
+
             </tr>
 
             {% endfor %}

@@ -13,7 +13,7 @@
     {% endif %}
    	{% if round %}
     <hr>
-   		{{ form.as_p }}
+   		
       <p><h2> Please fill below fields</h2> </p>
       <table class="table">
           <tr>
@@ -43,6 +43,7 @@
         {% endfor %}
         </table>
 
+      <p>Final Comments: <input type="text" size="100" name="comments" id="finalComments"></p>
    		<input class="btn btn-lg btn-primary" type="submit" value="Submit" />
    	{% else %}
    		<h3>No rounds found</h3>

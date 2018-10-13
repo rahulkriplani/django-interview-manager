@@ -88,7 +88,7 @@ class AddInterview(forms.ModelForm):
 class RoundForm(forms.ModelForm):
     class Meta:
         models = models.Round
-        fields = ['name', 'date', 'contact_time', 'assignee', 'round_type', 'result']
+        fields = ['name', 'date', 'contact_time', 'assignee', 'round_type', 'result', 'comments']
 
     date = forms.DateField(widget=AdminDateWidget())
 
@@ -102,7 +102,7 @@ RoundInLineFormSet = forms.inlineformset_factory(
         models.Interview,
         models.Round,
         extra=1,
-        fields=('name', 'date', 'contact_time', 'assignee', 'round_type', 'result'),
+        fields=('name', 'date', 'contact_time', 'assignee', 'round_type', 'result', 'comments'),
         formset=RoundFormSet,
         min_num=0,
         )
