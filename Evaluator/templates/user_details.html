@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>Name : {{ user.first_name}} {{ user.last_name}} </h1>
+<h3>Email: {{ user.email }}</h3>
+<h3>Groups: {% if user.groups.all %}
+				{% for group in user.groups.all %}
+					{{ group.name }}
+				{% endfor %}
+			{% else %}
+			None
+			{% endif %}</h3>
+
+{% if rounds %}
+	{% for round in rounds %}
+		<div class="well">
+		{% if round.interviewratingsheet %}
+			<p>Round Name : {{ round }} <a href={% url 'Evaluator:rating_details' round.interviewratingsheet.pk %}>View Ratings</a></p>
+			
+		{% else %}
+			{{ round }}
+		{% endif %}
+		<p>Taken on Date: {{ round.date }}</p>
+		</div>
+	{% endfor %}
+
+{% endif %}
+
+{% endblock %}

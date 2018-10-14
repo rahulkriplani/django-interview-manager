@@ -8,6 +8,7 @@ Pagination in search pages
 IDEAS:
 Statistics Page (No of InterV per year/month/week)
 Bar graph : How many People made it past 1st round /2nd/3rd.......
+User details: All interviews taken 
 
 ANALYTICS 
 (Candi Hired month/year)

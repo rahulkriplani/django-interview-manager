@@ -3,12 +3,12 @@ from __future__ import unicode_literals
 
 from django.shortcuts import render, redirect, reverse
 from django.contrib.auth.forms import PasswordChangeForm
-from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth import update_session_auth_hash, authenticate, login
 from django.views.generic import CreateView, UpdateView, DeleteView, ListView
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.http import Http404, HttpResponseRedirect
 from django.utils.decorators import method_decorator
-from django.contrib.auth import authenticate, login
+from django.contrib.auth.models import User
 from django.utils import timezone
 
 from . import forms
@@ -187,6 +187,16 @@ def change_password(request):
         form = forms.PasswordChangeForm(user=request.user)
         args = {'form':form}
         return render(request, 'password_change.html', args)
+
+@user_passes_test(lambda u: u.is_staff)
+@login_required
+def get_details_user(request, user_pk):
+    user = User.objects.get(pk=user_pk)
+    if user:
+        rounds = user.round_set.all()
+        return render(request, 'user_details.html', {'rounds': rounds, 'user': user})
+    else:
+        raise Http404("User does not exists!")
 
 #***********************************************************************
 #-------------------------------- INTERVIEW ---------------------------

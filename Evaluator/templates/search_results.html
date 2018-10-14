@@ -31,6 +31,14 @@
 	    <li>{{ vendor }} <a href={% url 'Evaluator:vendor_details' vendor.pk %}>View</a> </li>
 		{% endfor %}
 	{% endif %}
+
+	{% if result.users %}
+	<h2>Users found</h2>
+		{% for user in result.users %}
+	    <li>{{ user }} <a href={% url 'Evaluator:user_details' user.pk %}>View</a> </li>
+		{% endfor %}
+	{% endif %}
+
 {% else %}
 	{% if message %}
 		<h1>{{ message }}</h1>

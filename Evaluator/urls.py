@@ -15,6 +15,7 @@ urlpatterns = [
     url(r'^register/$', views.register, name='register'),
     url(r'^profile/edit$', views.edit_profile, name='edit_profile'),
     url(r'^password/$', views.change_password, name='change_password'),
+    url(r'^userDetails/(?P<user_pk>\d+)/$', views.get_details_user, name='user_details'),
 
     # Question URLs
     url(r'^questions/$', views.QuestionList.as_view(), name='question_list'),
