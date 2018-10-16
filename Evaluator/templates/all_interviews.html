@@ -10,7 +10,7 @@
   </form>
 
 
-<h1>Search Results: {{ filter.qs.count}}</h1>
+<h1>Search Results: {{ filter.count }}</h1>
 <div class="panel panel-default">
     <table class="table">
     	<tr>
@@ -20,7 +20,7 @@
                 <th>Status</th>
                 <th>Result</th>
             </tr>
-    {% for interview in filter.qs %}
+    {% for interview in interviews %}
     <tr>
         <td><a href={% url 'Evaluator:interview_details' interview.pk %}>{{ interview }}</a></td>
         <td>{{ interview.date }} </td>
@@ -33,22 +33,22 @@
 
 </div>
 
-{% if page_interviews.has_other_pages %}
+{% if interviews.has_other_pages %}
   <ul class="pagination">
-    {% if page_interviews.has_previous %}
-      <li><a href="?page={{ page_interviews.previous_page_number }}">&laquo;</a></li>
+    {% if interviews.has_previous %}
+      <li><a href="?page={{ interviews.previous_page_number }}">&laquo;</a></li>
     {% else %}
       <li class="disabled"><span>&laquo;</span></li>
     {% endif %}
-    {% for i in page_interviews.paginator.page_range %}
-      {% if page_interviews.number == i %}
+    {% for i in interviews.paginator.page_range %}
+      {% if interviews.number == i %}
         <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
       {% else %}
         <li><a href="?page={{ i }}">{{ i }}</a></li>
       {% endif %}
     {% endfor %}
-    {% if page_interviews.has_next %}
-      <li><a href="?page={{ page_interviews.next_page_number }}">&raquo;</a></li>
+    {% if interviews.has_next %}
+      <li><a href="?page={{ interviews.next_page_number }}">&raquo;</a></li>
     {% else %}
       <li class="disabled"><span>&raquo;</span></li>
     {% endif %}

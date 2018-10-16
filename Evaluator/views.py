@@ -206,10 +206,11 @@ def get_details_user(request, user_pk):
 @user_passes_test(lambda u: u.is_staff)
 @login_required
 def all_interviews(request):
-    interviews = Interview.all_interviews()
+    interviews = Interview.objects.get_queryset().order_by('id')
     interview_filter = InterviewFilter(request.GET, queryset=interviews)
+    
     page = request.GET.get('page', 1)
-    paginator = Paginator(interview_filter, 10)
+    paginator = Paginator(interview_filter.qs, 10)
     try:
         page_interviews = paginator.page(page)
     except PageNotAnInteger:
@@ -217,7 +218,9 @@ def all_interviews(request):
     except EmptyPage:
         page_interviews = paginator.page(paginator.num_pages)
 
-    return render(request, 'all_interviews.html', {'filter': interview_filter})
+    
+
+    return render(request, 'all_interviews.html', {'filter': interview_filter, 'interviews': page_interviews})
 
 
 @user_passes_test(lambda u: u.is_staff)
