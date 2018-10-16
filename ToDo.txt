@@ -38,3 +38,7 @@ Ratings legends and possibly color coding or symbols.
 Graphics: Tiles background for Interview Status - Done
 URLS should be meaningful (candi url, user profile etc)
 Rating Template aspect to have expected level - Done
+
+Deployment :
+
+https://uwsgi-docs.readthedocs.io/en/latest/tutorials/Django_and_nginx.html

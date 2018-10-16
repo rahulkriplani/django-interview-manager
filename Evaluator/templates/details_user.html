@@ -13,18 +13,25 @@
 			{% endif %}</h3>
 
 {% if rounds %}
-	{% for round in rounds %}
-		<div class="well">
-		{% if round.interviewratingsheet %}
-			<p>Round Name : {{ round }} <a href={% url 'Evaluator:rating_details' round.interviewratingsheet.pk %}>View Ratings</a></p>
-			
-		{% else %}
-			{{ round }}
-		{% endif %}
-		<p>Taken on Date: {{ round.date }}</p>
-		</div>
-	{% endfor %}
+	<table class="table">
+	        	<tr>
+	                <th>Round</th>
+	                <th>Date Taken</th>
+	                <th>Interview Link</th>
+	                <th>Rating Link</th>
+	            </tr>
 
+	{% for round in rounds %}
+		{% if round.interviewratingsheet %}
+		        <tr>
+		            <td>{{ round.name }} </td>
+		            <td>{{ round.date }}</td>
+		            <td><a href={% url 'Evaluator:interview_details' round.interview.pk %}>{{ round.interview }}</a></td>
+		            <td><a href={% url 'Evaluator:rating_details' round.interviewratingsheet.pk %}>View Ratings</a></td>
+		        </tr>
+		{% endif %}
+	{% endfor %}
+	</table>
 {% endif %}
 
 {% endblock %}
