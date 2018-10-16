@@ -22,7 +22,7 @@ import json
 
 
 #***********************************************************************
-#-------------------------------- Ratings ---------------------------
+#-------------------------------- Search  ---------------------------
 #***********************************************************************
 
 @user_passes_test(lambda u: u.is_staff)
@@ -102,7 +102,7 @@ def rating_details(request, rating_pk):
     aspects_points = [aspect.points for aspect in rating_aspects]
     aspects_exp_points = [aspect.expected_points for aspect in rating_aspects]
 
-    return render(request, 'rating_details.html',
+    return render(request, 'details_rating.html',
         {
             'rating_sheet':rating,
             'aspects': rating_aspects,
@@ -194,7 +194,7 @@ def get_details_user(request, user_pk):
     user = User.objects.get(pk=user_pk)
     if user:
         rounds = user.round_set.all()
-        return render(request, 'user_details.html', {'rounds': rounds, 'user': user})
+        return render(request, 'details_user.html', {'rounds': rounds, 'user': user})
     else:
         raise Http404("User does not exists!")
 
@@ -261,7 +261,7 @@ def interviews_details(request, interview_pk):
     all_rounds = interview.round_set.order_by('created_at')
     args = {'interview': interview, 'rounds': all_rounds}
 
-    return render(request, 'interview_details.html', args)
+    return render(request, 'details_interview.html', args)
 
 
 
@@ -355,7 +355,7 @@ def candi_details(request, candidate_pk):
     candidate = Candidate.objects.get(pk=candidate_pk)
     interviews = Interview.objects.filter(candidate=candidate)
     args = {'candidate': candidate, 'interviews': interviews}
-    return render(request, 'candi_details.html', args)
+    return render(request, 'details_candidate.html', args)
 
 #***********************************************************************
 #-------------------------------- QUESTION ---------------------------
@@ -384,7 +384,7 @@ def question_details(request, question_id):
     except Question.DoesNotExist:
         raise Http404("Question does not exists!")
     args = {'question': question}
-    return render(request, 'question_details.html', args)
+    return render(request, 'details_question.html', args)
 
 
 @method_decorator(login_required, name='dispatch')
@@ -412,7 +412,7 @@ def create_question(request):
                 answer.save()
             #return HttpResponseRedirect(reverse('Evaluator:profile'))
             return HttpResponseRedirect(question.get_absolute_url())
-    return render(request, 'create_question.html',
+    return render(request, 'add_question.html',
             {
                 'form':form,
                 'formset':answer_forms
@@ -439,7 +439,7 @@ def edit_question(request, que_pk):
                 answer.question = question
                 answer.save()
             return HttpResponseRedirect(question.get_absolute_url())
-    return render(request, 'create_question.html',
+    return render(request, 'add_question.html',
             {
                 'form':form,
                 'formset':answer_forms
@@ -459,7 +459,7 @@ def create_question_set(request):
         if question_set_form.is_valid():
             question_set = question_set_form.save()
             return HttpResponseRedirect(question_set.get_absolute_url())
-    return render(request, 'create_exam.html',
+    return render(request, 'add_exam.html',
             {
                 'form':question_set_form
             })
@@ -467,17 +467,13 @@ def create_question_set(request):
 def question_set_details(request, qset_pk):
     question_set = QuestionSet.objects.get(pk=qset_pk)
     questions = Question.objects.filter(qset=question_set)
-    return render(request, 'qset_details.html', {'question_set': question_set, 'questions':questions})
+    return render(request, 'details_QuestionSet.html', {'question_set': question_set, 'questions':questions})
 
 @login_required
 def get_question_sets(request):
     question_sets = QuestionSet.objects.all()
     return render(request, 'all_qsets.html',{'question_sets':question_sets})
 
-@login_required
-def question_sets(request):
-    question_sets = QuestionSet.objects.all()
-    return render(request, 'all_qsets.html',{'question_sets':question_sets})
 
 #***********************************************************************
 #-------------------------------- EXAM ---------------------------
@@ -507,4 +503,4 @@ def allVendors(request):
 @login_required
 def vendor_details(request, vendor_pk):
     vendor = Vendor.objects.get(pk=vendor_pk)
-    return render(request, 'vendors_details.html', {'vendor': vendor})
+    return render(request, 'details_vendors.html', {'vendor': vendor})
