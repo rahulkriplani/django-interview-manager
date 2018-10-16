@@ -176,7 +176,7 @@ def edit_profile(request):
 
 def change_password(request):
     if request.method == 'POST':
-        form = forms.PasswordChangeForm(data=request.POST, user=request.user)
+        form = PasswordChangeForm(data=request.POST, user=request.user)
         if form.is_valid():
             form.save()
             update_session_auth_hash(request, form.user)
@@ -184,7 +184,7 @@ def change_password(request):
         else:
             return redirect('/profile/password')
     else:
-        form = forms.PasswordChangeForm(user=request.user)
+        form = PasswordChangeForm(user=request.user)
         args = {'form':form}
         return render(request, 'password_change.html', args)
 
