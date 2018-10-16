@@ -82,7 +82,7 @@ class AddInterview(forms.ModelForm):
         model = models.Interview
         fields = ['candidate', 'date', 'position', 'question_set']
 
-    date = forms.DateField(widget=AdminDateWidget())
+    date = forms.DateField(widget=AdminDateWidget()) # This shows the admin calender on the frontend form
 
 
 class RoundForm(forms.ModelForm):
