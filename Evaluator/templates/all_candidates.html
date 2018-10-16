@@ -9,7 +9,7 @@
   </form>
 
 
-<h1>Search Results</h1>
+<h1>Search Results: {{ filter.qs.count }}</h1>
 <div class="panel panel-default">
     <table class="table">
         <tr>
@@ -20,7 +20,7 @@
                 <th>Registered On</th>
                 <th>Vendor</th>
             </tr>
-    {% for candidate in filter.qs %}
+    {% for candidate in candidates %}
     <tr>
         <td><a href={% url 'Evaluator:candi_details' candidate.pk %}>{{ candidate.name }}</a></td>
         <td>{{ candidate.contact_primary }} </td>
@@ -33,4 +33,27 @@
     </table>
 
 </div>
+
+{% if candidates.has_other_pages %}
+  <ul class="pagination">
+    {% if candidates.has_previous %}
+      <li><a href="?page={{ candidates.previous_page_number }}">&laquo;</a></li>
+    {% else %}
+      <li class="disabled"><span>&laquo;</span></li>
+    {% endif %}
+    {% for i in candidates.paginator.page_range %}
+      {% if candidates.number == i %}
+        <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+      {% else %}
+        <li><a href="?page={{ i }}">{{ i }}</a></li>
+      {% endif %}
+    {% endfor %}
+    {% if candidates.has_next %}
+      <li><a href="?page={{ candidates.next_page_number }}">&raquo;</a></li>
+    {% else %}
+      <li class="disabled"><span>&raquo;</span></li>
+    {% endif %}
+  </ul>
+{% endif %}
+
 {% endblock %}

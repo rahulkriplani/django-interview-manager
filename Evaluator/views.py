@@ -218,8 +218,6 @@ def all_interviews(request):
     except EmptyPage:
         page_interviews = paginator.page(paginator.num_pages)
 
-    
-
     return render(request, 'all_interviews.html', {'filter': interview_filter, 'interviews': page_interviews})
 
 
@@ -347,9 +345,19 @@ def search_candidate(request):
 @user_passes_test(lambda u: u.is_staff)
 @login_required
 def all_candidates(request):
-    candidates = Candidate.objects.all()
+    candidates = Candidate.objects.get_queryset().order_by('id')
     candidate_filter = CandidateFilter(request.GET, queryset=candidates)
-    return render(request, 'all_candidates.html', {'candidates': candidates, 'filter': candidate_filter})
+    page = request.GET.get('page', 1)
+    paginator = Paginator(candidate_filter.qs, 10)
+    try:
+        page_candidates = paginator.page(page)
+    except PageNotAnInteger:
+        page_candidates = paginator.page(1)
+    except EmptyPage:
+        page_candidates = paginator.page(paginator.num_pages)
+
+    return render(request, 'all_candidates.html', {'candidates': page_candidates, 'filter': candidate_filter})
+
 
 @login_required
 def edit_candidate(request, candidate_pk):
