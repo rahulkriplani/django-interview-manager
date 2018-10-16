@@ -10,6 +10,7 @@ from django.http import Http404, HttpResponseRedirect
 from django.utils.decorators import method_decorator
 from django.contrib.auth.models import User
 from django.utils import timezone
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from . import forms
 from .models import Interview, Question, Candidate, Answer, QuestionSet, Round, Vendor
@@ -207,7 +208,16 @@ def get_details_user(request, user_pk):
 def all_interviews(request):
     interviews = Interview.all_interviews()
     interview_filter = InterviewFilter(request.GET, queryset=interviews)
-    return render(request, 'all_interviews.html', {'interviews': interviews, 'filter': interview_filter})
+    page = request.GET.get('page', 1)
+    paginator = Paginator(interview_filter, 10)
+    try:
+        page_interviews = paginator.page(page)
+    except PageNotAnInteger:
+        page_interviews = paginator.page(1)
+    except EmptyPage:
+        page_interviews = paginator.page(paginator.num_pages)
+
+    return render(request, 'all_interviews.html', {'filter': interview_filter})
 
 
 @user_passes_test(lambda u: u.is_staff)
