@@ -1,39 +1,37 @@
 {% extends 'base.html' %}
+{% load static %}
+
+{% block head %}
+    <title>Login Page</title>
+{% endblock %}
 
 {% block content %}
 <!-- Where all the magic happens -->
 <!-- LOGIN FORM -->
-<div class="text-center" style="padding:50px 0">
-	<div class="logo">login</div>
+<link rel="stylesheet" href="{% static 'css/signin.css' %}" >
+
+<div class="text-left" style="padding:20px 0">
+
 	<!-- Main Form -->
 
-    <div class="login-form-1">
-		<form id="login-form" class="text-left"  method="post">
-			<div class="login-form-main-message"></div>
-			<div class="main-login-form">
-				<div class="login-group">
-					{% csrf_token %}
-					<div class="form-group">
-                            <label for="id_username" class="sr-only">Username</label>
-						    <input type="text" class="form-control" id="id_username" name="username">
+    <div>
+		<form id="login-form" class="form-signin"  method="post">
+			<h2 class="form-signin-heading">Please sign in</h2>
+			{% csrf_token %}
+            <label for="id_username" class="sr-only">Username</label>
+			<input type="text" class="form-control" id="id_username" placeholder="Username" name="username">
+			<label for="id_password" class="sr-only">Password</label>
+			<input type="password" class="form-control" id="id_password" placeholder="Password" name="password">
 
-					</div>
-                    <div class="form-group">
-						<label for="id_password" class="sr-only">Password</label>
-						<input type="password" class="form-control" id="id_password" name="password">
-					</div>
+			<button type="submit" class="btn btn-info btn-lgk btn-block">Login</button>
 
-				</div>
-				<button type="submit" class="btn btn-info btn-lg">Login</button>
-
-			</div>
 			{% if error %}
 				{{ error }}
 			{% endif %}
 			<div class="etc-login-form">
 				<br>
-				<p>Forgot your password? <a href="#">click here</a></p>
-				<p>new user? <a href="#">create new account</a></p>
+				<p>Forgot your password? <a href="#">Click here</a></p>
+				<p>New user? <a href="#">create new account</a></p>
 			</div>
 		</form>
 	</div>
