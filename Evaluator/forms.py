@@ -1,9 +1,20 @@
+import datetime
+
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.contrib.admin.widgets import AdminDateWidget
 
 from . import models
+
+def present_or_future_date(value):
+    """
+    This function is to be used with validator argument for a form field.
+    It checks if date entered by user is either present day or a future date.
+    """
+    if value < datetime.date.today():
+        raise forms.ValidationError("The date cannot be in the past!")
+    return value
 
 
 class RegistrationForm(UserCreationForm):
@@ -82,7 +93,7 @@ class AddInterview(forms.ModelForm):
         model = models.Interview
         fields = ['candidate', 'date', 'position', 'question_set']
 
-    date = forms.DateField(widget=AdminDateWidget()) # This shows the admin calender on the frontend form
+    date = forms.DateField(widget=AdminDateWidget(), validators=[present_or_future_date]) # This shows the admin calender on the frontend form
 
 
 class RoundForm(forms.ModelForm):
@@ -90,7 +101,7 @@ class RoundForm(forms.ModelForm):
         models = models.Round
         fields = ['name', 'date', 'contact_time', 'assignee', 'round_type', 'result', 'comments']
 
-    date = forms.DateField(widget=AdminDateWidget())
+    date = forms.DateField(widget=AdminDateWidget(), validators=[present_or_future_date])
 
 RoundFormSet = forms.modelformset_factory(
         models.Round,
