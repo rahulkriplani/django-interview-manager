@@ -328,19 +328,6 @@ def add_candidate(request):
         args = {'form': form}
         return render(request, 'add_candidate.html', args)
 
-@user_passes_test(lambda u: u.is_staff)
-@login_required
-def search_candidate(request):
-    if request.method == 'GET':
-        if 'keyword' in request.GET.keys():
-            keyword = request.GET['keyword']
-            candis = Candidate.objects.filter(name__icontains=keyword)
-            if candis:
-                return render(request, 'search_candidate.html', {'candi_list': candis})
-            else:
-                return render(request, 'search_candidate.html', {'error_message': 'No candidates matching'})
-        else:
-            return render(request, 'search_candidate.html')
 
 @user_passes_test(lambda u: u.is_staff)
 @login_required

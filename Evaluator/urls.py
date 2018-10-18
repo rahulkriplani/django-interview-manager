@@ -34,7 +34,6 @@ urlpatterns = [
     url(r'^candidateDetails/(?P<candidate_pk>\d+)/$', views.candi_details, name='candi_details'),
     url(r'^addCandidate/$', views.add_candidate, name='add_candidate'),
     url(r'^editCandidate/(?P<candidate_pk>\d+)/$', views.edit_candidate, name='edit_candidate'),
-    url(r'^search/candidate/$', views.search_candidate, name='search_candidate'),
     url(r'^allCandidates/$', views.all_candidates, name='all_candidates'),
 
     # Exam URLs
