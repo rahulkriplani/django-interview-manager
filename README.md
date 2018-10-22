@@ -26,9 +26,11 @@
   - See complete history of a Candidate (All interviews, rounds with results). [Completed]
   - See complete history of a Interviewer (All rounds with rating link). [Completed]
   - Add Ratings based on Aspects for each Round. [Completed]
-  - Rating Sheet shows comments and points received along with a a graph showing comparison 
+  - Rating Sheet shows comments and points received along with a a graph showing comparison
     between expected points and actual points. [Completed]
   - Global Search in NavBar that can search for Candidates, Vendors, Users, and Positions. [Completed]
-  
+  - Downloadable reports in Excel form. [Not Started]
+  - Statistics [Not Started]
+
 
 
