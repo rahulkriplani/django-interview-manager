@@ -11,7 +11,13 @@
 
 <div class="container">
 
-    <h1>Create Interview</h1>
+    {% if form.instance.id %}
+        <h1>Edit Interview</h1>
+    {% else %}
+        <h1>Create Interview</h1>
+    {% endif %}
+    <hr>
+
 
         <form method="post">
             <div class="form-group">
@@ -54,6 +60,11 @@
             </tbody>
             </table>
             <input class="btn btn-success btn-lg" type="submit" name="Save" value="Save Interview">
+            {% if form.instance.id %}
+                <a class="btn btn-lg btn-danger" href="{% url 'Evaluator:interview_details' form.instance.pk %}">Cancel</a>
+            {% else %}
+                <a class="btn btn-lg btn-danger" href="{% url 'Evaluator:profile' %}">Cancel</a>
+            {% endif %}
             </div>
         </form>
 

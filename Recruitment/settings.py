@@ -132,11 +132,23 @@ LOG_LOCATION = os.path.join(BASE_DIR, 'Logs')
 LOGGING = {
     'version':1,
     'disable_existing_loggers': True,
+    'formatters':{
+        'my_formatter':{
+                        'format': '%(asctime)s, File: %(module)s.py, Function: %(funcName)s, Message: %(message)s'
+                    }
+
+                },
     'handlers':{
         'file': {
                     'level': 'DEBUG',
                     'class': 'logging.FileHandler',
                     'filename': os.path.join(LOG_LOCATION, 'debug.log'),
+                    'formatter': 'my_formatter',
+                },
+        'console': {
+                    'level': 'DEBUG',
+                    'class': 'logging.StreamHandler',
+                    'formatter': 'my_formatter',
                 },
                },
     'loggers': {
