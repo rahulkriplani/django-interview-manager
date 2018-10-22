@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 """
 
 import os
+import logging
+
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -123,3 +125,26 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 LOGIN_REDIRECT_URL = '/profile'
+
+#Logging Settings
+LOG_LOCATION = os.path.join(BASE_DIR, 'Logs')
+
+LOGGING = {
+    'version':1,
+    'disable_existing_loggers': False,
+    'handlers':{
+        'file': {
+                    'level': 'DEBUG',
+                    'class': 'logging.FileHandler',
+                    'filename': os.path.join(LOG_LOCATION, 'debug.log'),
+                },
+               },
+    'loggers': {
+
+            'django': {
+                        'handlers': ['file'],
+                        'level': 'DEBUG',
+                        'propagate': True,
+                      }
+                }
+            }
