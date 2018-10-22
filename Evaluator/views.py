@@ -20,6 +20,9 @@ from .filters import InterviewFilter, CandidateFilter
 from .search import global_search
 
 import json
+import logging
+
+logger = logging.getLogger('mylogs')
 
 
 #***********************************************************************
@@ -31,10 +34,13 @@ import json
 def search_all(request):
     if request.method == 'GET':
         keyword = request.GET.get('searchKeyword')
+        logger.debug("Search called for keyword: %s" % keyword)
         result = global_search(keyword)
         if result:
+            logger.debug("Results found")
             return  render(request, 'search_results.html', {'result':result})
         else:
+            logger.debug("No Results found")
             return  render(request, 'search_results.html', {'message':'No results'})
 
 #***********************************************************************
@@ -44,12 +50,14 @@ def search_all(request):
 @user_passes_test(lambda u: u.is_staff)
 @login_required
 def add_ratings(request, interview_pk, round_pk):
+    logger.debug("%s is trying to add ratings for interview id: %s and for round id: %s" % (request.user.username , interview_pk, round_pk))
     if interview_pk:
         try:
             interview = Interview.objects.get(pk=interview_pk)
             max_range = interview.position.rating_sheet.rate_max
             min_range = interview.position.rating_sheet.rate_min
         except Interview.DoesNotExist:
+            logger.debug("Interview not found")
             raise Http404("Interview does not exists!")
         except AttributeError:
             raise Http404("No rating sheet template available for this position. Please create one!")
@@ -58,6 +66,7 @@ def add_ratings(request, interview_pk, round_pk):
         try:
             rnd = Round.objects.get(pk=round_pk)
         except Round.DoesNotExist:
+            logger.debug("Round not found")
             raise Http404("Round Name not provided")
 
 
@@ -68,6 +77,7 @@ def add_ratings(request, interview_pk, round_pk):
             round_name=rnd,
             comment = request.POST['comments']
             )
+        logger.debug("InterviewRatingSheet successfully created.")
 
         for key in request.POST.keys():
             if '_aspect' in key:
@@ -81,6 +91,7 @@ def add_ratings(request, interview_pk, round_pk):
                     )
                 rating_aspect.save()
 
+        logger.debug("All Aspects for IRS successfully created...Returning")
         return HttpResponseRedirect(interview.get_absolute_url())
 
     return render(request, 'add_rating.html',
@@ -208,7 +219,7 @@ def get_details_user(request, user_pk):
 def all_interviews(request):
     interviews = Interview.objects.get_queryset().order_by('id')
     interview_filter = InterviewFilter(request.GET, queryset=interviews)
-    
+
     page = request.GET.get('page', 1)
     paginator = Paginator(interview_filter.qs, 10)
     try:

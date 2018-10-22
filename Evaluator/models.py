@@ -218,7 +218,7 @@ class Round(models.Model):
                              )
 
     def __str__(self):  # __unicode__ on Python 2
-        return "{0}_{1}".format(self.name, str(self.date), self.round_type)
+        return self.name
 
 
 

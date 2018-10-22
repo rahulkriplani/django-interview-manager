@@ -24,6 +24,7 @@
                     <th>Assignee</th>
                     <th>Type</th>
                     <th>Result</th>
+                    <th>Instructions</th>
                     <th>View/Add Ratings</th>
                 </tr>
             {% for round in rounds %}
@@ -35,6 +36,7 @@
                 <td>{{ round.assignee.username }}</td>
                 <td>{{ round.get_round_type_display  }}</td>
                 <td>{{ round.get_result_display }}</td>
+                <td>{{ round.comments  }}</td>
                 {% if round.interviewratingsheet %}
                     <td><a href={% url 'Evaluator:rating_details' round.interviewratingsheet.pk %}>View Ratings</a></td>
                 {% else %}

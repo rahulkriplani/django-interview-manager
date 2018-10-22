@@ -131,7 +131,7 @@ LOG_LOCATION = os.path.join(BASE_DIR, 'Logs')
 
 LOGGING = {
     'version':1,
-    'disable_existing_loggers': False,
+    'disable_existing_loggers': True,
     'handlers':{
         'file': {
                     'level': 'DEBUG',
@@ -141,7 +141,7 @@ LOGGING = {
                },
     'loggers': {
 
-            'django': {
+            'mylogs': {
                         'handlers': ['file'],
                         'level': 'DEBUG',
                         'propagate': True,
