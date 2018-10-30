@@ -1,1 +1,5 @@
 
+2018-10-31 00:27:48,044, File: views.py, Function: search_all, Message: Search called for keyword: tuple
+2018-10-31 00:27:48,047, File: views.py, Function: search_all, Message: No Results found
+2018-10-31 00:28:05,776, File: views.py, Function: search_all, Message: Search called for keyword: test
+2018-10-31 00:28:05,778, File: views.py, Function: search_all, Message: Results found

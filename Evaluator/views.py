@@ -381,21 +381,6 @@ def candi_details(request, candidate_pk):
 #***********************************************************************
 
 
-@user_passes_test(lambda u: u.is_staff)
-@login_required
-def search_question(request):
-    if request.method == 'GET':
-        if 'keyword' in request.GET.keys():
-            keyword = request.GET['keyword']
-            questions = Question.objects.filter(description__icontains=keyword)
-            if questions:
-                return render(request, 'search_candidate.html', {'question_list': questions})
-            else:
-                return render(request, 'search_candidate.html', {'error_message': 'No candidates matching'})
-        else:
-            return render(request, 'search_candidate.html')
-
-
 @login_required
 def question_details(request, question_id):
     try:
@@ -446,6 +431,9 @@ def edit_question(request, que_pk):
             queryset=form.instance.answer_set.all()
             )
     if request.method == 'POST':
+        if request.POST.get('delete'):
+            question.delete()
+            return redirect('/profile')
         form = forms.QuestionForm(request.POST, instance=question)
         answer_forms = forms.AnswerInLineFormSet(
                 request.POST,

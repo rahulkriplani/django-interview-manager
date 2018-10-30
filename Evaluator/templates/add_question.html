@@ -2,6 +2,13 @@
 {% load static %}
 {% block content %}
 
+{% if form.instance.id %}
+        <h1>Edit Question</h1>
+    {% else %}
+        <h1>Create Question</h1>
+    {% endif %}
+
+
 <form method='POST'>
     <div class="form-group">
     {% csrf_token %}
@@ -34,7 +41,13 @@
         </tbody>
     </table>
 
-	<input class="btn btn-lg btn-primary" type="submit" name="Save" value="Save">
+	<input class="btn btn-success btn-lg" type="submit" name="Save" value="Save Question">
+    {% if form.instance.id %}
+        <input class="btn btn-warning btn-lg" type="submit" name="delete" value="Delete">
+        <a class="btn btn-lg btn-danger" href="{% url 'Evaluator:question_details' form.instance.pk %}">Cancel</a>
+    {% else %}
+        <a class="btn btn-lg btn-danger" href="{% url 'Evaluator:profile' %}">Cancel</a>
+    {% endif %}
 	</div>
 </form>
 {% endblock %}

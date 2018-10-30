@@ -2,7 +2,7 @@
 
 {% block content %}
 <h1>{{ question.description }}</h1>
-
+<p><a class="btn btn-info" href={% url 'Evaluator:edit_question' question.pk %}>Edit</a></p>
 <form action="{% url 'Evaluator:question_details' question.id %}" method="post">
 {% csrf_token %}
     {% for option in question.answer_set.all %}
