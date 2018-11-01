@@ -57,7 +57,7 @@ def edit_question(request, que_pk):
     if request.method == 'POST':
         if request.POST.get('delete'):
             question.delete()
-            return redirect('/profile')
+            return redirect('Evaluator:question_list')
         form = forms.QuestionForm(request.POST, instance=question)
         answer_forms = forms.AnswerInLineFormSet(
                 request.POST,

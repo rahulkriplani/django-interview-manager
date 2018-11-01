@@ -3,6 +3,7 @@
 {% block content %}
 <h1>{{ question.description }}</h1>
 
+
 <form action="{% url 'Evaluator:question_details' question.id %}" method="post">
 {% csrf_token %}
     {% for option in question.answer_set.all %}
@@ -10,8 +11,7 @@
     <label for="option{{forloop.counter}}">{{option.detail}}</label><br>
     {% endfor %}
 
-    <input type="submit" value="Save"/>
-
 </form>
+<p><a class="btn btn-info" href={% url 'Evaluator:edit_question' question.pk %}>Edit</a></p>
 {% endblock %}
 
