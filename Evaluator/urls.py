@@ -1,7 +1,7 @@
 from django.conf.urls import url
 from django.contrib.auth.views import login, logout
 from django.core.urlresolvers import reverse
-from . import views
+import views
 
 app_name = 'Evaluator'
 
