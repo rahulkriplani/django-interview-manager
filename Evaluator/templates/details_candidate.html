@@ -3,7 +3,10 @@
 
 <div class="well">
     <div class="container">
-<h2>Name : {{ candidate.name }}</h2>
+        
+            <h2>Name : {{ candidate.name }} </h2>
+            <a class="btn btn-info right-justify" href={% url 'Evaluator:edit_candidate' candidate.pk %}>Edit</a>
+        
 <h4>Contact: {{ candidate.contact_primary }}</h4>
 <h4>Experience: {{ candidate.experience }} yrs </h4>
 <h4>Position Applied: {{ candidate.position_applied }}</h4>
@@ -13,6 +16,7 @@
         <span class="label label-success">{{ skill.name }}</span>
     {% endfor %}
 </h4>
+
 </div>
 </div>
 
