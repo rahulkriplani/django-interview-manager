@@ -5,59 +5,120 @@
 {% endblock %}
 
 {% block content %}
-<div class="col-md-10">
-    <p><h3>Welcome {{ request.user.first_name }} {{request.user.last_name}}</h3></p>
-    {% if my_rounds %}
-        <p><h3> Upcoming rounds : {% for round in my_rounds %}</h3></p>
-            <ol class="list-group">
-             <p>
-                <li class="list-group-item list-group-item-info">
-                    <strong>{{ forloop.counter }}. Position : </strong>{{ round.interview.position.name }}
-            </p>
-                 <p><strong>Candidate Name :</strong> {{ round.interview.candidate.name }}</p>
-                 <p><strong>Date :</strong> {{ round.date|date }} at {{ round.contact_time }} </p>
-                 <p><strong>Type : </strong>{{ round.get_round_type_display }}</p>
-                 <p><strong>Interview Link: </strong><a href={% url 'Evaluator:interview_details' round.interview.pk %}>{{round.interview}}</a></p>
-                        {% if request.user.is_superuser %}
-                          <p><strong>Result : </strong><span class="label label-info">{{ round.interview.get_result_display }}</span></p>
-                        {% endif %}
-                        {% if round.interview.question_set.pk %}
-                     	  <p><strong>Exam Link : </strong><a href={% url 'Evaluator:question_set_details' round.interview.question_set.pk %}>{{round.interview.question_set.name}}</a></p>
-                        {% endif %}
-                </li>
 
-            {% endfor %}
-            </ol>
-    {% else %}
-      <h3>No rounds scheduled </h3>
-    {% endif %}
-</div>
+    <div class="col-md-10">
+        <p><h3>Welcome {{ request.user.first_name }} {{request.user.last_name}}</h3></p>
+        {% if my_rounds %}
+            <p><h3> Upcoming rounds : {% for round in my_rounds %}</h3></p>
+                <ol class="list-group">
+                 <p>
+                    <li class="list-group-item list-group-item-info">
+                        <strong>{{ forloop.counter }}. Position : </strong>{{ round.interview.position.name }}
+                </p>
+                     <p><strong>Candidate Name :</strong> {{ round.interview.candidate.name }}</p>
+                     <p><strong>Date :</strong> {{ round.date|date }} at {{ round.contact_time }} </p>
+                     <p><strong>Type : </strong>{{ round.get_round_type_display }}</p>
+                     <p><strong>Interview Link: </strong><a href={% url 'Evaluator:interview_details' round.interview.pk %}>{{round.interview}}</a></p>
+                            {% if request.user.is_superuser %}
+                              <p><strong>Result : </strong><span class="label label-info">{{ round.interview.get_result_display }}</span></p>
+                            {% endif %}
+                            {% if round.interview.question_set.pk %}
+                         	  <p><strong>Exam Link : </strong><a href={% url 'Evaluator:question_set_details' round.interview.question_set.pk %}>{{round.interview.question_set.name}}</a></p>
+                            {% endif %}
+                    </li>
 
-<div class="col-md-2">
-    <div class="row well">
-        Text
-        Line
-        Line
-    </div>
-    <div class="row well" style="margin-bottom: 10px; margin-top: 50px">
-        <h3 style="margin-top:0px;margin-bottom:20px"><span  class="label label-primary">Interview Tools</span></h3>
-        <p><a href="{% url 'Evaluator:add_interview' %}">Schedule Interview</a></p>
-        <p><a href="{% url 'Evaluator:all_interview' %}">All Interviews</a></p>
-    </div>
-    <div class="row well" style="margin-bottom: 20px; margin-top: 20px">
-            <h3 style="margin-top:0px;margin-bottom:20px"><span  class="label label-primary">Candidate</span></h3>
-            <p><a href="{% url 'Evaluator:add_candidate' %}">Add Candidate</a></p>
-            <p><a href="{% url 'Evaluator:all_candidates' %}">All Candidates</a></p>
+                {% endfor %}
+                </ol>
+        {% else %}
+          <h3>No rounds scheduled </h3>
+        {% endif %}
     </div>
 
-    <div class="row well">
-        <h3 style="margin-top:0px;margin-bottom:20px"><span  class="label label-primary">Question Designing</span></h3>
-	    <p><a href="{% url 'Evaluator:add_question' %}">Add Question</p>
+    <div class="col-md-2">
+        <div class="row well">
+            Text
+            Line
+            Line
+        </div>
+        <div class="row well" style="margin-bottom: 10px; margin-top: 50px">
+            <h3 style="margin-top:0px;margin-bottom:20px"><span  class="label label-primary">Interview Tools</span></h3>
+            <p><a href="{% url 'Evaluator:add_interview' %}">Schedule Interview</a></p>
+            <p><a href="{% url 'Evaluator:all_interview' %}">All Interviews</a></p>
+        </div>
+        <div class="row well" style="margin-bottom: 20px; margin-top: 20px">
+                <h3 style="margin-top:0px;margin-bottom:20px"><span  class="label label-primary">Candidate</span></h3>
+                <p><a href="{% url 'Evaluator:add_candidate' %}">Add Candidate</a></p>
+                <p><a href="{% url 'Evaluator:all_candidates' %}">All Candidates</a></p>
+        </div>
+
+        <div class="row well">
+            <h3 style="margin-top:0px;margin-bottom:20px"><span  class="label label-primary">Question Designing</span></h3>
+    	    <p><a href="{% url 'Evaluator:add_question' %}">Add Question</a></p>
+        </div>
+    	<div class="row well">
+            <h3 style="margin-top:0px;margin-bottom:20px"><span  class="label label-primary">Exam Tools</span></h3>
+    	    <p><a href="{% url 'Evaluator:allQueSets' %}">All QuestionSets</a></p>
+           	    <p><a href="{% url 'Evaluator:createQuestionSet' %}">Create Que Set</a></p>
+        </div>
     </div>
-	<div class="row well">
-        <h3 style="margin-top:0px;margin-bottom:20px"><span  class="label label-primary">Exam Tools</span></h3>
-	    <p><a href="{% url 'Evaluator:allQueSets' %}">All QuestionSets</p>
-       	    <p><a href="{% url 'Evaluator:createQuestionSet' %}">Create Que Set</p>
-    </div>
-</div>
+
+
 {% endblock %}
+
+<div class="container">
+{% block footer %}
+    <footer class="footer1">
+      <div class="container">
+        <div class="col-md-4">
+            <h5>Interview Links</h5>
+            <ul class="list-unstyled">
+            
+              <li>
+                <a href="{% url 'Evaluator:add_interview' %}">Schedule Interview</a>
+              </li>
+              <li>
+                <a href="{% url 'Evaluator:all_interview' %}">All Interviews</a>
+              </li>
+            </ul>
+            <hr>  
+            <h5>Candidate Links</h5>
+              <ul class="list-unstyled">
+              <li>
+                <a href="{% url 'Evaluator:add_candidate' %}">Add Candidate</a>
+              </li>
+              <li>
+                <a href="{% url 'Evaluator:all_candidates' %}">All Candidates</a>
+              </li>
+              <li></li>
+              <li></li>
+            </ul>
+        </div>
+        <div class="col-md-4">
+            <h5 class="text-muted">Other links</h5>
+            <ul class="list-unstyled">
+                <li>
+                    <a href="{% url 'Evaluator:createQuestionSet' %}">Create Question Set</a>
+                </li>
+                <li>
+                    <a href="{% url 'Evaluator:allQueSets' %}">All Question Sets</a>
+                </li>
+                <li>
+                    <a href="{% url 'Evaluator:question_list' %}">All Questions</a>
+                </li>
+            </ul>
+        </div>
+        <div class="col-md-4">
+            <h5>Company</h5>
+            <ul class="list-unstyled">
+                <li>
+                    <a href="#">About Us</a>
+                </li>
+                <li>
+                    <a href="#">Contact Us</a>
+                </li>
+        </div>  
+      </div>
+    </footer>
+{% endblock %}
+</div>
+

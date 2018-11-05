@@ -4,3 +4,5 @@
 2018-10-31 00:28:05,776, File: views.py, Function: search_all, Message: Search called for keyword: test
 2018-10-31 00:28:05,778, File: views.py, Function: search_all, Message: Results found
 2018-11-02 01:00:35,087, File: view_exam.py, Function: add_ratings, Message: arindam31 is trying to add ratings for interview id: 14 and for round id: 8
+2018-11-05 16:35:18,447, File: view_others.py, Function: search_all, Message: Search called for keyword: arindam
+2018-11-05 16:35:18,458, File: view_others.py, Function: search_all, Message: Results found

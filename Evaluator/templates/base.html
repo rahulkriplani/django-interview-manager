@@ -3,6 +3,7 @@
 {% load static %}
 <head>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" >
+    <link rel="stylesheet" href="{% static 'css/web.css' %}" >
     <meta charset="UTF-8">
 
     {% block head %}
@@ -74,6 +75,11 @@
 
     <div class="container">
     {% block content %}
+    {% endblock %}
+    </div>
+
+    <div>
+    {% block footer %}
     {% endblock %}
     </div>
 
