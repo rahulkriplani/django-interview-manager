@@ -48,12 +48,11 @@ def edit_candidate(request, candidate_pk):
         form = forms.AddCandidateForm(request.POST, instance=candidate)
         if form.is_valid():
             form.save()
-            #return redirect('/profile')  # This has to go to candidate details page
             return HttpResponseRedirect(candidate.get_absolute_url())
     else:
         form = forms.AddCandidateForm(instance=candidate)
         args = {'form':form}
-        return render(request, 'edit_profile.html', args)
+        return render(request, 'add_candidate.html', args)
 
 def candi_details(request, candidate_pk):
     candidate = Candidate.objects.get(pk=candidate_pk)
