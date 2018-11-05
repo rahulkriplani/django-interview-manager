@@ -8,6 +8,8 @@ from django.shortcuts import redirect
 from django.utils import timezone
 from simple_history.models import HistoricalRecords
 from django.core.urlresolvers import reverse
+from django.db.models import Sum, Count
+from django.db.models.functions import TruncMonth
 
 from datetime import datetime
 
@@ -163,6 +165,21 @@ class Interview(models.Model):
     def all_interviews(cls):
         return Interview.objects.all()
 
+    @classmethod
+    def count_interviews_past_30_days(self):
+        return self.objects.filter(date__gt=datetime.date.today() - datetime.timedelta(30))
+
+    @classmethod
+    def count_all_months_interviews_current_year(self):
+        # Below query gives a list of objects which look like this: {'c': 1, 'month': datetime.date(2018, 1, 1)}
+        result =  self.objects.annotate(month=TruncMonth('date')).values('month').annotate(c=Count('id'))
+        d = dict()
+        for item in result:
+            d[item['month'].month] = item['c']
+        for i in range(1, 13):
+            if i not in d.keys():
+                d[i] = 0
+        return d
 
 
 class Round(models.Model):
