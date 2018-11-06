@@ -31,7 +31,8 @@ def user_login(request):
 def profile(request):
     today_date = timezone.now().date()
     user_rounds = Round.objects.filter(assignee=request.user, date__gte=today_date, interview__status='AC')
-    args = {'user': request.user, 'my_rounds': user_rounds}
+    interviews_this_year = Interview.count_all_months_interviews_current_year()
+    args = {'user': request.user, 'my_rounds': user_rounds, 'interview_count': interviews_this_year}
     return render(request, 'profile.html', args)
 
 def register(request):

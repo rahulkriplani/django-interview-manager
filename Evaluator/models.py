@@ -12,6 +12,7 @@ from django.db.models import Sum, Count
 from django.db.models.functions import TruncMonth
 
 from datetime import datetime
+from collections import OrderedDict
 
 
 class RatingSheet(models.Model):
@@ -172,14 +173,16 @@ class Interview(models.Model):
     @classmethod
     def count_all_months_interviews_current_year(self):
         # Below query gives a list of objects which look like this: {'c': 1, 'month': datetime.date(2018, 1, 1)}
-        result =  self.objects.annotate(month=TruncMonth('date')).values('month').annotate(c=Count('id'))
+        result =  self.objects.annotate(month=TruncMonth('date')).values('month').annotate(c=Count('id')).order_by('month')
+
         d = dict()
         for item in result:
             d[item['month'].month] = item['c']
         for i in range(1, 13):
             if i not in d.keys():
                 d[i] = 0
-        return d
+        
+        return d.values()
 
 
 class Round(models.Model):

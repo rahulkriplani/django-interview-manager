@@ -8,6 +8,16 @@
 
     <div class="col-md-10">
         <p><h3>Welcome {{ request.user.first_name }} {{request.user.last_name}}</h3></p>
+        <div class="row">
+            <div class="col-md-6">
+                <div id="interviewTrendYear"></div>
+            </div>
+            <div class="col-md-6">
+                <p>Test</p>
+            </div>
+        </div>
+            
+        
         {% if my_rounds %}
             <p><h3> Upcoming rounds : {% for round in my_rounds %}</h3></p>
                 <ol class="list-group">
@@ -63,6 +73,36 @@
         </div>
     </div>
 
+<script src="https://code.jquery.com/jquery-3.2.1.js"></script>
+<script src="https://code.highcharts.com/highcharts.src.js"></script>
+
+<script>
+    var chart = new Highcharts.Chart({
+      chart: {
+          renderTo: 'interviewTrendYear',
+          type: 'line',
+          height: '50%',
+      },
+      title: {
+          text: 'Interview Trend'
+      },
+      
+      xAxis: {
+          categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+      },
+      yAxis: {
+          title: {
+            text: 'Interviews scheduled'
+          }  
+      },
+       series: [{
+          name: 'No of interviews',
+          data: {{ interview_count }},
+          color: 'green',
+        }],
+
+      });
+</script>
 
 {% endblock %}
 
