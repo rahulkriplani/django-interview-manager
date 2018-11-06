@@ -26,13 +26,27 @@ def user_login(request):
     else:
         return render(request, 'login_form.html')
 
+def _get_user_rounds_in_year(interviewee):
+    result = Round.objects.filter(assignee=interviewee).annotate(month=TruncMonth('date')).values('month').annotate(c=Count('id'))
+    d = dict()
+    for item in result:
+        d[item['month'].month] = item['c']
+    for i in range(1, 13):
+        if i not in d.keys():
+            d[i] = 0
+
+    return d.values()    
+
 @user_passes_test(lambda u: u.is_staff)
 @login_required
 def profile(request):
     today_date = timezone.now().date()
     user_rounds = Round.objects.filter(assignee=request.user, date__gte=today_date, interview__status='AC')
     interviews_this_year = Interview.count_all_months_interviews_current_year()
-    args = {'user': request.user, 'my_rounds': user_rounds, 'interview_count': interviews_this_year}
+    rounds_user_year = _get_user_rounds_in_year(request.user)
+    
+        
+    args = {'user': request.user, 'my_rounds': user_rounds, 'interview_count': interviews_this_year, 'rounds_user_year': rounds_user_year}
     return render(request, 'profile.html', args)
 
 def register(request):
@@ -84,3 +98,6 @@ def get_details_user(request, user_pk):
         return render(request, 'details_user.html', {'rounds': rounds, 'user': user})
     else:
         raise Http404("User does not exists!")
+
+
+

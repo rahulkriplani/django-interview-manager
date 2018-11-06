@@ -13,7 +13,7 @@
                 <div id="interviewTrendYear"></div>
             </div>
             <div class="col-md-6">
-                <p>Test</p>
+                <div id="roundsUserInYear"></div>
             </div>
         </div>
             
@@ -98,7 +98,35 @@
        series: [{
           name: 'No of interviews',
           data: {{ interview_count }},
-          color: 'green',
+          color: 'red',
+        }],
+
+      });
+</script>
+
+<script>
+    var chart = new Highcharts.Chart({
+      chart: {
+          renderTo: 'roundsUserInYear',
+          type: 'line',
+          height: '50%',
+      },
+      title: {
+          text: 'Rounds this year for {{ request.user.first_name }}'
+      },
+      
+      xAxis: {
+          categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+      },
+      yAxis: {
+          title: {
+            text: 'Rounds Scheduled'
+          }  
+      },
+       series: [{
+          name: 'No of rounds',
+          data: {{ rounds_user_year }},
+          color: '#57b230',
         }],
 
       });
