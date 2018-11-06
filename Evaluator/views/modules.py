@@ -1,7 +1,7 @@
 from __future__ import unicode_literals
 
 from django.shortcuts import render, redirect, reverse
-from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth.forms import PasswordChangeForm, UserChangeForm
 from django.contrib.auth import update_session_auth_hash, authenticate, login
 from django.views.generic import CreateView, UpdateView, DeleteView, ListView
 from django.contrib.auth.decorators import login_required, user_passes_test

@@ -58,6 +58,8 @@ def edit_profile(request):
         args = {'form' : form}
         return render(request, 'edit_profile.html', args)
 
+@user_passes_test(lambda u: u.is_staff)
+@login_required
 def change_password(request):
     if request.method == 'POST':
         form = PasswordChangeForm(data=request.POST, user=request.user)
