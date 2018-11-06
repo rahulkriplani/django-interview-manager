@@ -1,7 +1,9 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block head %}
 <title>{{request.user.first_name}}'s Profile</title>
+<link rel="stylesheet" href="{% static 'css/highcharts.css' %}" >
 {% endblock %}
 
 {% block content %}
@@ -73,8 +75,9 @@
         </div>
     </div>
 
-<script src="https://code.jquery.com/jquery-3.2.1.js"></script>
-<script src="https://code.highcharts.com/highcharts.src.js"></script>
+
+<script src="https://code.highcharts.com/highcharts.js"></script>
+
 
 <script>
     var chart = new Highcharts.Chart({

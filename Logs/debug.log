@@ -10,3 +10,13 @@
 2018-11-06 14:34:32,452, File: view_others.py, Function: search_all, Message: Results found
 2018-11-06 14:43:00,687, File: view_others.py, Function: search_all, Message: Search called for keyword: test
 2018-11-06 14:43:00,690, File: view_others.py, Function: search_all, Message: Results found
+2018-11-06 19:16:09,269, File: view_exam.py, Function: add_ratings, Message: arindam31 is trying to add ratings for interview id: 14 and for round id: 8
+2018-11-06 19:21:23,925, File: view_others.py, Function: search_all, Message: Search called for keyword: 
+2018-11-06 19:21:23,928, File: view_others.py, Function: search_all, Message: Results found
+2018-11-06 19:45:09,846, File: view_others.py, Function: search_all, Message: Search called for keyword: 
+2018-11-06 19:45:09,849, File: view_others.py, Function: search_all, Message: Results found
+2018-11-07 00:39:55,574, File: view_exam.py, Function: add_ratings, Message: arindam31 is trying to add ratings for interview id: 14 and for round id: 8
+2018-11-07 02:20:10,735, File: view_others.py, Function: search_all, Message: Search called for keyword: 
+2018-11-07 02:20:10,740, File: view_others.py, Function: search_all, Message: Results found
+2018-11-07 02:21:31,111, File: view_others.py, Function: search_all, Message: Search called for keyword: Arin
+2018-11-07 02:21:31,114, File: view_others.py, Function: search_all, Message: Results found

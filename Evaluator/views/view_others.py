@@ -9,14 +9,17 @@ from modules import *
 def search_all(request):
     if request.method == 'GET':
         keyword = request.GET.get('searchKeyword')
-        logger.debug("Search called for keyword: %s" % keyword)
-        result = global_search(keyword)
-        if result:
-            logger.debug("Results found")
-            return  render(request, 'search_results.html', {'result':result})
+        if keyword:
+            logger.debug("Search called for keyword: %s" % keyword)
+            result = global_search(keyword)
+            if result:
+                logger.debug("Results found")
+                return  render(request, 'search_results.html', {'result':result})
+            else:
+                logger.debug("No Results found")
+                return  render(request, 'search_results.html', {'message':'No results'})
         else:
-            logger.debug("No Results found")
-            return  render(request, 'search_results.html', {'message':'No results'})
+            return  render(request, 'search_results.html', {'message':'Keyword cannot be of zero length'})
 
 #***********************************************************************
 #-------------------------------- Home  ---------------------------

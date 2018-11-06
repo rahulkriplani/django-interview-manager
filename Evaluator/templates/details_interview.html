@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<div id="interview_details">
 <h1>{{ interview }}</h1>
          <p><a class="btn btn-info" href={% url 'Evaluator:edit_interview' interview.pk %}>Edit</a></p>
          <p><b>Position </b>: {{ interview.position.name }}</p>
@@ -46,8 +47,6 @@
             </tr>
             {% endfor %}
         {% endif %}
-
-
-
-
+    </table>
+</div>
 {% endblock %}
