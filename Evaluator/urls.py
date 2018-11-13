@@ -14,7 +14,7 @@ urlpatterns = [
     url(r'^profile/$', views.profile, name='profile'),
     url(r'^register/$', views.register, name='register'),
     url(r'^profile/edit/$', views.edit_profile, name='edit_profile'),
-    url(r'^password/$', views.change_password, name='change_password'),
+    url(r'^profile/password/$', views.change_password, name='change_password'),
     url(r'^userDetails/(?P<user_pk>\d+)/$', views.get_details_user, name='user_details'),
 
     # Question URLs
