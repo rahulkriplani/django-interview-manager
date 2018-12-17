@@ -14,7 +14,7 @@ class InterviewCalendar(HTMLCalendar):
         if day != 0:
             cssclass = self.cssclasses[weekday]
             if date.today() == date(self.year, self.month, day):
-                cssclass += ' today'
+                cssclass += ' '
             if day in self.interviews:
                 cssclass += ' h4'
                 body = []

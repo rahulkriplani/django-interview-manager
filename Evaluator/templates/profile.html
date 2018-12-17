@@ -18,8 +18,8 @@
                 <div id="roundsUserInYear"></div>
             </div>
         </div>
-            
-        
+
+
         {% if my_rounds %}
             <p><h3> Upcoming rounds : {% for round in my_rounds %}</h3></p>
                 <ol class="list-group">
@@ -47,11 +47,7 @@
     </div>
 
     <div class="col-md-2">
-        <div class="row well">
-            Text
-            Line
-            Line
-        </div>
+        <p>It is {% now "jS F Y H:i" %}</p>
         <div class="row well" style="margin-bottom: 10px; margin-top: 50px">
             <h3 style="margin-top:0px;margin-bottom:20px"><span  class="label label-primary">Interview Tools</span></h3>
             <p><a href="{% url 'Evaluator:add_interview' %}">Schedule Interview</a></p>
@@ -89,14 +85,14 @@
       title: {
           text: 'Interview Trend'
       },
-      
+
       xAxis: {
           categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
       },
       yAxis: {
           title: {
             text: 'Interviews scheduled'
-          }  
+          }
       },
        series: [{
           name: 'No of interviews',
@@ -117,14 +113,14 @@
       title: {
           text: 'Rounds this year for {{ request.user.first_name }}'
       },
-      
+
       xAxis: {
           categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
       },
       yAxis: {
           title: {
             text: 'Rounds Scheduled'
-          }  
+          }
       },
        series: [{
           name: 'No of rounds',

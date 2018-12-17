@@ -35,7 +35,7 @@ def _get_user_rounds_in_year(interviewee):
         if i not in d.keys():
             d[i] = 0
 
-    return d.values()    
+    return d.values()
 
 @user_passes_test(lambda u: u.is_staff)
 @login_required
@@ -43,10 +43,15 @@ def profile(request):
     today_date = timezone.now().date()
     user_rounds = Round.objects.filter(assignee=request.user, date__gte=today_date, interview__status='AC')
     interviews_this_year = Interview.count_all_months_interviews_current_year()
+    interviews_this_month = Interview.objects.filter(
+    date__year=datetime.date.today().year, date__month=datetime.date.today().month
+    )
+    cal = InterviewCalendar(interviews_this_month).formatmonth(datetime.date.today().year, datetime.date.today().month)
+
     rounds_user_year = _get_user_rounds_in_year(request.user)
-    
-        
-    args = {'user': request.user, 'my_rounds': user_rounds, 'interview_count': interviews_this_year, 'rounds_user_year': rounds_user_year}
+
+
+    args = {'user': request.user, 'my_rounds': user_rounds, 'interview_count': interviews_this_year, 'rounds_user_year': rounds_user_year, 'calendar': mark_safe(cal)}
     return render(request, 'profile.html', args)
 
 def register(request):
