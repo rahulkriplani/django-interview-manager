@@ -28,6 +28,8 @@ urlpatterns = [
     url(r'^allInterview/$', views.all_interviews, name='all_interview'),
     url(r'^detailInterview/(?P<interview_pk>\d+)/$', views.interviews_details, name='interview_details'),
     url(r'^editInterview/(?P<interview_pk>\d+)/$', views.edit_interview, name='edit_interview'),
+    url(r'^calendar/(?P<year>\d+)/(?P<month>\d+)$', views.calendar, name='calendar'),
+    url(r'^allInterview/onDate/(?P<year>\d+)/(?P<month>\d+)/(?P<day>\d+)$', views.get_interviews_by_date, name='interviewsbydate'),
 
     # Candidate URLS
     url(r'^candidateDetails/(?P<candidate_pk>\d+)/$', views.candi_details, name='candi_details'),

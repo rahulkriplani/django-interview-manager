@@ -21,6 +21,14 @@ def all_interviews(request):
 
     return render(request, 'all_interviews.html', {'filter': interview_filter, 'interviews': page_interviews})
 
+@user_passes_test(lambda u: u.is_staff)
+@login_required
+def get_interviews_by_date(request, year, month, day):
+    date = datetime.date(int(year), int(month), int(day))
+    interviews = Interview.objects.filter(date=date).order_by('date')
+    print interviews
+    return render(request, 'Evaluator/interview_list.html', {'interviews': interviews})
+
 
 @user_passes_test(lambda u: u.is_staff)
 @login_required
@@ -91,3 +99,11 @@ def edit_interview(request, interview_pk):
                 'formset':round_forms
             })
 
+@user_passes_test(lambda u: u.is_staff)
+@login_required
+def calendar(request, year, month):
+    my_interviews = Interview.objects.order_by('date').filter(
+    date__year=year, date__month=month
+    )
+    cal = InterviewCalendar(my_interviews).formatmonth(year, month)
+    return render_to_response('Evaluator/calendar.html', {'calendar': mark_safe(cal),})
