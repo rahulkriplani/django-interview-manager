@@ -1,8 +1,35 @@
 {% extends 'base.html' %}
+{% load mathfilters %}
 {% block content %}
 
 
 {{ calendar }}
-<div class="text-left"><a href="#">Prev</a></div><div class="text-right"><a href="#">Next</a></div>
+
+{% now "n" as current_month %}
+{% now "Y" as current_year %}
+
+{% if current_month == '1' %}
+    <div class="text-left">
+        <a href='/calendar/{{ current_year|sub:"1" }}/12'>Prev</a>
+    </div>
+    <div class="text-right">
+            <a href='/calendar/{{ current_year }}/2'>Next</a>
+    </div>
+{% elif current_month == '12' %}
+    {{ current_month }}
+    <div class="text-left">
+        <a href='/calendar/{{ current_year }}/11'>Prev</a>
+    </div>
+    <div class="text-right">
+            <a href='/calendar/{{ current_year|add:1 }}/1'>Next</a>
+    </div>
+{% else %}
+    <div class="text-left">
+        <a href='/calendar/{% now "Y" %}/{% now "n" %}'>Prev</a>
+    </div>
+    <div class="text-right">
+        <a href='/calendar/{% now "Y" %}/{% now "n" %}'>Next</a>
+    </div>
+{% endif %}
 
 {% endblock %}

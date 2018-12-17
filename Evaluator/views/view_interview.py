@@ -26,7 +26,6 @@ def all_interviews(request):
 def get_interviews_by_date(request, year, month, day):
     date = datetime.date(int(year), int(month), int(day))
     interviews = Interview.objects.filter(date=date).order_by('date')
-    print interviews
     return render(request, 'Evaluator/interview_list.html', {'interviews': interviews})
 
 

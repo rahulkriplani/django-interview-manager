@@ -32,7 +32,8 @@
                       <ul class="nav navbar-nav">
                         <li class="active"><a href="/profile">Home</a></li>
                         <li><a href="/profile/edit">Edit Profile</a></li>
-                        <li><a href="/calendar/{% now "Y" %}/{% now "f" %}">Calendar</a></li>
+                        <!-- https://docs.djangoproject.com/en/1.11/ref/templates/builtins/#std:templatefilter-date -->
+                        <li><a href="/calendar/{% now "Y" %}/{% now "n" %}">Calendar</a></li>
                       </ul>
 
               <div class="nav navbar-nav">
