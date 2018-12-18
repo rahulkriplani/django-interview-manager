@@ -1,7 +1,14 @@
 {% extends 'base.html' %}
 
 {% block content %}
-{% for interview in interviews %}
-    <li><a href="{% url 'Evaluator:interview_details' interview.pk %}">{{ interview }}</a></li>
-{% endfor %}
+{% if interviews %}
+    {% for interview in interviews %}
+        <li><a href="{% url 'Evaluator:interview_details' interview.pk %}">{{ interview }}</a></li>
+    {% endfor %}
+{% endif %}
+
+{% if message %}
+    <h1  class="text-center">{{ message }}</h1>
+{% endif %}
+
 {% endblock %}

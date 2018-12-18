@@ -24,9 +24,15 @@ def all_interviews(request):
 @user_passes_test(lambda u: u.is_staff)
 @login_required
 def get_interviews_by_date(request, year, month, day):
-    date = datetime.date(int(year), int(month), int(day))
+    try:
+        date = datetime.date(int(year), int(month), int(day))
+    except ValueError:
+        return render(request, 'Evaluator/interview_list.html', {'message': "Incorrect Date range entered ! "})
     interviews = Interview.objects.filter(date=date).order_by('date')
-    return render(request, 'Evaluator/interview_list.html', {'interviews': interviews})
+    if interviews:
+        return render(request, 'Evaluator/interview_list.html', {'interviews': interviews})
+    else:
+        return render(request, 'Evaluator/interview_list.html', {'message': "No interviews found scheduled! "})
 
 
 @user_passes_test(lambda u: u.is_staff)
@@ -102,7 +108,7 @@ def edit_interview(request, interview_pk):
 @login_required
 def calendar(request, year, month):
     my_interviews = Interview.objects.order_by('date').filter(
-    date__year=year, date__month=month
-    )
+    date__year=year, date__month=month)
     cal = InterviewCalendar(my_interviews).formatmonth(year, month)
     return render_to_response('Evaluator/calendar.html', {'calendar': mark_safe(cal), 'year_passed': year, 'month_passed': month})
+
