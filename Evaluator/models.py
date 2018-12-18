@@ -181,7 +181,7 @@ class Interview(models.Model):
         for i in range(1, 13):
             if i not in d.keys():
                 d[i] = 0
-        
+
         return d.values()
 
 
@@ -191,8 +191,8 @@ class Round(models.Model):
     contact_time = models.TimeField(default=timezone.now)
     assignee = models.ForeignKey(User)
     interview = models.ForeignKey(Interview)
-    created_at = models.DateTimeField(default=datetime.now, editable=False)
-    modified_on = models.DateTimeField(default=datetime.now, editable=False)
+    created_at = models.DateTimeField(default=timezone.now, editable=False)
+    modified_on = models.DateTimeField(default=timezone.now, editable=False)
     comments = models.CharField(max_length=300, default='', null=True, blank=True)
 
     def save(self, *args, **kwargs):

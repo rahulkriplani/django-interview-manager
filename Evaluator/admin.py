@@ -87,10 +87,15 @@ class InterviewRatingSheetAdmin(admin.ModelAdmin):
     readonly_fields = ['interview', 'round_name', ]
     inlines = [RatingAspectInline]
 
+class CandidateAdmin(admin.ModelAdmin):
+    model = Candidate
+    list_display = ['name', 'position_applied', 'created_at', 'vendor']
+    search_fields = ['name']
+    list_filter = ['position_applied']
 
 
 admin.site.register(Vendor, VendorAdmin)
-admin.site.register(Candidate)
+admin.site.register(Candidate, CandidateAdmin)
 admin.site.register(Position, PositionAdmin)
 admin.site.register(Interview, InterviewAdmin)
 admin.site.register(Question, QuestionAdmin)

@@ -15,7 +15,7 @@ from django.db.models.functions import TruncMonth
 from django.db.models import Sum, Count
 
 from Evaluator import forms
-from Evaluator.models import Interview, Question, Candidate, Answer, QuestionSet, Round, Vendor
+from Evaluator.models import Interview, Question, Candidate, Answer, QuestionSet, Round, Vendor, Skill
 from Evaluator.models import RatingAspect, InterviewRatingSheet
 from Evaluator.filters import InterviewFilter, CandidateFilter
 

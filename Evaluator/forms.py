@@ -80,7 +80,7 @@ AnswerInLineFormSet = forms.inlineformset_factory(
 class AddCandidateForm(forms.ModelForm):
     class Meta:
         model = models.Candidate
-        fields = ['name', 'experience', 'position_applied', 'contact_primary', 'vendor']
+        fields = ['name', 'experience', 'position_applied', 'contact_primary', 'vendor', 'skill']
 
 class QuestionSetForm(forms.ModelForm):
     name = forms.CharField(max_length=200)

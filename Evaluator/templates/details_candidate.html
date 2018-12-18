@@ -2,11 +2,10 @@
 {% block content %}
 
 <div class="well">
-    <div class="container">
-        
+
             <h2>Name : {{ candidate.name }} </h2>
             <a class="btn btn-info right-justify" href={% url 'Evaluator:edit_candidate' candidate.pk %}>Edit</a>
-        
+
 <h4>Contact: {{ candidate.contact_primary }}</h4>
 <h4>Experience: {{ candidate.experience }} yrs </h4>
 <h4>Position Applied: {{ candidate.position_applied }}</h4>
@@ -18,69 +17,72 @@
 </h4>
 
 </div>
-</div>
 
 
-{% for interview in interviews %}
-    <div class="panel panel-default">
-        <ul>
-            <h4>{{ interview }}</h4>
-            <li>Creation Date: {{ interview.date }}</li>
-            <li>Position: {{ interview.position }}</li>
-            <li>Status: {{ interview.get_status_display }}</li>
-            <li>Result: {{ interview.get_result_display }}</li>
+{% if interviews %}
+    {% for interview in interviews %}
+        <div class="panel panel-default">
+            <ul>
+                <h4>{{ interview }}</h4>
+                <li>Creation Date: {{ interview.date }}</li>
+                <li>Position: {{ interview.position }}</li>
+                <li>Status: {{ interview.get_status_display }}</li>
+                <li>Result: {{ interview.get_result_display }}</li>
 
 
-            <h4 class="mt-3">History:</h4>
-        <table class="table">
-            <tr>
-                <th>Change Date</th>
-                <th>Status</th>
-                <th>Result</th>
-                <th>Modified By</th>
-            </tr>
-
-            {% for line in interview.history.all %}
-            <tr>
-                <td>{{ line.history_date }}</td>
-                <td>{{ line.get_status_display }}</td>
-                <td>{{ line.get_result_display }}</td>
-                <td>{{ line.history_user }}</td>
-            </tr>
-            {% endfor %}
-
-        </table>
-        {% if interview.round_set.all %}
-
-            <h4>Rounds Details: </h4>
-
+                <h4 class="mt-3">History:</h4>
             <table class="table">
                 <tr>
-                {% for round in interview.round_set.all %}
-                    <th>{{ round.name }}</th>
-                {% endfor %}
+                    <th>Change Date</th>
+                    <th>Status</th>
+                    <th>Result</th>
+                    <th>Modified By</th>
                 </tr>
 
+                {% for line in interview.history.all %}
                 <tr>
-                {% for round in interview.round_set.all %}
-                    <td>{{ round.get_result_display }}</td>
-                {% endfor %}
+                    <td>{{ line.history_date }}</td>
+                    <td>{{ line.get_status_display }}</td>
+                    <td>{{ line.get_result_display }}</td>
+                    <td>{{ line.history_user }}</td>
                 </tr>
-
-                <tr>
-                {% for round in interview.round_set.all %}
-                    {% if round.interviewratingsheet %}
-                        <td><a href={% url 'Evaluator:rating_details' round.interviewratingsheet.pk %}>View Ratings</a></td>
-                    {% else %}
-                        <td><p>Rating Sheet Unavailable</p></td>
-                    {% endif %}
                 {% endfor %}
-                </tr>
 
             </table>
-        {% endif %}
-        </ul>
+            {% if interview.round_set.all %}
 
-    </div>
-{% endfor %}
+                <h4>Rounds Details: </h4>
+
+                <table class="table">
+                    <tr>
+                    {% for round in interview.round_set.all %}
+                        <th>{{ round.name }}</th>
+                    {% endfor %}
+                    </tr>
+
+                    <tr>
+                    {% for round in interview.round_set.all %}
+                        <td>{{ round.get_result_display }}</td>
+                    {% endfor %}
+                    </tr>
+
+                    <tr>
+                    {% for round in interview.round_set.all %}
+                        {% if round.interviewratingsheet %}
+                            <td><a href={% url 'Evaluator:rating_details' round.interviewratingsheet.pk %}>View Ratings</a></td>
+                        {% else %}
+                            <td><p>Rating Sheet Unavailable</p></td>
+                        {% endif %}
+                    {% endfor %}
+                    </tr>
+
+                </table>
+            {% endif %}
+            </ul>
+
+        </div>
+    {% endfor %}
+{% else %}
+    <h1 class="text-center"> No interviews scheduled yet! </h1>
+{% endif %}
 {% endblock %}

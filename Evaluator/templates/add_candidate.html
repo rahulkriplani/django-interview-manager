@@ -2,7 +2,6 @@
 
 {% block content %}
 
-<div class="container">
 	<h1>Add a Candidate</h1>
 		<form method="post">
 			{% csrf_token %}
@@ -10,6 +9,5 @@
 			<button class="btn btn-success btn-lg type="submit">Save</button>
 			<a class="btn btn-lg btn-danger" href="{% url 'Evaluator:profile' %}">Cancel</a>
 		</form>
-</div>
 
 {% endblock %}

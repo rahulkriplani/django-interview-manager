@@ -11,13 +11,17 @@ def add_candidate(request):
     if request.method == 'POST':
         form = forms.AddCandidateForm(request.POST)
         if form.is_valid():
-            post = form.save(commit=False)
-            post.name = form.cleaned_data['name']
-            post.contact_primary = form.cleaned_data['contact_primary']
-            post.experience = form.cleaned_data['experience']
-            post.position_applied = form.cleaned_data['position_applied']
-            post.save()
-            return redirect('/profile')
+            candidate = form.save(commit=False)
+            candidate.name = form.cleaned_data['name']
+            candidate.contact_primary = form.cleaned_data['contact_primary']
+            candidate.experience = form.cleaned_data['experience']
+            candidate.position_applied = form.cleaned_data['position_applied']
+            candidate.save()
+            for sk in form.cleaned_data['skill']:
+                skill = Skill.objects.get(name=sk)
+                candidate.skill.add(skill)
+
+            return HttpResponseRedirect(candidate.get_absolute_url())
     else:
         form = forms.AddCandidateForm()
         args = {'form': form}
