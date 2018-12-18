@@ -5,30 +5,26 @@
 
 {{ calendar }}
 
-{% now "n" as current_month %}
-{% now "Y" as current_year %}
-
-{% if current_month == '1' %}
+{% if month_passed == '1' %}
     <div class="text-left">
-        <a href='/calendar/{{ current_year|sub:"1" }}/12'>Prev</a>
+        <a href='/calendar/{{ year_passed|sub:"1" }}/12'>Prev</a>
     </div>
     <div class="text-right">
-            <a href='/calendar/{{ current_year }}/2'>Next</a>
+            <a href='/calendar/{{ year_passed }}/2'>Next</a>
     </div>
-{% elif current_month == '12' %}
-    {{ current_month }}
+{% elif month_passed == '12' %}
     <div class="text-left">
-        <a href='/calendar/{{ current_year }}/11'>Prev</a>
+        <a href='/calendar/{{ year_passed }}/11'>Prev</a>
     </div>
     <div class="text-right">
-            <a href='/calendar/{{ current_year|add:1 }}/1'>Next</a>
+            <a href='/calendar/{{ year_passed|add:1 }}/1'>Next</a>
     </div>
 {% else %}
     <div class="text-left">
-        <a href='/calendar/{% now "Y" %}/{% now "n" %}'>Prev</a>
+        <a href='/calendar/{{ year_passed }}/{{ month_passed|sub:"1" }}'>Prev</a>
     </div>
     <div class="text-right">
-        <a href='/calendar/{% now "Y" %}/{% now "n" %}'>Next</a>
+        <a href='/calendar/{{ year_passed }}/{{ month_passed|add:"1" }}'>Next</a>
     </div>
 {% endif %}
 

@@ -105,4 +105,4 @@ def calendar(request, year, month):
     date__year=year, date__month=month
     )
     cal = InterviewCalendar(my_interviews).formatmonth(year, month)
-    return render_to_response('Evaluator/calendar.html', {'calendar': mark_safe(cal),})
+    return render_to_response('Evaluator/calendar.html', {'calendar': mark_safe(cal), 'year_passed': year, 'month_passed': month})
