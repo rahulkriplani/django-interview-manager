@@ -5,7 +5,7 @@ from modules import *
 #***********************************************************************
 
 @user_passes_test(lambda u: u.is_staff)
-@login_required
+@login_required(login_url="/login")
 def all_interviews(request):
     interviews = Interview.objects.get_queryset().order_by('id')
     interview_filter = InterviewFilter(request.GET, queryset=interviews)
@@ -22,7 +22,7 @@ def all_interviews(request):
     return render(request, 'all_interviews.html', {'filter': interview_filter, 'interviews': page_interviews})
 
 @user_passes_test(lambda u: u.is_staff)
-@login_required
+@login_required(login_url="/login")
 def get_interviews_by_date(request, year, month, day):
     try:
         date = datetime.date(int(year), int(month), int(day))
@@ -35,8 +35,11 @@ def get_interviews_by_date(request, year, month, day):
         return render(request, 'Evaluator/interview_list.html', {'message': "No interviews found scheduled! "})
 
 
+
+
+@login_required(login_url="/login")
 @user_passes_test(lambda u: u.is_staff)
-@login_required
+@user_passes_test(lambda u: 'Evaluator.add_interview' in u.get_group_permissions())
 def add_interview(request):
     round_forms = forms.RoundInLineFormSet(
             queryset=Round.objects.none()
@@ -63,7 +66,7 @@ def add_interview(request):
 
 
 @user_passes_test(lambda u: u.is_staff)
-@login_required
+@login_required(login_url="/login")
 def interviews_details(request, interview_pk):
     try:
         interview = Interview.objects.get(pk=interview_pk)
@@ -78,7 +81,7 @@ def interviews_details(request, interview_pk):
 
 
 @user_passes_test(lambda u: u.is_staff)
-@login_required
+@login_required(login_url="/login")
 def edit_interview(request, interview_pk):
     interview = Interview.objects.get(pk=interview_pk)
     form = forms.AddInterview(instance=interview)
@@ -105,7 +108,7 @@ def edit_interview(request, interview_pk):
             })
 
 @user_passes_test(lambda u: u.is_staff)
-@login_required
+@login_required(login_url="/login")
 def calendar(request, year, month):
     my_interviews = Interview.objects.order_by('date').filter(
     date__year=year, date__month=month)

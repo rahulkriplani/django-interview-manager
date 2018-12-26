@@ -5,7 +5,7 @@ from modules import *
 #***********************************************************************
 
 @user_passes_test(lambda u: u.is_staff)
-@login_required
+@login_required(login_url="/login")
 def exams(request):
     Exams = Exam.objects.all()
     return render(request, 'exams.html',{'exams':Exams})
@@ -21,7 +21,7 @@ def exam_launch_page(request):
 #***********************************************************************
 
 @user_passes_test(lambda u: u.is_staff)
-@login_required
+@login_required(login_url="/login")
 def add_ratings(request, interview_pk, round_pk):
     logger.debug("%s is trying to add ratings for interview id: %s and for round id: %s" % (request.user.username , interview_pk, round_pk))
     if interview_pk:
@@ -75,7 +75,7 @@ def add_ratings(request, interview_pk, round_pk):
           })
 
 @user_passes_test(lambda u: u.is_staff)
-@login_required
+@login_required(login_url="/login")
 def rating_details(request, rating_pk):
     try:
         rating = InterviewRatingSheet.objects.get(pk=rating_pk)

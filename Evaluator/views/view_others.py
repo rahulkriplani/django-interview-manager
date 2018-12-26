@@ -5,7 +5,7 @@ from modules import *
 #***********************************************************************
 
 @user_passes_test(lambda u: u.is_staff)
-@login_required
+@login_required(login_url="/login")
 def search_all(request):
     if request.method == 'GET':
         keyword = request.GET.get('searchKeyword')
@@ -34,12 +34,12 @@ def index(request):
 #***********************************************************************
 
 @user_passes_test(lambda u: u.is_staff)
-@login_required
+@login_required(login_url="/login")
 def allVendors(request):
     return render(request, 'all_vendors.html', {'vendors': Vendors.objects.all()})
 
 @user_passes_test(lambda u: u.is_staff)
-@login_required
+@login_required(login_url="/login")
 def vendor_details(request, vendor_pk):
     vendor = Vendor.objects.get(pk=vendor_pk)
     return render(request, 'details_vendors.html', {'vendor': vendor})

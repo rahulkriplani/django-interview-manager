@@ -37,8 +37,8 @@ def _get_user_rounds_in_year(interviewee):
 
     return d.values()
 
-@user_passes_test(lambda u: u.is_staff)
 @login_required
+@user_passes_test(lambda u: u.is_staff)
 def profile(request):
     today_date = timezone.now().date()
     user_rounds = Round.objects.filter(assignee=request.user, date__gte=today_date, interview__status='AC')
@@ -61,7 +61,6 @@ def register(request):
         args = {'form': form}
         return render(request, 'register.html', args)
 
-@user_passes_test(lambda u: u.is_staff)
 @login_required
 def edit_profile(request):
     if request.method == 'POST':
@@ -74,7 +73,6 @@ def edit_profile(request):
         args = {'form' : form}
         return render(request, 'edit_profile.html', args)
 
-@user_passes_test(lambda u: u.is_staff)
 @login_required
 def change_password(request):
     if request.method == 'POST':
@@ -90,7 +88,7 @@ def change_password(request):
         args = {'form':form}
         return render(request, 'password_change.html', args)
 
-@user_passes_test(lambda u: u.is_staff)
+
 @login_required
 def get_details_user(request, user_pk):
     user = User.objects.get(pk=user_pk)

@@ -5,7 +5,8 @@ from modules import *
 #***********************************************************************
 
 
-@login_required
+@login_required(login_url="/login")
+@user_passes_test(lambda u: u.is_staff)
 def question_details(request, question_id):
     try:
         question = Question.objects.get(pk=question_id)
@@ -19,8 +20,8 @@ def question_details(request, question_id):
 class QuestionList(ListView):
     model = Question
 
+@login_required(login_url="/login")
 @user_passes_test(lambda u: u.is_staff)
-@login_required
 def create_question(request):
     answer_forms = forms.AnswerInLineFormSet(
             queryset=Answer.objects.none()
@@ -47,7 +48,7 @@ def create_question(request):
             })
 
 @user_passes_test(lambda u: u.is_staff)
-@login_required
+@login_required(login_url="/login")
 def edit_question(request, que_pk):
     question = Question.objects.get(pk=que_pk)
     form = forms.QuestionForm(instance=question)
@@ -81,8 +82,8 @@ def edit_question(request, que_pk):
 #***********************************************************************
 
 
+@login_required(login_url="/login")
 @user_passes_test(lambda u: u.is_staff)
-@login_required
 def create_question_set(request):
     question_set_form = forms.QuestionSetForm()
     if request.method == 'POST':
@@ -95,12 +96,15 @@ def create_question_set(request):
                 'form':question_set_form
             })
 
+@login_required(login_url="/login")
+@user_passes_test(lambda u: u.is_staff)
 def question_set_details(request, qset_pk):
     question_set = QuestionSet.objects.get(pk=qset_pk)
     questions = Question.objects.filter(qset=question_set)
     return render(request, 'details_QuestionSet.html', {'question_set': question_set, 'questions':questions})
 
-@login_required
+@login_required(login_url="/login")
+@user_passes_test(lambda u: u.is_staff)
 def get_question_sets(request):
     question_sets = QuestionSet.objects.all()
     return render(request, 'all_qsets.html',{'question_sets':question_sets})

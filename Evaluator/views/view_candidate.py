@@ -6,7 +6,7 @@ from modules import *
 #***********************************************************************
 
 @user_passes_test(lambda u: u.is_staff)
-@login_required
+@login_required(login_url="/login")
 def add_candidate(request):
     if request.method == 'POST':
         form = forms.AddCandidateForm(request.POST)
@@ -29,7 +29,7 @@ def add_candidate(request):
 
 
 @user_passes_test(lambda u: u.is_staff)
-@login_required
+@login_required(login_url="/login")
 def all_candidates(request):
     candidates = Candidate.objects.get_queryset().order_by('id')
     candidate_filter = CandidateFilter(request.GET, queryset=candidates)
@@ -45,7 +45,8 @@ def all_candidates(request):
     return render(request, 'all_candidates.html', {'candidates': page_candidates, 'filter': candidate_filter})
 
 
-@login_required
+@login_required(login_url="/login")
+@user_passes_test(lambda u: u.is_staff)
 def edit_candidate(request, candidate_pk):
     candidate = Candidate.objects.get(pk=candidate_pk)
     if request.method == 'POST':
@@ -58,6 +59,9 @@ def edit_candidate(request, candidate_pk):
         args = {'form':form}
         return render(request, 'add_candidate.html', args)
 
+
+@login_required(login_url="/login")
+@user_passes_test(lambda u: u.is_staff)
 def candi_details(request, candidate_pk):
     candidate = Candidate.objects.get(pk=candidate_pk)
     interviews = Interview.objects.filter(candidate=candidate)
