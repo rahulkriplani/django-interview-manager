@@ -189,5 +189,5 @@ def calendar(request, year, month):
     my_interviews = Interview.objects.order_by('date').filter(
     date__year=year, date__month=month)
     cal = InterviewCalendar(my_interviews).formatmonth(year, month)
-    return render_to_response('Evaluator/calendar.html', {'calendar': mark_safe(cal), 'year_passed': year, 'month_passed': month})
+    return render(request, 'Evaluator/calendar.html', {'calendar': mark_safe(cal), 'year_passed': year, 'month_passed': month})
 

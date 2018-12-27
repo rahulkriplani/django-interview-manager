@@ -19,7 +19,7 @@ class InterviewCalendar(HTMLCalendar):
                 cssclass += ' h4'
                 body = []
                 for interview in self.interviews[day]:
-                    body.append('<a href="/allInterview/onDate/%s/%s/%s">' % (self.year, self.month, day))
+                    body.append('<a href="/allInterview/onDate/{}/{:02d}/{:02d}">' .format(self.year, self.month, day))
                     #body.append(esc(str(interview)))
                     body.append('%s</a>' % day)
 
