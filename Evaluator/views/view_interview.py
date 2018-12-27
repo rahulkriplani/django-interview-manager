@@ -4,9 +4,85 @@ from modules import *
 #-------------------------------- INTERVIEW ---------------------------
 #***********************************************************************
 
+def get_interviews_as_per_filters(request_get):
+    args = {}
+    status = request_get['status']
+    if status:
+        args['status'] = status
+
+    position = request_get['position']
+
+    if request_get['position']:
+        args['position'] = position
+
+    start_date = request_get['start_date']
+    if start_date:
+        args['date__gte'] = start_date
+
+    end_date = request_get['end_date']
+    if end_date:
+        args['date__lte'] = end_date
+
+
+
+    # 1 is today, 2 is past 7 days, 3 is this month, 4 is this year, yesterday is 5
+    reg_year = {
+            'today': timezone.now().today().date(),
+            'month': timezone.now().month,
+            'year': timezone.now().year,
+            'yesterday': timezone.now().today().date() - timezone.timedelta(days=1),
+            'past7days': timezone.now().today().date() - timezone.timedelta(days=7)
+            }
+
+    registry_year = request_get['registry_year']
+
+    if registry_year != '':
+        if registry_year == '4':
+            #interviews = Interview.objects.filter(status=status, date__lte=end_date, date__gte=start_date, date__year=reg_year['year'], position=position).order_by('id')
+            args['date__year'] = reg_year['year']
+        elif registry_year == '1':
+            #interviews = Interview.objects.filter(status=status, date=reg_year['today'], position=position).order_by('id')
+            args['date'] = reg_year['today']
+        elif registry_year == '2':
+            #interviews = Interview.objects.filter(status=status, date__lte=reg_year['today'], date__gte=reg_year['past7'], position=position).order_by('id')
+            args['date__lte'] = reg_year['today']
+            args['date__gte'] = reg_year['past7days']
+        elif registry_year == '3':
+            #interviews = Interview.objects.filter(status=status, date__month=reg_year['month'], position=position).order_by('id')
+            args['date__month'] = reg_year['month']
+        elif registry_year == '5':
+            #interviews = Interview.objects.filter(status=status, date=reg_year['yesterday'], position=position).order_by('id')
+            args['date'] = reg_year['yesterday']
+
+    interviews = Interview.objects.filter(**args)
+
+    return interviews
+
+
 @user_passes_test(lambda u: u.is_staff)
-@login_required(login_url="/login")
+@login_required
 def all_interviews(request):
+
+    if 'download_interview' in request.GET.keys():
+        """
+        If user clicks the "Download Report button, the request.GET has a key by the name 'download_interview'. "
+        The key has been injected on the template "templates/all_interviews.html" with name given to the download button.
+        This one: <button class="btn btn-primary btn-lg" type="submit" name="download_interview">Download Results</button>
+        We collect the filter values and get all interviews as per filters selected.
+        Then we write the values for each interview in a csv file. The file is directly download on the user's machine.
+        """
+        interviews = get_interviews_as_per_filters(request.GET)
+
+        result = [['Candidate Name', 'Interview Date', 'Position', 'Status', 'Result'],]
+        for interview in interviews:
+            row = [interview.candidate.name, interview.date, interview.position.name, interview.get_status_display(), interview.get_result_display()]
+            result.append(row)
+
+        logger.debug('Download interview filter results. Initiated by: %s' % request.user.username)
+        response = download_csv_report(result, report_name='report_interview.csv')
+        return response
+
+
     interviews = Interview.objects.get_queryset().order_by('id')
     interview_filter = InterviewFilter(request.GET, queryset=interviews)
 
