@@ -14,6 +14,7 @@
 
 - django-filter==1.1.0
 - simple-history
+- django-mathfilters==0.4.0
 
 ### Features:
 
@@ -31,8 +32,6 @@
   - Rating Sheet shows comments and points received along with a a graph showing comparison
     between expected points and actual points. **[Completed]**
   - Global Search in NavBar that can search for Candidates, Vendors, Users, and Positions. **[Completed]**
-  - Downloadable reports in Excel form. **[Not Started]**
-  - Statistics **[Not Started]**
-
-
-
+  - Downloadable reports in Excel form. **[Completed]**
+  - Statistics **[Completed]**
+  - Calender: Month wise showing dates with links for all interviews that day. **[Completed]**
