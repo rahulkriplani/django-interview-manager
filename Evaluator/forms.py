@@ -52,6 +52,10 @@ class EditProfileForm(UserChangeForm):
 
         return user
 
+class BulkCreateCandidateForm(forms.Form):
+    file = forms.FileField()
+    date = forms.DateField(widget=AdminDateWidget(), validators=[present_or_future_date])
+
 class AnswerForm(forms.ModelForm):
     class Meta:
         models = models.Answer

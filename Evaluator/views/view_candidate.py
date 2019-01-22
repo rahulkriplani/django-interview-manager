@@ -1,9 +1,42 @@
 from modules import *
 
 
+
 #***********************************************************************
 #-------------------------------- CANDIDATE ---------------------------
 #***********************************************************************
+
+def create_candis_interviews(fileobj):
+
+    for row in fileobj:
+        candi =  [row.strip() for row in row.split(',')]
+        # Create a candidate
+        print candi
+        position = Position.objects.get(id_code=candi[1].strip())
+        vendor = Vendor.objects.get(name=candi[4])
+        candidate = Candidate.objects.create(name=candi[0], position_applied=position, experience=candi[2], contact_primary=candi[3], vendor=vendor)
+
+@user_passes_test(lambda u: u.is_staff)
+@login_required(login_url="/login")
+def bulk_upload_candis(request):
+    # Note: Each line in csv file should be of format:
+    # Oneil, SDE04, 8, 1122334455, Company Online
+    # Name, Position, Exp, Contact, Vendor Name
+    if request.method == 'POST':
+        form = forms.BulkCreateCandidateForm(request.POST, request.FILES)
+        if form.is_valid():
+            file = request.FILES['file'].file
+
+            create_candis_interviews(file)
+
+            return render(request, 'success_bulk_upload.html')
+        else:
+            print 'Invalid form'
+            return
+    else:
+        form = forms.BulkCreateCandidateForm()
+        args = {'form': form}
+        return render(request, 'bulk_upload_candis.html', args)
 
 @user_passes_test(lambda u: u.is_staff)
 @login_required(login_url="/login")

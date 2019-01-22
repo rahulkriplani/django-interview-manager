@@ -36,6 +36,7 @@ urlpatterns = [
     url(r'^addCandidate/$', views.add_candidate, name='add_candidate'),
     url(r'^editCandidate/(?P<candidate_pk>\d+)/$', views.edit_candidate, name='edit_candidate'),
     url(r'^allCandidates/$', views.all_candidates, name='all_candidates'),
+    url(r'^bulkCreateCandis/$', views.bulk_upload_candis, name='bulk_upload_candis'),
 
     # Exam URLs
     url(r'Exams/$', views.exams, name="allexams"),

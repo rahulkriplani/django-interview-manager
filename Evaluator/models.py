@@ -97,7 +97,7 @@ class Candidate(models.Model):
     experience = models.PositiveIntegerField()
     position_applied = models.ForeignKey(Position)
     vendor = models.ForeignKey(Vendor, null=True)
-    skill = models.ManyToManyField(Skill)
+    skill = models.ManyToManyField(Skill, blank=True)
     created_at = models.DateTimeField(default=timezone.now, editable=False)
 
 
