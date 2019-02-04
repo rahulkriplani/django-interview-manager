@@ -52,10 +52,6 @@ class EditProfileForm(UserChangeForm):
 
         return user
 
-class BulkCreateCandidateForm(forms.Form):
-    file = forms.FileField()
-    date = forms.DateField(widget=AdminDateWidget(), validators=[present_or_future_date])
-
 class AnswerForm(forms.ModelForm):
     class Meta:
         models = models.Answer
@@ -120,4 +116,25 @@ RoundInLineFormSet = forms.inlineformset_factory(
         fields=('name', 'date', 'contact_time', 'assignee', 'round_type', 'result', 'comments'),
         formset=RoundFormSet,
         min_num=0,
+        )
+
+class BulkCreateInterviewsAndCandidates(forms.Form):
+    name_list = forms.CharField(
+        widget=forms.Textarea(attrs={'class': 'form-control', 'required': True}),
+        help_text='Please mention names in separate lines',
+        label='Candidate List',
+        )
+    position = forms.ModelChoiceField(
+        queryset=models.Position.objects.all(),
+        widget=forms.Select(attrs={'class':'form-control my-4', 'required': True}),
+        label='Position *',
+        )
+    experience = forms.IntegerField(label='Exp *',)
+    date = forms.DateField(widget=AdminDateWidget(attrs={'required': True}))
+
+    vendor = forms.ModelChoiceField(
+        queryset=models.Vendor.objects.all(),
+        widget=forms.Select(attrs={'class':'form-control mt-4', 'required': True}),
+        label='Vendor *',
+
         )

@@ -2,22 +2,61 @@
 {% load static %}
 
 {% block content %}
-<link rel="stylesheet" type="text/css" href="{% static 'admin/css/forms.css' %}"/>
-<link rel="stylesheet" type="text/css" href="{% static 'admin/css/widgets.css' %}"/>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" >
-<h1>Bulk Create Candis and Interviews</h1>
+<link rel="stylesheet" type="text/css" href="{% static 'admin/css/forms.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'admin/css/widgets.css' %}">
+<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" >
+
+<h1>Bulk Create Candidates and Interviews</h1>
 
  <form role="form" method="post" enctype="multipart/form-data">
-        
-    {% csrf_token %}
-    {{ form.media }}
 
-    {{ form.as_p }}
-    <input class="btn btn-success btn-lg" type="submit" name="Upload" value="Upload">
+    {% csrf_token %}
+    <table class="table">
+        {{ form}}
+        {{ form.errors }}
+    </table>
+
+    <h2>Add Rounds</h2>
+
+    {{round_form.management_form}}
+    <hr>
+
+    <table border="0.5" class="table">
+    <thead>
+        <tr>
+            <th>Round Name (e.g F2F_Tech)</th>
+            <th>Date</th>
+            <th>Time</th>
+            <th>Assigned To</th>
+            <th>Additional Comments</th>
+            <th>Round Type</th>
+            <th>Result</th>
+        </tr>
+    </thead>
+
+    <tbody class="table">
+    {% for form in round_form %}
+        {{ form.id }} <!--This is just for handling an error during save after editing -->
+        {{ form.media }}
+    <tr>
+        <td> {{ form.name }} {{ form.name.errors }}</td>
+        <td>{{ form.date }} {{ form.date.errors }}</td>
+        <td>{{ form.contact_time }} {{ form.contact_time.errors }}</td>
+        <td>{{ form.assignee }} {{ form.assignee.errors }}</td>
+        <td>{{ form.comments }} {{ form.comments.errors }}</td>
+        <td>{{ form.round_type }} {{ form.round_type.errors }}</td>
+        <td>{{ form.result }} {{ form.result.errors }}</td>
+    </tr>
+
+    {% endfor %}
+    </tbody>
+    </table>
+
+    <input class="btn btn-success btn-lg mt-4" type="submit" name="Upload" value="Create">
 
   </form>
 
- <script type="text/javascript" src="/admin/jsi18n/"></script>
+<script type="text/javascript" src="/admin/jsi18n/"></script>
 <script type="text/javascript" src="{% static 'admin/js/core.js' %}"></script>
 <script type="text/javascript" src="{% static 'admin/js/admin/RelatedObjectLookups.js' %}"></script>
 <script type="text/javascript" src="{% static 'admin/js/vendor/jquery/jquery.min.js' %}"></script>

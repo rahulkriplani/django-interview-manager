@@ -83,7 +83,7 @@ def all_interviews(request):
         return response
 
 
-    interviews = Interview.objects.get_queryset().order_by('id')
+    interviews = Interview.objects.get_queryset().order_by('-date')
     interview_filter = InterviewFilter(request.GET, queryset=interviews)
 
     page = request.GET.get('page', 1)
@@ -97,6 +97,7 @@ def all_interviews(request):
 
     return render(request, 'all_interviews.html', {'filter': interview_filter, 'interviews': page_interviews})
 
+
 @user_passes_test(lambda u: u.is_staff)
 @login_required(login_url="/login")
 def get_interviews_by_date(request, year, month, day):
@@ -109,7 +110,6 @@ def get_interviews_by_date(request, year, month, day):
         return render(request, 'Evaluator/interview_list.html', {'interviews': interviews})
     else:
         return render(request, 'Evaluator/interview_list.html', {'message': "No interviews found scheduled! "})
-
 
 
 

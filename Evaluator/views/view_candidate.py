@@ -19,24 +19,61 @@ def create_candis_interviews(fileobj):
 @user_passes_test(lambda u: u.is_staff)
 @login_required(login_url="/login")
 def bulk_upload_candis(request):
-    # Note: Each line in csv file should be of format:
-    # Oneil, SDE04, 8, 1122334455, Company Online
-    # Name, Position, Exp, Contact, Vendor Name
+    form = forms.BulkCreateInterviewsAndCandidates()
+    round_forms = forms.RoundInLineFormSet(
+            queryset=Round.objects.none()
+            )
+
     if request.method == 'POST':
-        form = forms.BulkCreateCandidateForm(request.POST, request.FILES)
-        if form.is_valid():
-            file = request.FILES['file'].file
+        form = forms.BulkCreateInterviewsAndCandidates(request.POST)
+        round_forms = forms.RoundInLineFormSet(
+                request.POST,
+                queryset=Round.objects.none()
+                )
 
-            create_candis_interviews(file)
+        if form.is_valid() and round_forms.is_valid():
+            names = form.cleaned_data['name_list']
+            names = names.split('\r\n')
 
-            return render(request, 'success_bulk_upload.html')
+            position_id = form.cleaned_data['position'].id
+            position = Position.objects.get(id=position_id)
+
+            experience = form.cleaned_data['experience']
+            vendor_id = form.cleaned_data['vendor'].id
+            vendor = Vendor.objects.get(id=vendor_id)
+            date = form.cleaned_data['date']
+
+            #Create Candidates
+            for candi in names:
+                candi = Candidate.objects.create(name=candi, position_applied=position, experience=experience, vendor=vendor)
+
+                #Create interview for Candidate
+                interview = Interview.objects.create(
+                    candidate=candi,
+                    date=date,
+                    position=position,
+                    )
+
+                rnd_name = round_forms.cleaned_data[0]['name']
+                contact_time = round_forms.cleaned_data[0]['contact_time']
+                comments = round_forms.cleaned_data[0]['comments']
+                assignee = round_forms.cleaned_data[0]['assignee']
+                user = User.objects.get(username=assignee)
+                round_type = round_forms.cleaned_data[0]['round_type']
+
+                #Create round
+                Round.objects.create(name=rnd_name, contact_time=contact_time, comments=comments,
+                    assignee=user, round_type=round_type, interview=interview, date=date)
+
+            return redirect('Evaluator:all_candidates')
         else:
-            print 'Invalid form'
-            return
-    else:
-        form = forms.BulkCreateCandidateForm()
-        args = {'form': form}
-        return render(request, 'bulk_upload_candis.html', args)
+            args = {'form': form, 'message': 'No Valid Form'}
+            return render(request, 'bulk_upload_candis.html', args)
+
+    args = {'form': form, 'round_form': round_forms}
+    return render(request, 'bulk_upload_candis.html', args)
+
+
 
 @user_passes_test(lambda u: u.is_staff)
 @login_required(login_url="/login")
@@ -64,7 +101,7 @@ def add_candidate(request):
 @user_passes_test(lambda u: u.is_staff)
 @login_required(login_url="/login")
 def all_candidates(request):
-    candidates = Candidate.objects.get_queryset().order_by('id')
+    candidates = Candidate.objects.get_queryset().order_by('-created_at')
     candidate_filter = CandidateFilter(request.GET, queryset=candidates)
     page = request.GET.get('page', 1)
     paginator = Paginator(candidate_filter.qs, 10)
