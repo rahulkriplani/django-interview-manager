@@ -1,5 +1,9 @@
 {% extends 'base.html' %}
 
+{% block head %}
+    <title>Interview Details</title>
+{% endblock %}
+
 {% block content %}
 <div id="interview_details">
 <h1>{{ interview }}</h1>
@@ -23,6 +27,7 @@
                     <th>Date Scheduled</th>
                     <th>Time</th>
                     <th>Assignee</th>
+                    <th>Assisting Interviewers</th>
                     <th>Type</th>
                     <th>Result</th>
                     <th>Instructions</th>
@@ -35,6 +40,12 @@
                 <td>{{ round.date}}</td>
                 <td>{{ round.contact_time }}</td>
                 <td>{{ round.assignee.username }}</td>
+                <td><ul>
+                    {% for interviewer in round.supporting_interviewer.all %}
+                        <li>{{ interviewer.first_name }}</li>
+                    {% endfor %}
+                    </ul>
+                </td>
                 <td>{{ round.get_round_type_display  }}</td>
                 <td>{{ round.get_result_display }}</td>
                 <td>{{ round.comments  }}</td>
@@ -45,6 +56,7 @@
                 {% endif %}
 
             </tr>
+
             {% endfor %}
         {% endif %}
     </table>

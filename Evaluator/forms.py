@@ -103,6 +103,7 @@ class RoundForm(forms.ModelForm):
         models = models.Round
         fields = ['name', 'date', 'contact_time', 'assignee', 'supporting_interviewer', 'round_type', 'result', 'comments']
 
+    date = forms.DateField(widget=AdminDateWidget(), validators=[present_or_future_date]) # This shows the admin calender on the frontend form
 
 
 RoundFormSet = forms.modelformset_factory(
