@@ -29,36 +29,33 @@
             </div>
             {{formset.management_form}}
             <hr>
-            <table class="table">
-            <thead>
-                        <tr>
-                            <th>Heading</th>
-                            <th>Date</th>
-                            <th>Time</th>
-                            <th>Assigned To</th>
-                            <th>Additional Comments</th>
-                            <th>Round Type</th>
-                            <th>Result</th>
-                        </tr>
-                    </thead>
-            <tbody class="table">
+
+            {% if form.instance.id %}
+                <h1>Edit Round</h1>
+            {% else %}
+                <h1>Add Round</h1>
+            {% endif %}
+
+            <hr>
+
+            <div id="form_set">
             {% for form in formset %}
                 {{ form.id }} <!--This is just for handling an error during save after editing -->
                 {{ form.media }}
-            <tr>
-                <td> {{ form.name }} {{ form.name.errors }}</td>
-                <td>{{ form.date }} {{ form.date.errors }}</td>
-                <td>{{ form.contact_time }} {{ form.contact_time.errors }}</td>
-                <td>{{ form.assignee }} {{ form.assignee.errors }}</td>
-                <td>{{ form.comments }} {{ form.comments.errors }}</td>
-                <td>{{ form.round_type }} {{ form.round_type.errors }}</td>
-                <td>{{ form.result }} {{ form.result.errors }}</td>
-
-            </tr>
-
+                <table class="table">
+                    {{ form.as_table }}
+                </table>
             {% endfor %}
-            </tbody>
-            </table>
+            </div>
+
+            <input type="button" value="+ Round" id="add_more" class="btn btn-info btn-lg"></input>
+
+            <div id="empty_form" style="display:none">
+                <table class='table'>
+                    {{ formset.empty_form.as_table }}
+                </table>
+            </div>
+
             <input class="btn btn-success btn-lg" type="submit" name="Save" value="Save Interview">
             {% if form.instance.id %}
                 <a class="btn btn-lg btn-danger" href="{% url 'Evaluator:interview_details' form.instance.pk %}">Cancel</a>
@@ -69,16 +66,29 @@
         </form>
 
 </div>
+
 <script type="text/javascript" src="/admin/jsi18n/"></script>
-<script type="text/javascript" src="{% static 'admin/js/core.js' %}"></script>
+
+<script type="text/javascript" src="{% static 'js/jquery.js' %}"></script>
 <script type="text/javascript" src="{% static 'admin/js/admin/RelatedObjectLookups.js' %}"></script>
 <script type="text/javascript" src="{% static 'admin/js/vendor/jquery/jquery.min.js' %}"></script>
 <script type="text/javascript" src="{% static 'admin/js/jquery.init.js' %}"></script>
 <script type="text/javascript" src="{% static 'admin/js/actions.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'admin/js/core.js' %}"></script>
 <script type="text/javascript" src="{% static 'admin/js/calendar.js' %}"></script>
 <script type="text/javascript" src="{% static 'admin/js/admin/DateTimeShortcuts.js' %}"></script>
 
 
+
+<script type="text/javascript">
+    $('#add_more').click(function()
+    {
+     var form_idx = $('#id_form-TOTAL_FORMS').val();
+        $('#form_set').append($('#empty_form').html().replace(/__prefix__/g, form_idx));
+        $('#id_form-TOTAL_FORMS').val(parseInt(form_idx) + 1);
+    });
+
+</script>
 {% endblock %}
 
 
