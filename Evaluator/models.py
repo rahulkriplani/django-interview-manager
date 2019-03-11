@@ -194,6 +194,7 @@ class Round(models.Model):
     created_at = models.DateTimeField(default=timezone.now, editable=False)
     modified_on = models.DateTimeField(default=timezone.now, editable=False)
     comments = models.CharField(max_length=300, default='', null=True, blank=True)
+    supporting_interviewer = models.ManyToManyField(User, null=True, blank=True, related_name="supporters")
 
     def save(self, *args, **kwargs):
         ''' On save, update timestamps '''

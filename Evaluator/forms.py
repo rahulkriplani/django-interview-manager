@@ -3,7 +3,7 @@ import datetime
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
-from django.contrib.admin.widgets import AdminDateWidget
+from django.contrib.admin.widgets import AdminDateWidget, AdminTimeWidget
 
 from . import models
 
@@ -97,11 +97,13 @@ class AddInterview(forms.ModelForm):
 
 
 class RoundForm(forms.ModelForm):
+    contact_time = forms.TimeField(widget=AdminTimeWidget())
+
     class Meta:
         models = models.Round
-        fields = ['name', 'date', 'contact_time', 'assignee', 'round_type', 'result', 'comments']
+        fields = ['name', 'date', 'contact_time', 'assignee', 'supporting_interviewer', 'round_type', 'result', 'comments']
 
-    date = forms.DateField(widget=AdminDateWidget(), validators=[present_or_future_date])
+
 
 RoundFormSet = forms.modelformset_factory(
         models.Round,
@@ -113,7 +115,7 @@ RoundInLineFormSet = forms.inlineformset_factory(
         models.Interview,
         models.Round,
         extra=1,
-        fields=('name', 'date', 'contact_time', 'assignee', 'round_type', 'result', 'comments'),
+        fields=('name', 'date', 'contact_time', 'assignee', 'supporting_interviewer', 'round_type', 'result', 'comments'),
         formset=RoundFormSet,
         min_num=0,
         )

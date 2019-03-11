@@ -2,12 +2,18 @@
 {% load static %}
 {% load i18n %}
 
+{% block head %}
+    <title>Add Interview</title>
+{% endblock %}
 
 {% block content %}
+
+<script type="text/javascript" src="{% url 'javascript-catalog' %}"></script>
+<script type="text/javascript" src="{% static 'admin/js/core.js' %}"></script>
 <link rel="stylesheet" type="text/css" href="{% static 'admin/css/forms.css' %}"/>
 <link rel="stylesheet" type="text/css" href="{% static 'admin/css/widgets.css' %}"/>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" >
-
+<script type="text/javascript" src="{% static 'js/jquery.js' %}"></script>
 
 <div class="container">
 
@@ -39,6 +45,7 @@
             <hr>
 
             <div id="form_set">
+
             {% for form in formset %}
                 {{ form.id }} <!--This is just for handling an error during save after editing -->
                 {{ form.media }}
@@ -52,6 +59,7 @@
 
             <div id="empty_form" style="display:none">
                 <table class='table'>
+                    <h1> New Round:</h1>
                     {{ formset.empty_form.as_table }}
                 </table>
             </div>
@@ -68,18 +76,15 @@
 </div>
 
 <script type="text/javascript" src="/admin/jsi18n/"></script>
-
-<script type="text/javascript" src="{% static 'js/jquery.js' %}"></script>
-<script type="text/javascript" src="{% static 'admin/js/admin/RelatedObjectLookups.js' %}"></script>
 <script type="text/javascript" src="{% static 'admin/js/vendor/jquery/jquery.min.js' %}"></script>
 <script type="text/javascript" src="{% static 'admin/js/jquery.init.js' %}"></script>
 <script type="text/javascript" src="{% static 'admin/js/actions.min.js' %}"></script>
-<script type="text/javascript" src="{% static 'admin/js/core.js' %}"></script>
-<script type="text/javascript" src="{% static 'admin/js/calendar.js' %}"></script>
-<script type="text/javascript" src="{% static 'admin/js/admin/DateTimeShortcuts.js' %}"></script>
 
 
 
+
+
+{# The below script is to create multi copies of Round form using + button #}
 <script type="text/javascript">
     $('#add_more').click(function()
     {
