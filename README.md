@@ -26,7 +26,7 @@
 
   - Schedule Interview for a Candidate. **[Completed]**
   - Add Rounds to a Interview and assign to an interviewer. Leave additional instructions if required **[Completed]**
-  - Rounds can have optional assisting interviewers too. 
+  - Rounds can have optional assisting interviewers too. **[Completed]**
   - See complete history of a Candidate (All interviews, rounds with results). **[Completed]**
   - See complete history of a Interviewer (All rounds with rating link). **[Completed]**
   - Add Ratings based on Aspects for each Round. **[Completed]**
