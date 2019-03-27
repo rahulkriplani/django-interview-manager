@@ -11,6 +11,7 @@ class InterviewCalendar(HTMLCalendar):
         self.interviews = self.group_by_day(interviews)
 
     def formatday(self, day, weekday):
+        marked_day = []
         if day != 0:
             cssclass = self.cssclasses[weekday]
             if date.today() == date(self.year, self.month, day):
@@ -19,9 +20,11 @@ class InterviewCalendar(HTMLCalendar):
                 cssclass += ' h4'
                 body = []
                 for interview in self.interviews[day]:
-                    body.append('<a href="/allInterview/onDate/{}/{:02d}/{:02d}">' .format(self.year, self.month, day))
-                    #body.append(esc(str(interview)))
-                    body.append('%s</a>' % day)
+                    if day not in marked_day:
+                        marked_day.append(day)
+                        body.append('<a href="/allInterview/onDate/{}/{:02d}/{:02d}">' .format(self.year, self.month, day))
+                        #body.append(esc(str(interview)))
+                        body.append('%s</a>' % day)
 
                 return self.day_cell(cssclass, '%s' % ''.join(body))
             return self.day_cell(cssclass, day)
