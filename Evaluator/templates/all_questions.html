@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+{% block content %}
+<link rel="stylesheet" type="text/css" href="{% static 'admin/css/forms.css' %}"/>
+<link rel="stylesheet" type="text/css" href="{% static 'admin/css/widgets.css' %}"/>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" >
+
+
+<form method="get">
+    {{ filter.form.as_p }}
+    <p><b>Note</b>: Year format is YYYY-mm-dd</p>
+    <button class="btn btn-primary btn-lg" type="submit">Search</button>
+
+  </form>
+
+
+<h1>Search Results: {{ filter.qs.count }}</h1>
+<div class="panel panel-default">
+    <table class="table">
+        <tr>
+                <th>Description</th>
+                <th>Difficulty</th>
+                <th>Skill</th>
+            </tr>
+    {% for question in questions %}
+    <tr>
+        <td>{{ question.description }} </td>
+        <td>{{ question.difficulty }} </td>
+        <td>{{ question.skill }} </td>
+    </tr>
+    {% endfor %}
+    </table>
+
+</div>
+
+{% if questions.has_other_pages %}
+  <ul class="pagination">
+    {% if questions.has_previous %}
+      <li><a href="?page={{ questions.previous_page_number }}">&laquo;</a></li>
+    {% else %}
+      <li class="disabled"><span>&laquo;</span></li>
+    {% endif %}
+    {% for i in questions.paginator.page_range %}
+      {% if questions.number == i %}
+        <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+      {% else %}
+        <li><a href="?page={{ i }}">{{ i }}</a></li>
+      {% endif %}
+    {% endfor %}
+    {% if questions.has_next %}
+      <li><a href="?page={{ questions.next_page_number }}">&raquo;</a></li>
+    {% else %}
+      <li class="disabled"><span>&raquo;</span></li>
+    {% endif %}
+  </ul>
+{% endif %}
+
+<script type="text/javascript" src="/admin/jsi18n/"></script>
+<script type="text/javascript" src="{% static 'admin/js/core.js' %}"></script>
+<script type="text/javascript" src="{% static 'admin/js/admin/RelatedObjectLookups.js' %}"></script>
+<script type="text/javascript" src="{% static 'admin/js/vendor/jquery/jquery.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'admin/js/jquery.init.js' %}"></script>
+<script type="text/javascript" src="{% static 'admin/js/actions.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'admin/js/calendar.js' %}"></script>
+<script type="text/javascript" src="{% static 'admin/js/admin/DateTimeShortcuts.js' %}"></script>
+
+{% endblock %}

@@ -16,9 +16,21 @@ def question_details(request, question_id):
     return render(request, 'details_question.html', args)
 
 
-@method_decorator(login_required, name='dispatch')
-class QuestionList(ListView):
-    model = Question
+def all_questions(request):
+
+    questions = Question.objects.get_queryset().order_by('description')
+    question_filter = QuestionFilter(request.GET, queryset=questions)
+
+    page = request.GET.get('page', 1)
+    paginator = Paginator(question_filter.qs, 10)
+    try:
+        page_questions = paginator.page(page)
+    except PageNotAnInteger:
+        page_questions = paginator.page(1)
+    except EmptyPage:
+        page_questions = paginator.page(paginator.num_pages)
+
+    return render(request, 'all_questions.html', {'filter': question_filter, 'questions': page_questions})
 
 @login_required(login_url="/login")
 @user_passes_test(lambda u: u.is_staff)
