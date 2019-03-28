@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block head %}
+    <title>Job Openings</title>
+{% endblock %}
+
+{% block content %}
+
+{% for opening in openings %}
+    {% if forloop.counter0|divisibleby:"3" %}
+        <div class="row">
+    {% endif %}
+        <div class="col-md-3">
+            <p>{{ opening.position.name }}</p>
+            <p>{{ opening.position.id_code }}</p>
+            <p>{{ opening.posted_on }}</p>
+        </div>
+    {% if forloop.counter|divisibleby:"3" %}
+        </div>
+    {% endif %}
+
+{% endfor %}
+{% endblock %}
+
+</div>

@@ -16,6 +16,7 @@ def question_details(request, question_id):
     return render(request, 'details_question.html', args)
 
 
+@login_required(login_url="/login")
 def all_questions(request):
 
     questions = Question.objects.get_queryset().order_by('description')

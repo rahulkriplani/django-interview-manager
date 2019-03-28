@@ -297,3 +297,11 @@ class RatingAspect(models.Model):
 
     def __str__(self):  # __unicode__ on Python 2
         return self.name
+
+class JobOpening(models.Model):
+    position = models.ForeignKey(Position)
+    no_of_openings = models.PositiveIntegerField(default=1)
+    posted_on = models.DateTimeField(default=timezone.now, editable=False)
+
+    def __str__(self):
+        return 'Opening_{}'.format(self.position.id_code)

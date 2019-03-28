@@ -15,6 +15,7 @@ from .models import Skill
 from .models import QuestionSet
 from .models import Round
 from .models import Vendor
+from .models import JobOpening
 from .models import RatingSheet, Aspect, RatingAspect
 from .models import InterviewRatingSheet
 
@@ -93,6 +94,13 @@ class CandidateAdmin(admin.ModelAdmin):
     search_fields = ['name']
     list_filter = ['position_applied']
 
+class JobOpeningAdmin(admin.ModelAdmin):
+    model = JobOpening
+
+    list_display = ['__str__', 'position_code', 'no_of_openings', 'posted_on']
+
+    def position_code(self, object):
+        return object.position.id_code
 
 admin.site.register(Vendor, VendorAdmin)
 admin.site.register(Candidate, CandidateAdmin)
@@ -100,6 +108,7 @@ admin.site.register(Position, PositionAdmin)
 admin.site.register(Interview, InterviewAdmin)
 admin.site.register(Question, QuestionAdmin)
 admin.site.register(Skill)
+admin.site.register(JobOpening, JobOpeningAdmin)
 admin.site.register(QuestionSet)
 admin.site.register(RatingSheet, RatingSheetAdmin)
 admin.site.register(InterviewRatingSheet, InterviewRatingSheetAdmin)

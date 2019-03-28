@@ -1,11 +1,16 @@
 {% extends 'base.html' %}
+
+{% block head %}
+    <title>All Question Sets</title>
+{% endblock %}
+
 {% block content %}
 <h1>All Question Sets</h1>
 <div class="row">
     <ul>
-	{% for qset in question_sets %}
-    	<li><a href={% url 'Evaluator:question_set_details' qset.pk %}>{{ qset.name }}</a></li>
-	{% endfor %}
+    {% for qset in question_sets %}
+        <li><a href={% url 'Evaluator:question_set_details' qset.pk %}>{{ qset.name }}</a></li>
+    {% endfor %}
     </ul>
 </div>
 {% endblock %}

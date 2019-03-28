@@ -59,4 +59,7 @@ urlpatterns = [
     url(r'ratingDetails/(?P<rating_pk>\d+)/$', views.rating_details, name='rating_details'),
 
     url(r'^sitesearch/$', views.search_all, name='globalsearch'),
+
+    # Job Openings
+    url(r'^allOpenings/$', views.all_openings, name='allOpenings'),
     ]

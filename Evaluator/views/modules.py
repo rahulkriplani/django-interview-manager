@@ -23,6 +23,8 @@ from django.contrib import messages
 from Evaluator import forms
 from Evaluator.models import Interview, Question, Candidate, Answer, QuestionSet, Round, Vendor, Skill
 from Evaluator.models import RatingAspect, InterviewRatingSheet, Position
+from Evaluator.models import JobOpening
+
 from Evaluator.filters import InterviewFilter, CandidateFilter, QuestionFilter
 from django.conf import settings
 
