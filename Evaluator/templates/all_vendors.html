@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block head %}
+    <title>All Vendors</title>
+{% endblock %}
+
+{% block content %}
+<h1>All Vendors</h1>
+
+    <ul>
+    {% for vendor in vendors %}
+        <li><a href={% url 'Evaluator:vendor_details' vendor.pk %}>{{ vendor.name }}</a></li>
+    {% endfor %}
+    </ul>
+
+{% endblock %}

@@ -6,20 +6,28 @@
 
 {% block content %}
 
-{% for opening in openings %}
-    {% if forloop.counter0|divisibleby:"3" %}
-        <div class="row">
-    {% endif %}
-        <div class="col-md-3">
-            <p>{{ opening.position.name }}</p>
-            <p>{{ opening.position.id_code }}</p>
-            <p>{{ opening.posted_on }}</p>
-        </div>
-    {% if forloop.counter|divisibleby:"3" %}
-        </div>
+    <a href="{% url 'Evaluator:create_opening' %}" class="btn btn-success">Create Opening</a>
+    {% if openings %}
+        <h1>Below are open positions in IEPL</h1>
+        {% for opening in openings %}
+                <div class="well">
+
+                    <p><strong>Position</strong>: {{ opening.position.name }}</p>
+                    <p><strong>Position Code</strong>: {{ opening.position.id_code }}</p>
+                    <p><strong>Position Details</strong>: {{ opening.position.technology }}</p>
+                    <p><strong>No od Openings</strong>: {{ opening.no_of_openings }}</p>
+                    <p><strong>Posted on</strong>: {{ opening.posted_on }}</p>
+                    {% if request.user.is_superuser %}
+                        <a href="{% url 'Evaluator:edit_job_opening' opening.pk %}" class="btn btn-primary">Edit</a>
+                    {% endif %}
+
+                </div>
+
+        {% endfor %}
+    {% else %}
+        <h2>No openings right now.</h2>
     {% endif %}
 
-{% endfor %}
 {% endblock %}
 
-</div>
+

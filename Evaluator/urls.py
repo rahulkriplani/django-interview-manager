@@ -62,4 +62,6 @@ urlpatterns = [
 
     # Job Openings
     url(r'^allOpenings/$', views.all_openings, name='allOpenings'),
+    url(r'^addJobOpening/$', views.create_opening, name='create_opening'),
+    url(r'^editJobOpening/(?P<opening_pk>\d+)/$', views.edit_job_opening, name='edit_job_opening'),
     ]

@@ -35,6 +35,21 @@ class RegistrationForm(UserCreationForm):
 
         return user
 
+class CreateJobOpeningForm(forms.ModelForm):
+    disabled_fields = ['position']
+
+    class Meta:
+        model = models.JobOpening
+        fields = ('position', 'no_of_openings')
+
+    def __init__(self, *args, **kwargs):
+        super(CreateJobOpeningForm, self).__init__(*args, **kwargs)
+        instance = getattr(self, 'instance', None)
+        if instance and instance.pk:
+            for field in self.disabled_fields:
+                self.fields[field].disabled = True
+
+
 class EditProfileForm(UserChangeForm):
 
     class Meta:

@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <h1>Create a job profile</h1>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button class="btn btn-success btn-lg type="submit">Save</button>
+            <a class="btn btn-lg btn-danger" href="{% url 'Evaluator:allOpenings' %}">Cancel</a>
+        </form>
+
+{% endblock %}
