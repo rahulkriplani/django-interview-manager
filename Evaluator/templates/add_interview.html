@@ -3,7 +3,7 @@
 {% load i18n %}
 
 {% block head %}
-    <title>Add Interview</title>
+    <title>Add an Interview</title>
 {% endblock %}
 
 {% block content %}
@@ -15,7 +15,6 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" >
 <script type="text/javascript" src="{% static 'js/jquery.js' %}"></script>
 
-<div class="container">
 
     {% if form.instance.id %}
         <h1>Edit Interview</h1>
@@ -25,11 +24,12 @@
     <hr>
 
 
-        <form method="post">
+        <form method="post" style="margin-bottom: 20px;">
             <div class="form-group">
                 {% csrf_token %}
                 {{ form.media }}
                 {{ form.as_p }}
+                {{ form.errors }}
                 <p>Note: Date format is yyyy-mm-dd</p>
 
             </div>
@@ -73,16 +73,11 @@
             </div>
         </form>
 
-</div>
 
 <script type="text/javascript" src="/admin/jsi18n/"></script>
 <script type="text/javascript" src="{% static 'admin/js/vendor/jquery/jquery.min.js' %}"></script>
 <script type="text/javascript" src="{% static 'admin/js/jquery.init.js' %}"></script>
 <script type="text/javascript" src="{% static 'admin/js/actions.min.js' %}"></script>
-
-
-
-
 
 {# The below script is to create multi copies of Round form using + button #}
 <script type="text/javascript">
@@ -95,6 +90,3 @@
 
 </script>
 {% endblock %}
-
-
-

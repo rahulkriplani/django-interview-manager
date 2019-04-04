@@ -19,6 +19,7 @@ def create_candis_interviews(fileobj):
 @user_passes_test(lambda u: u.is_staff)
 @login_required(login_url="/login")
 def bulk_upload_candis(request):
+    logger.debug('Creating Bulk candidates and interviews')
     form = forms.BulkCreateInterviewsAndCandidates()
     round_forms = forms.RoundInLineFormSet(
             queryset=Round.objects.none()
@@ -32,6 +33,7 @@ def bulk_upload_candis(request):
                 )
 
         if form.is_valid() and round_forms.is_valid():
+
             names = form.cleaned_data['name_list']
             names = names.split('\r\n')
 
@@ -43,28 +45,42 @@ def bulk_upload_candis(request):
             vendor = Vendor.objects.get(id=vendor_id)
             date = form.cleaned_data['date']
 
+            #pdb.set_trace()
+
             #Create Candidates
             for candi in names:
-                candi = Candidate.objects.create(name=candi, position_applied=position, experience=experience, vendor=vendor)
+                logger.debug('Creating for :%s' % candi)
+                my_candi = Candidate(name=candi, position_applied=position, experience=experience, vendor=vendor)
+                my_candi.save()
+                logger.debug('Candidate created')
 
-                #Create interview for Candidate
-                interview = Interview.objects.create(
-                    candidate=candi,
+                my_interview = Interview(
+                    candidate=my_candi,
                     date=date,
                     position=position,
                     )
 
-                rnd_name = round_forms.cleaned_data[0]['name']
-                contact_time = round_forms.cleaned_data[0]['contact_time']
-                comments = round_forms.cleaned_data[0]['comments']
-                assignee = round_forms.cleaned_data[0]['assignee']
-                user = User.objects.get(username=assignee)
-                round_type = round_forms.cleaned_data[0]['round_type']
+                my_interview.save()
 
-                #Create round
-                Round.objects.create(name=rnd_name, contact_time=contact_time, comments=comments,
-                    assignee=user, round_type=round_type, interview=interview, date=date)
+                logger.debug('Interview created')
 
+                #Creating and Saving Rounds
+                logger.debug('Creating Rounds')
+                for int_round in round_forms:
+                    r = Round.objects.create(
+                        name = int_round.cleaned_data['name'],
+                        assignee = int_round.cleaned_data['assignee'],
+                        comments = int_round.cleaned_data['comments'],
+                        date = int_round.cleaned_data['date'],
+                        contact_time = int_round.cleaned_data['contact_time'],
+                        round_type= int_round.cleaned_data['round_type'],
+                        interview=my_interview,
+                        )
+                    for support in int_round.cleaned_data['supporting_interviewer']:
+                        r.supporting_interviewer.add(support)
+                    r.save()
+
+                logger.debug('Rounds created')
             return redirect('Evaluator:all_candidates')
         else:
             args = {'form': form, 'message': 'No Valid Form'}

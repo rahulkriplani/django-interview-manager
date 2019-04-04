@@ -130,7 +130,7 @@ RoundFormSet = forms.modelformset_factory(
 RoundInLineFormSet = forms.inlineformset_factory(
         models.Interview,
         models.Round,
-        extra=1,
+        extra=0,
         fields=('name', 'date', 'contact_time', 'assignee', 'supporting_interviewer', 'round_type', 'result', 'comments'),
         formset=RoundFormSet,
         min_num=0,

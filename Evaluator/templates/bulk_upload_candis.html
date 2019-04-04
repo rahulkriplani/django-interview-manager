@@ -1,14 +1,20 @@
 {% extends 'base.html' %}
+
 {% load static %}
+
+{% block head %}
+    <title>Bulk Create Candidates</title>
+{% endblock %}
 
 {% block content %}
 <link rel="stylesheet" type="text/css" href="{% static 'admin/css/forms.css' %}">
 <link rel="stylesheet" type="text/css" href="{% static 'admin/css/widgets.css' %}">
 <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" >
+<script type="text/javascript" src="{% static 'js/jquery.js' %}"></script>
 
 <h1>Bulk Create Candidates and Interviews</h1>
 
- <form role="form" method="post" enctype="multipart/form-data">
+ <form role="form" method="post" enctype="multipart/form-data"  style="margin-bottom: 20px;">
 
     {% csrf_token %}
     <table class="table">
@@ -21,40 +27,35 @@
     {{round_form.management_form}}
     <hr>
 
-    <table border="0.5" class="table">
-    <thead>
-        <tr>
-            <th>Round Name (e.g F2F_Tech)</th>
-            <th>Date</th>
-            <th>Time</th>
-            <th>Assigned To</th>
-            <th>Additional Comments</th>
-            <th>Round Type</th>
-            <th>Result</th>
-        </tr>
-    </thead>
+        <div id="form_set">
 
-    <tbody class="table">
-    {% for form in round_form %}
-        {{ form.id }} <!--This is just for handling an error during save after editing -->
-        {{ form.media }}
-    <tr>
-        <td> {{ form.name }} {{ form.name.errors }}</td>
-        <td>{{ form.date }} {{ form.date.errors }}</td>
-        <td>{{ form.contact_time }} {{ form.contact_time.errors }}</td>
-        <td>{{ form.assignee }} {{ form.assignee.errors }}</td>
-        <td>{{ form.comments }} {{ form.comments.errors }}</td>
-        <td>{{ form.round_type }} {{ form.round_type.errors }}</td>
-        <td>{{ form.result }} {{ form.result.errors }}</td>
-    </tr>
+        {% for form in round_form %}
+            {{ form.id }} <!--This is just for handling an error during save after editing -->
+            {{ form.media }}
+            <table class="table">
+                {{ form.as_table }}
+            </table>
+        {% endfor %}
+        </div>
 
-    {% endfor %}
-    </tbody>
-    </table>
+        <input type="button" value="+ Round" id="add_more" class="btn btn-info btn-lg"></input>
 
-    <input class="btn btn-success btn-lg mt-4" type="submit" name="Upload" value="Create">
+        <div id="empty_form" style="display:none">
+            <table class='table'>
+                <h1> New Round:</h1>
+                {{ round_form.empty_form.as_table }}
+            </table>
+        </div>
 
-  </form>
+        <input class="btn btn-success btn-lg mt-4" type="submit" name="Upload" value="Create">
+        {% if form.instance.id %}
+            <a class="btn btn-lg btn-danger" href="{% url 'Evaluator:interview_details' form.instance.pk %}">Cancel</a>
+        {% else %}
+            <a class="btn btn-lg btn-danger" href="{% url 'Evaluator:profile' %}">Cancel</a>
+        {% endif %}
+        </div>
+ </form>
+
 
 <script type="text/javascript" src="/admin/jsi18n/"></script>
 <script type="text/javascript" src="{% static 'admin/js/core.js' %}"></script>
@@ -64,5 +65,16 @@
 <script type="text/javascript" src="{% static 'admin/js/actions.min.js' %}"></script>
 <script type="text/javascript" src="{% static 'admin/js/calendar.js' %}"></script>
 <script type="text/javascript" src="{% static 'admin/js/admin/DateTimeShortcuts.js' %}"></script>
+
+{# The below script is to create multi copies of Round form using + button #}
+<script type="text/javascript">
+    $('#add_more').click(function()
+    {
+     var form_idx = $('#id_form-TOTAL_FORMS').val();
+        $('#form_set').append($('#empty_form').html().replace(/__prefix__/g, form_idx));
+        $('#id_form-TOTAL_FORMS').val(parseInt(form_idx) + 1);
+    });
+
+</script>
 
 {% endblock %}
