@@ -37,3 +37,4 @@
   - Statistics **[Completed]**
   - Calender: Month wise showing dates with links for all interviews that day. **[Completed]**
   - Bulk Create Candidates - This feature can be used during Interview Drives where we need to create lots of candidates for a common positions and they have the same sequence of rounds . **[Completed]**
+  - Upload resume through Candidate details page, after you have created a candidate. If a resume (any document is present), the same can be viewed through Candi details page.**[Completed]**
