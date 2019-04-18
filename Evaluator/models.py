@@ -305,3 +305,8 @@ class JobOpening(models.Model):
 
     def __str__(self):
         return 'Opening_{}'.format(self.position.id_code)
+
+class Document(models.Model):
+    document = models.FileField(upload_to='resumes/')
+    upload_to = models.DateTimeField(auto_now_add=True)
+    candidate = models.OneToOneField(Candidate)

@@ -151,5 +151,23 @@ def edit_candidate(request, candidate_pk):
 def candi_details(request, candidate_pk):
     candidate = Candidate.objects.get(pk=candidate_pk)
     interviews = Interview.objects.filter(candidate=candidate)
-    args = {'candidate': candidate, 'interviews': interviews}
+    candi_document = None
+    try:
+        candi_document = Document.objects.get(candidate=candidate_pk)
+    except:
+        pass
+
+    args = {'candidate': candidate, 'interviews': interviews, 'candi_doc': candi_document}
+
     return render(request, 'details_candidate.html', args)
+
+@login_required(login_url="/login")
+def candi_resume_upload(request):
+    if request.method == 'POST':
+        form = forms.DocumentForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('Evaluator:profile')
+    else:
+        form = forms.DocumentForm()
+    return render(request, 'candi_resume_upload.html', {'form': form})

@@ -156,3 +156,8 @@ class BulkCreateInterviewsAndCandidates(forms.Form):
         label='Vendor *',
 
         )
+
+class DocumentForm(forms.ModelForm):
+    class Meta:
+        model = models.Document
+        fields = ('document', 'candidate')

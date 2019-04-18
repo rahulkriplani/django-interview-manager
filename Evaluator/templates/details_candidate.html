@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+
 {% block content %}
 
 <div class="well">
@@ -10,11 +11,17 @@
 <h4>Experience: {{ candidate.experience }} yrs </h4>
 <h4>Position Applied: {{ candidate.position_applied }}</h4>
 
+{% if skills %}
 <h4>Skills:
     {% for skill in candidate.skill.all %}
         <span class="label label-success">{{ skill.name }}</span>
     {% endfor %}
 </h4>
+{% endif %}
+
+{% if candi_doc %}
+    <a href="{{ candi_doc.document.url }}" >Download Resume</a>
+{% endif %}
 
 </div>
 
