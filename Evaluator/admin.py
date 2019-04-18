@@ -18,6 +18,7 @@ from .models import Vendor
 from .models import JobOpening
 from .models import RatingSheet, Aspect, RatingAspect
 from .models import InterviewRatingSheet
+from .models import Document
 
 
 class VendorAdmin(admin.ModelAdmin):
@@ -88,11 +89,20 @@ class InterviewRatingSheetAdmin(admin.ModelAdmin):
     readonly_fields = ['interview', 'round_name', ]
     inlines = [RatingAspectInline]
 
+class DocumentInline(admin.TabularInline):
+    model = Document
+    extra = 0
+
 class CandidateAdmin(admin.ModelAdmin):
     model = Candidate
-    list_display = ['name', 'position_applied', 'created_at', 'vendor']
+    list_display = ['name', 'position_applied', 'created_at', 'vendor', 'candi_resume']
     search_fields = ['name']
     list_filter = ['position_applied']
+
+    inlines = [DocumentInline]
+
+    def candi_resume(self, object):
+        return object.document
 
 class JobOpeningAdmin(admin.ModelAdmin):
     model = JobOpening

@@ -310,3 +310,6 @@ class Document(models.Model):
     document = models.FileField(upload_to='resumes/')
     upload_to = models.DateTimeField(auto_now_add=True)
     candidate = models.OneToOneField(Candidate)
+
+    def __str__(self):
+        return 'Resume_{}'.format(self.candidate.name)
