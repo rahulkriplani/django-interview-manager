@@ -160,4 +160,4 @@ class BulkCreateInterviewsAndCandidates(forms.Form):
 class DocumentForm(forms.ModelForm):
     class Meta:
         model = models.Document
-        fields = ('document', 'candidate')
+        fields = ('document', )

@@ -19,6 +19,7 @@ from django.template.loader import get_template
 from django.template import Context
 from django.core.mail import EmailMultiAlternatives
 from django.contrib import messages
+from django.core.exceptions import ObjectDoesNotExist
 
 from Evaluator import forms
 from Evaluator.models import Interview, Question, Candidate, Answer, QuestionSet, Round, Vendor, Skill

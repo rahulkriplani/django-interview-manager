@@ -21,6 +21,12 @@
 
 {% if candi_doc %}
     <a href="{{ candi_doc.document.url }}" >Download Resume</a>
+{% else %}
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ resume_form.as_p }}
+    <button type="submit">Upload</button>
+  </form>
 {% endif %}
 
 </div>

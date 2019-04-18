@@ -151,23 +151,23 @@ def edit_candidate(request, candidate_pk):
 def candi_details(request, candidate_pk):
     candidate = Candidate.objects.get(pk=candidate_pk)
     interviews = Interview.objects.filter(candidate=candidate)
-    candi_document = None
-    try:
-        candi_document = Document.objects.get(candidate=candidate_pk)
-    except:
-        pass
 
-    args = {'candidate': candidate, 'interviews': interviews, 'candi_doc': candi_document}
-
-    return render(request, 'details_candidate.html', args)
-
-@login_required(login_url="/login")
-def candi_resume_upload(request):
+    # This is for showing the Upload button.
+    resume_form = forms.DocumentForm()
     if request.method == 'POST':
         form = forms.DocumentForm(request.POST, request.FILES)
         if form.is_valid():
-            form.save()
-            return redirect('Evaluator:profile')
-    else:
-        form = forms.DocumentForm()
-    return render(request, 'candi_resume_upload.html', {'form': form})
+            document = form.save(commit=False)
+            document.candidate = candidate # This is because, candidate is not passed in form.POST
+            document.save()
+
+    # Find out if the candidate has a resume attached.
+    try:
+        candi_document = Document.objects.get(candidate=candidate_pk)
+    except Document.DoesNotExist:
+        candi_document = None
+
+
+    args = {'candidate': candidate, 'interviews': interviews, 'candi_doc': candi_document, 'resume_form': resume_form}
+
+    return render(request, 'details_candidate.html', args)
