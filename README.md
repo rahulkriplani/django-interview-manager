@@ -38,3 +38,9 @@
   - Calender: Month wise showing dates with links for all interviews that day. **[Completed]**
   - Bulk Create Candidates - This feature can be used during Interview Drives where we need to create lots of candidates for a common positions and they have the same sequence of rounds . **[Completed]**
   - Upload resume through Candidate details page, after you have created a candidate. If a resume (any document is present), the same can be viewed through Candi details page.**[Completed]**
+  
+  ### Possible Ideas:
+  - Browser Notifications when a round is scheduled in someone's name.
+  - Share Button beside Rating sheet . We can launch a modal with multi-selectable users , then send mail with attachment.
+  - Auto send Rating Sheet to a selected Users (e.g may be HR).
+  - If a Interview is being created for user , check if previous interview for candidate was closed. 
