@@ -1,6 +1,6 @@
 # TheEvaluator
 
- ### Objective:
+### Objective:
 
  A student/Candidate evaluation system along with Interview Management System.
 
