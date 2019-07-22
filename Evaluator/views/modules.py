@@ -2,7 +2,7 @@ from __future__ import unicode_literals
 
 import csv
 
-from django.shortcuts import render, redirect, reverse
+from django.shortcuts import render, redirect, reverse, render_to_response
 from django.contrib.auth.forms import PasswordChangeForm, UserChangeForm
 from django.contrib.auth import update_session_auth_hash, authenticate, login
 from django.views.generic import CreateView, UpdateView, DeleteView, ListView
@@ -20,15 +20,16 @@ from django.template import Context
 from django.core.mail import EmailMultiAlternatives
 from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
+from django.db.models import Q
 
 from Evaluator import forms
 from Evaluator.models import Interview, Question, Candidate, Answer, QuestionSet, Round, Vendor, Skill
-from Evaluator.models import RatingAspect, InterviewRatingSheet, Position
+from Evaluator.models import Position
 from Evaluator.models import JobOpening, Document
-
+from Evaluator.models import RatingAspect, InterviewRatingSheet
 from Evaluator.filters import InterviewFilter, CandidateFilter, QuestionFilter
-from django.conf import settings
 
+from django.conf import settings
 
 from Evaluator.search import global_search
 from Evaluator.mycalendar import InterviewCalendar

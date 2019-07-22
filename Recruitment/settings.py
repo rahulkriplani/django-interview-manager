@@ -33,8 +33,8 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
-    'django.contrib.auth',
+
+
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
@@ -42,7 +42,8 @@ INSTALLED_APPS = [
     'simple_history',
     'mathfilters',
     'Evaluator',
-
+    'django.contrib.admin', # This ordering has been brought
+    'django.contrib.auth', # down so that custom auth templates works
 ]
 
 MIDDLEWARE = [
@@ -155,6 +156,17 @@ LOGGING = {
                     'filename': os.path.join(LOG_LOCATION, 'debug.log'),
                     'formatter': 'my_formatter',
                 },
+        'errorfile': {
+                    'level': 'DEBUG',
+                    'class': 'logging.FileHandler',
+                    'filename': os.path.join(LOG_LOCATION, 'error.log'),
+                    'formatter': 'my_formatter',
+                },
+        'mail_admins': {
+                    'level': 'ERROR',
+                    'class': 'django.utils.log.AdminEmailHandler',
+                    'include_html': False,
+                },
         'console': {
                     'level': 'DEBUG',
                     'class': 'logging.StreamHandler',
@@ -167,6 +179,17 @@ LOGGING = {
                         'handlers': ['file'],
                         'level': 'DEBUG',
                         'propagate': True,
-                      }
+                      },
+            'django': {
+                'handlers': ['errorfile'],
+                'level': 'ERROR',
+                'propagate': False,
+        },
+        'django.request': {
+            'handlers': ['mail_admins'],
+            'level': 'ERROR',
+            'propagate': False,
+        },
                 }
             }
+
