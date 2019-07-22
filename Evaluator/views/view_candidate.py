@@ -1,20 +1,8 @@
 from modules import *
 
-
-
 #***********************************************************************
 #-------------------------------- CANDIDATE ---------------------------
 #***********************************************************************
-
-def create_candis_interviews(fileobj):
-
-    for row in fileobj:
-        candi =  [row.strip() for row in row.split(',')]
-        # Create a candidate
-        print candi
-        position = Position.objects.get(id_code=candi[1].strip())
-        vendor = Vendor.objects.get(name=candi[4])
-        candidate = Candidate.objects.create(name=candi[0], position_applied=position, experience=candi[2], contact_primary=candi[3], vendor=vendor)
 
 @user_passes_test(lambda u: u.is_staff)
 @login_required(login_url="/login")
@@ -45,7 +33,6 @@ def bulk_upload_candis(request):
             vendor = Vendor.objects.get(id=vendor_id)
             date = form.cleaned_data['date']
 
-            #pdb.set_trace()
 
             #Create Candidates
             for candi in names:

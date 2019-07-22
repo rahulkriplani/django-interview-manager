@@ -41,9 +41,10 @@ def _get_user_rounds_in_year(interviewee):
 @user_passes_test(lambda u: u.is_staff)
 def profile(request):
     today_date = timezone.now().date()
-    user_rounds = Round.objects.filter(assignee=request.user, date__gte=today_date, interview__status='AC')
+    #user_rounds = Round.objects.filter(assignee=request.user, date__gte=today_date, interview__status='AC')
+    the_user = request.user
+    user_rounds = Round.objects.filter(Q(supporting_interviewer=the_user) | Q(assignee=the_user), date__gte=today_date, interview__status='AC').distinct()
     interviews_this_year = Interview.count_all_months_interviews_current_year()
-
     rounds_user_year = _get_user_rounds_in_year(request.user)
 
 
