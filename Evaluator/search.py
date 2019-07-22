@@ -3,11 +3,11 @@ from django.contrib.auth.models import User
 from django.db.models import Q
 
 def global_search(query):
-    candidates = models.Candidate.objects.filter(Q(name__contains=query))
-    questions = models.Question.objects.filter(Q(description__contains=query))
-    vendors = models.Vendor.objects.filter(Q(name__contains=query))
-    positions = models.Position.objects.filter(Q(name__contains=query))
-    users = User.objects.filter(Q(first_name__contains=query)|Q(last_name__contains=query))
+    candidates = models.Candidate.objects.filter(Q(name__icontains=query))
+    questions = models.Question.objects.filter(Q(description__icontains=query))
+    vendors = models.Vendor.objects.filter(Q(name__icontains=query))
+    positions = models.Position.objects.filter(Q(name__icontains=query))
+    users = User.objects.filter(Q(first_name__icontains=query)|Q(last_name__icontains=query))
     dict_results = dict()
     if candidates:
         dict_results['candidates'] = candidates

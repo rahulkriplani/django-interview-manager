@@ -48,21 +48,37 @@ def add_ratings(request, interview_pk, round_pk):
             name=str(interview) + '_' + rnd.name,
             interview=interview,
             round_name=rnd,
-            comment = request.POST['comments']
+            comment = request.POST['comments'],
             )
         logger.debug("InterviewRatingSheet successfully created.")
 
         for key in request.POST.keys():
-            if '_aspect' in key:
-                aspect_first = key.split('_')[0]
-                rating_aspect = RatingAspect(
-                    name=aspect_first,
-                    interview_rating_sheet=irs,
-                    points=request.POST[key],
-                    comment=request.POST['{}_{}'.format(aspect_first, 'comment')],
-                    expected_points=int(request.POST['{}_{}'.format(aspect_first, 'expected_rate')]),
-                    )
-                rating_aspect.save()
+            if request.POST[key] == '0':
+                continue # Don't create rating aspect for a 0 entry.
+            else:
+                if '_aspect' in key:
+                    aspect_first = key.split('_')[0]
+                    rating_aspect = RatingAspect(
+                        name=aspect_first,
+                        interview_rating_sheet=irs,
+                        points=request.POST[key],
+                        comment=request.POST['{}_{}'.format(aspect_first, 'comment')],
+                        expected_points=int(request.POST['{}_{}'.format(aspect_first, 'expected_rate')]),
+                        )
+                    rating_aspect.save()
+
+        # Change the round's status as per decision
+        decision = request.POST['finalDecision']
+        if decision == 'OnHold':
+            rnd.result = 'OH'
+        elif decision == 'Advanced':
+            rnd.result = 'ADV'
+        elif decision == 'Rejected':
+            rnd.result = 'RJ'
+        else:
+            raise Http404("Invalid Decision.")
+
+        rnd.save()
 
         logger.debug("All Aspects for IRS successfully created...Returning")
         return HttpResponseRedirect(interview.get_absolute_url())

@@ -4,6 +4,7 @@ from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.contrib.admin.widgets import AdminDateWidget, AdminTimeWidget
+from django.utils.translation import ugettext_lazy as _
 
 from . import models
 
@@ -15,6 +16,7 @@ def present_or_future_date(value):
     if value < datetime.date.today():
         raise forms.ValidationError("The date cannot be in the past!")
     return value
+
 
 
 class RegistrationForm(UserCreationForm):
@@ -96,6 +98,10 @@ class AddCandidateForm(forms.ModelForm):
     class Meta:
         model = models.Candidate
         fields = ['name', 'experience', 'position_applied', 'contact_primary', 'vendor', 'skill']
+        labels = {
+        "contact_primary": _("Contact No:"),
+
+        }
 
 class QuestionSetForm(forms.ModelForm):
     name = forms.CharField(max_length=200)
@@ -104,22 +110,28 @@ class QuestionSetForm(forms.ModelForm):
         fields = ['name',]
 
 class AddInterview(forms.ModelForm):
+    disabled_fields = ('candidate', 'position', 'date')
     class Meta:
         model = models.Interview
-        fields = ['candidate', 'date', 'position', 'question_set']
+        fields = ['candidate', 'position', 'date' , 'question_set']
 
-    date = forms.DateField(widget=AdminDateWidget(), validators=[present_or_future_date]) # This shows the admin calender on the frontend form
+    def __init__(self, *args, **kwargs):
+        super(AddInterview, self).__init__(*args, **kwargs)
+        instance = getattr(self, 'instance', None)
+        if instance and instance.pk:
+            for field in self.disabled_fields:
+                self.fields[field].disabled = True
+
+    date = forms.DateField(widget=AdminDateWidget()) # This shows the admin calender on the frontend form
 
 
 class RoundForm(forms.ModelForm):
-    contact_time = forms.TimeField(widget=AdminTimeWidget())
-
     class Meta:
         models = models.Round
         fields = ['name', 'date', 'contact_time', 'assignee', 'supporting_interviewer', 'round_type', 'result', 'comments']
 
-    date = forms.DateField(widget=AdminDateWidget(), validators=[present_or_future_date]) # This shows the admin calender on the frontend form
 
+    date = forms.DateField(widget=AdminDateWidget(), validators=[present_or_future_date])
 
 RoundFormSet = forms.modelformset_factory(
         models.Round,

@@ -17,7 +17,7 @@ from collections import OrderedDict
 
 class RatingSheet(models.Model):
     name = models.CharField(max_length=100)
-    rate_min = models.IntegerField(default=1, validators=[MinValueValidator(0)])
+    rate_min = models.IntegerField(default=0, validators=[MinValueValidator(0)])
     rate_max = models.IntegerField(default=6, validators=[MaxValueValidator(100)])
 
 
@@ -204,6 +204,7 @@ class Round(models.Model):
         return super(Round, self).save(*args, **kwargs)
 
     type_choices = (
+        ('CV', 'CV Review'),
         ('U', 'Undecided'),
         ('F2F', 'Face to Face'),
         ('SKYPE', 'Skype Call'),
