@@ -44,3 +44,6 @@
   - Share Button beside Rating sheet . We can launch a modal with multi-selectable users , then send mail with attachment.
   - Auto send Rating Sheet to a selected Users (e.g may be HR).
   - If a Interview is being created for user , check if previous interview for candidate was closed. 
+
+  ### To-Dos:
+  - Migrate to Python 3
